@@ -1,0 +1,21 @@
+{
+  "name": "graphql-module-loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Vessel Vatel",
+    "email": "vesselvatel@gmail.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "directory-scanner": "^1.0.2",
+    "lodash": "^4.17.10"
+  }
+}
