@@ -17,5 +17,6 @@ export default class UserService extends BaseService {
         const cursor = await this.db.query(query);
         await this.query();
         return await cursor.next();
+
     }
 }
