@@ -5,6 +5,6 @@ import ErrorCatcher from '../../../app/middleware/error_catcher';
 
 declare module 'egg' {
   interface IMiddleware {
-    errorCatcher: ReturnType<typeof ErrorCatcher>;
+    errorCatcher: typeof ErrorCatcher;
   }
 }
