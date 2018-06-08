@@ -10,9 +10,9 @@ export default class UserService extends BaseService {
     }
 
     public async findUserByUsername(username : string) {
-        const query = aql`for u in user filter u.username == ${username} return u`;
-        const cursor = await this.db.query(query);
-        await this.query();
+        // const query = aql`for u in user filter u.username == ${username} return u`;
+        const cursor = await this.findByProperty('username', username);
+        // await this.query();
         return await cursor.next();
 
     }
