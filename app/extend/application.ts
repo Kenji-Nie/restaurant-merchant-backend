@@ -6,7 +6,7 @@ const ARANGO = Symbol.for('Application#arango');
 export default {
     get arango(): Database {
         if (!this[ARANGO]) {
-            this[ARANGO] = new Database({ url: 'http://localhost:8529' });
+            this[ARANGO] = new Database({ url: 'http://192.168.0.115:8529' });
         }
         return this[ARANGO];
     },

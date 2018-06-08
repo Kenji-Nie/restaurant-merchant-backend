@@ -4,8 +4,8 @@ describe('getUserByUsername()', () => {
     it('have', async () => {
         const ctx = app.mockContext();
         const u = await ctx.service.user.findUserByUsername('zhangsan');
-        // console.log('user');
-        // console.log(u);
+        console.log('user');
+        console.log(u);
     });
 
 });

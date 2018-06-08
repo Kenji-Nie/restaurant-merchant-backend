@@ -1,4 +1,4 @@
-import { Database, aql } from 'arangojs';
+import { aql, Database } from 'arangojs';
 import { DocumentCollection } from 'arangojs/lib/cjs/collection';
 
 export type Model = {
@@ -11,7 +11,7 @@ export default (db: any): Model => {
     return new Proxy(db, {
         get: collection(db),
     });
-}
+};
 
 function collection(db: Database) {
     return (_, key) => {
@@ -21,7 +21,7 @@ function collection(db: Database) {
                 get: property(collection),
             });
         }
-    }
+    };
 }
 
 function property(collection: DocumentCollection) {
@@ -31,11 +31,11 @@ function property(collection: DocumentCollection) {
                 return collection[key].bind(collection) as Function;
             }
             if (typeof key === 'object') {
-                console.log('obj')
+                console.log('obj');
             }
             return collection.document(key);
         }
-    }
+    };
 }
 
 function inspectFilter(value): boolean {

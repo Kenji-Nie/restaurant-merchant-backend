@@ -1,5 +1,5 @@
 namespace model.schema {
-    export interface User extends Base{
+    export interface User {
         type: {} & Type;
         username: string;
         password: string;
