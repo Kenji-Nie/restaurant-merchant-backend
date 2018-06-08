@@ -19,7 +19,6 @@ export default class BaseService extends Service {
     }
 
     public async findByProperty(property: string, value: string) {
-        this.model.user
         const query = aql`for o in ${this.collection} filter o.${property} == ${value} return o`;
         return await  this.db.query(query);
     }
