@@ -27,7 +27,7 @@ export default class UserService extends BaseService {
         const query = aql`for u in user let rs = (for r in role filter r._key in u.role_ids return r) FOR rToJoin IN (
     LENGTH(rs) > 0 ? rs:
       [ {} ]
-    )  filter u._key == ${uid} return {user: u, roles: rs}`;
+    )  filter u._key == ${uid} return merge(u, {roles: rs})`;
         return await this.query(query);
     }
 }

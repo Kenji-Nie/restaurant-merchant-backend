@@ -43,8 +43,6 @@ describe('getUserByUsername()', () => {
 
     it('findUserAndRoleById', async () => {
         const result = await (await ctx.service.user.findUserAndRoleById('109081')).next();
-        let u = result.user;
-        u.roles = result.roles;
-        console.log(u);
+        console.log(result);
     });
 });
