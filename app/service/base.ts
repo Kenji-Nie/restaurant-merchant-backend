@@ -6,17 +6,19 @@ export default class BaseService extends Service {
 
     protected model : Model;
     protected db : Database;
-    protected collectionName : string;
+    protected className : String;
 
-    constructor(ctx: Context,collectionName : string) {
+    constructor(ctx: Context) {
         super(ctx);
         this.model = ctx.app.model;
         this.db = this.app.arango;
-        this.collectionName = collectionName;
+        this.className = this.constructor.name.replace("Service", "");
     }
 
     public async query () {
-        console.log(this.collectionName);
+        let className = (/function (.{1,})\(/).exec(this.constructor.toString());
+        let x = (className && className.length > 1) ? className[1] : "";
+        console.log(this.className);
     }
 
 }
