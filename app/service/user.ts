@@ -24,10 +24,11 @@ export default class UserService extends BaseService {
     }
 
     public async findUserAndRoleById(uid: string) {
-        const query = aql`for u in user let rs = (for r in role filter r._key in u.role_ids return r) FOR rToJoin IN (
-    LENGTH(rs) > 0 ? rs:
-      [ {} ]
-    )  filter u._key == ${uid} return merge(u, {roles: rs})`;
+        const query = aql`for u in user let rs = (for r in role filter r._key in u.role_ids return r) filter u._key == ${uid} return merge(u, {roles: rs})`;
         return await this.query(query);
+    }
+
+    public async findUserAndRoleAndOrderById(uid: string, children: string[]) {
+        return await this.findInnnerJoinById(uid, children);
     }
 }

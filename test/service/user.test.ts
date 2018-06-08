@@ -1,5 +1,4 @@
 import {app} from 'egg-mock/bootstrap';
-import User = model.schema.User;
 
 describe('getUserByUsername()', () => {
     let ctx;
@@ -37,12 +36,18 @@ describe('getUserByUsername()', () => {
             merchants: [],
             deletion_flag: true
         }
-        const u = await ctx.service.user.save(user);
+        // const u = await ctx.service.user.save(user);
 
     });
 
     it('findUserAndRoleById', async () => {
         const result = await (await ctx.service.user.findUserAndRoleById('109081')).next();
-        console.log(result);
+        // console.log(result);
+    });
+
+    it('findUserAndRoleAndOrderById', async () => {
+        const user = await (await ctx.service.user.findUserAndRoleAndOrderById('109081',['role','order'])).next();
+        console.log(user.roles);
+        console.log(user.orders);
     });
 });
