@@ -25,6 +25,7 @@ export default (app: Application) => {
         }),
     );
     router.get('/', controller.home.index);
+    router.post('/api/user/login/loginData',controller.user.login);
     router.get('/api/getAddress', controller.region.getRegions);
 
 };

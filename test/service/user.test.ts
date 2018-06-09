@@ -6,6 +6,11 @@ describe('userTest', () => {
         ctx = app.mockContext();
     });
 
+    it('findUserByPhoneAndPassword', async () => {
+        const u = await ctx.service.user.findUserByPhoneAndPassword('13212341234', '123456');
+        // console.log(u);
+    });
+
     it('findUserByUsername', async () => {
         const u = await ctx.service.user.findUserByUsername('zhangsan');
         // console.log('user');
