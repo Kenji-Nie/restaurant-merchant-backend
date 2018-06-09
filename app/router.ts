@@ -25,5 +25,6 @@ export default (app: Application) => {
         }),
     );
     router.get('/', controller.home.index);
+    router.get('/api/getAddress', controller.region.getRegions);
 
 };
