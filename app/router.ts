@@ -1,8 +1,8 @@
+import { graphiqlKoa, graphqlKoa } from 'apollo-server-koa';
 import { Application } from 'egg';
-import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa';
 import { makeExecutableSchema } from 'graphql-tools';
-import { loader } from '../lib/graphql-module-loader/src';
 import * as path from 'path';
+import { loader } from '../lib/graphql-module-loader/src';
 
 export default (app: Application) => {
     const { controller, router } = app;
@@ -14,7 +14,7 @@ export default (app: Application) => {
                 schema: makeExecutableSchema(loader(path.resolve(app.baseDir, 'app/graphql'))),
                 context: ctx,
             };
-        })
+        }),
     );
 
     router.get(
@@ -24,8 +24,6 @@ export default (app: Application) => {
             // passHeader: `'Authorization': 'Bearer lorem ipsum'`,
         }),
     );
-
-
     router.get('/', controller.home.index);
 
 };
