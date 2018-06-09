@@ -19,7 +19,7 @@ export default (appInfo: EggAppConfig) => {
   config.keys = appInfo.name + '_1524469991622_4735';
 
   // add your config here
-  config.middleware = [ 'errorCatcher' ];
+    config.middleware = ['responseWrapper', 'errorHandler'];
 
   config.cluster = {
     listen: {

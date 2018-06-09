@@ -30,6 +30,7 @@
     "egg-validate": "^1.0.0",
     "graphql": "^0.13.2",
     "graphql-tools": "^2.24.0",
+    "uuid": "^3.2.1",
     "xml-js": "^1.6.2"
   },
   "devDependencies": {
@@ -56,6 +57,9 @@
     "type": "git",
     "url": "git+https://github.com/elixirChain/restaurant-merchant-backend.git"
   },
+  "eslintIgnore": [
+    "coverage"
+  ],
   "author": "Kenji",
   "license": "ISC",
   "bugs": {
