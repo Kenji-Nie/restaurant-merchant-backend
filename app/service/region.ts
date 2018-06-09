@@ -2,7 +2,7 @@ import BaseService from './base';
 
 export default class RegionService extends BaseService {
 
-    public async getAddress() {
+    public async getRegions() {
         const provinces = await (await this.findByProperty('parent_id', '')).all();
 
         let p;
@@ -10,9 +10,9 @@ export default class RegionService extends BaseService {
             const cities = await (await this.findByProperty('parent_id', province._key)).all();
             for (const city of cities) {
                 const areas = await (await this.findByProperty('parent_id', city._key)).all();
-                const ass: Array<object> = [];
+                const _areas: Array<object> = [];
                 for (const area of areas) {
-                    ass.push({areas: area.name});
+                    _areas.push({area: area.name});
                 }
             }
         }

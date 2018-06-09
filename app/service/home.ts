@@ -1,5 +1,4 @@
 import BaseService from "./base";
-import User = model.schema.User;
 
 export default class HomeService extends BaseService {
     public async index() {

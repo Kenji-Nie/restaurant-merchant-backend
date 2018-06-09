@@ -6,6 +6,7 @@ namespace model {
         func: schema.Func;
         icon: schema.Icon;
         merchandise: schema.Merchandise;
+        merchandiseType: schema.MerchandiseType;
         merchant: schema.Merchant;
         order: schema.Order;
         region: schema.Region;
