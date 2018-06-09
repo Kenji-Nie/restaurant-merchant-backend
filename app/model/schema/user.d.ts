@@ -4,7 +4,7 @@ namespace model.schema {
         username: string;
         password: string;
         name?: string;
-        wx_uid: string;
+        wx_uid?: string;
         phone?: string;
         email?: string;
         registration_date: string;

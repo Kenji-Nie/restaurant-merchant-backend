@@ -3,7 +3,7 @@ import { Application } from 'egg';
 import { makeExecutableSchema } from 'graphql-tools';
 import * as path from 'path';
 import { loader } from '../lib/graphql-module-loader/src';
-import { IRouter } from 'express';
+
 export default (app: Application) => {
     const { controller, router } = app;
 
@@ -25,17 +25,7 @@ export default (app: Application) => {
         }),
     );
     router.get('/', controller.home.index);
-    router.post('/api/:version/:module?/:controller/:method/:rest?', (ctx, next) => {
-        const { helper } = ctx;
-        const p = helper.modifyValues(ctx.params, helper.camelize);
+    router.post('/api/user/login/loginData',controller.user.login);
+    router.get('/api/getAddress', controller.region.getRegions);
 
-        try {
-            return (p.module ?
-                controller.api[p.version][p.module][p.controller][p.method] :
-                controller.api[p.version][p.controller][p.method]).apply(ctx, p.rest);
-        } catch (e) {
-            ctx.logger.error(e);
-            return new helper.SysError(`'${ctx.url}' resource not found`);
-        }
-    })
 };

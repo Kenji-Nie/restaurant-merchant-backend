@@ -8,8 +8,8 @@ describe('home',  () => {
     });
 
 
-    it('have', async () => {
-
+    it('getRegions', async () => {
+        await ctx.service.region.getRegions();
     });
 
 });
