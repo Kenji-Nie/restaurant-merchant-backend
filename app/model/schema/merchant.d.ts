@@ -25,7 +25,7 @@ namespace model.schema {
         merchandise_ids?: string[];
         merchandise_types?: string[];
         coupon_ids?: string[];
-        coupon_types?: string[];
+        merchandiseType_ids?: string[];
         order_ids?: string[];
         table_ids?: string[];
         ad_ids?: string[];

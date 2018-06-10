@@ -1,15 +1,15 @@
+import {Context} from 'egg';
 import {app} from 'egg-mock/bootstrap';
 
 describe('home',  () => {
 
-    let ctx;
+    let ctx: Context;
     before(async () => {
         ctx = app.mockContext();
     });
-
-
     it('getRegions', async () => {
-        await ctx.service.region.getRegions();
+        const u = await ctx.service.region.getRegions();
+        console.log(u);
     });
 
 });

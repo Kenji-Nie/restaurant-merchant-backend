@@ -10,7 +10,6 @@ export default class BaseService extends Service {
     protected db: Database;
     protected className: string;
     protected collection: DocumentCollection;
-
     constructor(ctx: Context) {
         super(ctx);
         this.model = ctx.app.model;

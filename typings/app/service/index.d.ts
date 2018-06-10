@@ -3,8 +3,10 @@
 
 import Address from '../../../app/service/address';
 import Base from '../../../app/service/base';
-import Home from '../../../app/service/home';
 import Merchandise from '../../../app/service/merchandise';
+import MerchandiseType from '../../../app/service/merchandiseType';
+import Merchant from '../../../app/service/merchant';
+import Order from '../../../app/service/order';
 import Region from '../../../app/service/region';
 import User from '../../../app/service/user';
 
@@ -12,8 +14,10 @@ declare module 'egg' {
   interface IService {
     address: Address;
     base: Base;
-    home: Home;
     merchandise: Merchandise;
+    merchandiseType: MerchandiseType;
+    merchant: Merchant;
+    order: Order;
     region: Region;
     user: User;
   }

@@ -3,12 +3,12 @@ namespace model.schema {
         name: string;
         type: {
             icon: string;
-            sequence_number: string;
+            sequence_number: number;
         } & Type;
         sale_volume: number;
         current_price: number;
         original_price: number;
-        sequence_number: string;
+        sequence_number: number;
         packing_charge: number;
         thumbnails: string[];
         images: string[];

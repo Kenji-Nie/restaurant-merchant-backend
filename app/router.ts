@@ -27,17 +27,17 @@ export default (app: Application) => {
     // router.get('/', controller.home.index);
     // router.post('/api/user/login/loginData',controller.user.login);
     // router.get('/api/getAddress', controller.region.getRegions);
-    router.post('/api/:version/:module?/:controller/:method/:rest?', (ctx, next) => {
-        const { helper } = ctx;
-        const p = helper.modifyValues(ctx.params, helper.camelize);
-        try {
-            return (p.module ?
-                controller.api[p.version][p.module][p.controller][p.method] :
-                controller.api[p.version][p.controller][p.method]).apply(ctx, p.rest);
-        } catch (e) {
-            // ctx.logger.error(e);
-            return new helper.SysError(`'${ctx.url}' resource not found`);
-        }
-    })
-
+    router.get('/api/getAuthenticationData', controller.merchant.getAuthenticationData);
+    // router.post('/api/:version/:module?/:controller/:method/:rest?', (ctx, next) => {
+    //     const { helper } = ctx;
+    //     const p = helper.modifyValues(ctx.params, helper.camelize);
+    //     try {
+    //         return (p.module ?
+    //             controller.api[p.version][p.module][p.controller][p.method] :
+    //             controller.api[p.version][p.controller][p.method]).apply(ctx, p.rest);
+    //     } catch (e) {
+    //         // ctx.logger.error(e);
+    //         return new helper.SysError(`'${ctx.url}' resource not found`);
+    //     }
+    // });
 };

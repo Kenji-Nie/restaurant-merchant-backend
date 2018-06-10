@@ -1,7 +1,8 @@
+import {Context} from 'egg';
 import {app} from 'egg-mock/bootstrap';
 
 describe('userTest', () => {
-    let ctx;
+    let ctx: Context;
     before(async () => {
         ctx = app.mockContext();
     });
@@ -41,23 +42,5 @@ describe('userTest', () => {
             deletion_flag: true,
         };
         // const u = await ctx.service.user.save(user);
-    });
-
-    it('findUserAndRoleById', async () => {
-        const result = await (await ctx.service.user.findUserAndRoleById('109081')).next();
-        // console.log(result);
-    });
-
-    it('findUserAndRoleAndOrderById', async () => {
-        const user = await (await ctx.service.user.findUserAndRoleAndOrderById('109081', ['role', 'order'])).next();
-        // console.log(user.roles);
-        // console.log(user.orders);
-    });
-
-    it('findUserAndRoleAndOrderByProperties', async () => {
-        const user = await (await ctx.service.user.findUserAndRoleAndOrderByUsernameAndEmail(
-            'lisi', 'zhangsan', true, ['role', 'order'])).next();
-        // console.log(user);
-        // console.log(user.orders);
     });
 });
