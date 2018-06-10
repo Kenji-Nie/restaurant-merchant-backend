@@ -27,4 +27,12 @@ export default class MerchandiseTypeService extends BaseService {
             return {_key: ''};
         }
     }
+
+    public async deleteMerchandiseType(mTypeId: string) {
+        try {
+            return await this.model.merchandiseType.remove(mTypeId);
+        } catch (e) {
+            return {_key: ''};
+        }
+    }
 }

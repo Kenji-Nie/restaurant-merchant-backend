@@ -28,4 +28,13 @@ export default class MerchandiseTypeController extends BaseController {
             status: !(result._key === ''),
         };
     }
+
+    public async deleteGroup() {
+        const params = this.ctx.params;
+        const result = await this.service.merchandiseType.deleteMerchandiseType(params.merchandise_type_id);
+        this.ctx.body = {
+            message: result,
+            status: !(result._key === ''),
+        };
+    }
 }

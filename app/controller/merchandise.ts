@@ -27,4 +27,13 @@ export default class MerchandiseController extends BaseController {
             status: !(result._key === ''),
         };
     }
+
+    public async deleteCommodity() {
+        const params = this.ctx.params;
+        const result = await this.service.merchandise.deleteMerchandise(params.merchandise_id);
+        this.ctx.body = {
+            message: result,
+            status: !(result._key === ''),
+        };
+    }
 }

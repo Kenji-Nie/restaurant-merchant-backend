@@ -32,3 +32,19 @@ namespace model.schema {
         deletion_flag?: boolean;
     }
 }
+// "admin_id": "001",
+//     "mainInformation": "未认证",
+//     "storeStatus": "营业中",
+//     "storeAvatar": "http://img3.imgtn.bdimg.com/it/u=4014972976,3855810213&fm=27&gp=0.jpg",
+//     "workTimes": {
+//     "week": "数组的默认值不能解析为数组: 周一 周二",
+//         "startTime": "08:00",
+//         "endTime": "22:00"
+// },
+//     "phone_number": "18165359296",
+//     "callSendPhone": "18165359296",
+//     "address": {
+//     "provice": "陕西省",
+//         "city": "西安市",
+//         "area": "碑林区",
+//         "detail": "夏家庄风和日丽小区9号楼101"}

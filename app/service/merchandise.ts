@@ -22,4 +22,12 @@ export default class MerchandiseService extends BaseService {
             return {_key: ''};
         }
     }
+
+    public async deleteMerchandise(mdiseId: string) {
+        try {
+            return await this.model.merchandise.remove(mdiseId);
+        } catch (e) {
+            return {_key: ''};
+        }
+    }
 }
