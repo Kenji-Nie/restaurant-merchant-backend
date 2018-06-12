@@ -70,4 +70,25 @@ export default class UserService extends BaseService {
     public async findUserAndOrderById(uid: string) {
         return await this.findInnnerJoinById(uid, ['order']);
     }
+
+    /**
+     * 通过eamil查询用户
+     * @param {string} email 邮箱地地
+     * @returns {Promise<ArrayCursor>}
+     */
+    public async findUserByEmail(email: string) {
+        return await this.findByProperty('email', email);
+    }
+
+    /**
+     * 通过phone和email查询用户
+     * @param {string} phone
+     * @param {string} email
+     * @returns {Promise<any | undefined>}
+     */
+    public async findUserByPhoneAndEamil(phone: string, email: string) {
+        const query = `for u in user filter u.phone==${phone} and u.email==${email}`;
+        const user = await (await this.query(query)).next();
+        return user;
+    }
 }
