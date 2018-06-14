@@ -14,5 +14,6 @@ namespace model {
         table: schema.Table;
         theme: schema.Theme;
         user: schema.User;
+        admin: schema.Admin;
     }
 }

@@ -18,4 +18,19 @@ export default class MerchantController extends BaseController {
             status: true,
         };
     }
+    public async getMerchantsByAdminId() {
+        const aid = await this.ctx.request.body.admin_id;
+        const merchants = await this.ctx.service.merchant.getMerchantsByAdminId(aid);
+        if (merchants != null) {
+            this.ctx.body = {
+                status: true,
+                message: merchants,
+            };
+        } else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
+    }
 }

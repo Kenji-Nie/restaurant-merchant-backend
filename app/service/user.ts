@@ -91,4 +91,24 @@ export default class UserService extends BaseService {
         const user = await (await this.query(query)).next();
         return user;
     }
+
+    /**
+     * 通过phone获取验证码
+     * @param {string} phone
+     * @returns {Promise<any>}
+     */
+    public async getYanZhengMa(phone: string) {
+        let yanZhengMa ;
+        yanZhengMa = 1234;
+        return yanZhengMa;
+    }
+
+    /**
+     * 通过phone、密码和验证码来获取用户的admin_id
+     * @param {string} phone
+     * @param {string} password
+     * @param {number} YanZhengMa
+     * @returns {Promise<any>}
+     */
+
 }

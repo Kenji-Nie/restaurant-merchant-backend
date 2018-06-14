@@ -22,4 +22,14 @@ export default class MerchantService extends BaseService {
     public async get(mid: string) {
         return await this.model.merchant[mid];
     }
+
+    /**
+     * 通过管理员ID获取该用户的商铺信息
+     * @param {string} aid
+     * @returns {Promise<void>}
+     */
+    public async getMerchantsByAdminId(aid: string ) {
+        const admin = await this.model.admin[aid];
+        return await this.findByProperty('merchants', admin.merchants);
+    }
 }

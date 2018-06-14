@@ -49,12 +49,12 @@ describe('userTest', () => {
         // console.log(await corsor.next());
         // console.log(u);
     });
-
-
     it('findUserByPhoneAndEamil', async () => {
         const user = await ctx.service.user.findUserByPhoneAndEamil('13212341234', 'zhangsan');
         console.log(user);
     });
-
-
+    it('getAdminId', async() => {
+        const adminId = await ctx.service.user.getAdminId('13212341234', '123', 1234);
+        console.log(adminId);
+    });
 });

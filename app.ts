@@ -15,6 +15,7 @@ async function initDb(app) {
     const dbName = 'px_restaurant';
     try {
         await db.useDatabase(dbName);
+        await db.useBasicAuth('root', 'root');
     } catch (e) {
         try {
             await db.createDatabase(dbName);
