@@ -21,4 +21,26 @@ export default class UserController extends BaseController {
             };
         }
     }
+
+
+    public async findUserByEmail() {
+        const email = await this.ctx.request.body.email;
+        const user = await (await this.service.user.findUserByEmail(email)).next();
+        if (user != null) {
+            this.ctx.body = {
+                status: true,
+                message: {
+                    user: user
+                }
+            }
+        } else {
+            this.ctx.body = {
+                status: false,
+                message: {
+                    user: null
+                }
+            }
+        }
+    }
+
 }

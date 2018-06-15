@@ -1,4 +1,4 @@
-import { aql, Database } from 'arangojs';
+import { Database, aql } from 'arangojs';
 import proxy from '../../lib/model-proxy';
 
 const ARANGO = Symbol.for('Application#arango');
