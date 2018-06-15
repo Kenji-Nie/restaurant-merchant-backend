@@ -15,6 +15,7 @@ async function initDb(app) {
     const dbName = 'px_restaurant';
     try {
         await db.useDatabase(dbName);
+        await db.useBasicAuth('root', 'root');
     } catch (e) {
         try {
             await db.createDatabase(dbName);
@@ -25,9 +26,12 @@ async function initDb(app) {
                     const collection = db.collection(v);
                     await collection.create();
                     await collection.load();
-                } catch (e) {}
-            })
-        } catch (e) {}
+                } catch (e) {
+                    console.log(e);
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        }
     }
-
 }

@@ -28,13 +28,21 @@ export default (app: Application) => {
     // router.post('/api/user/login/loginData',controller.user.login);
     // router.get('/api/getAddress', controller.region.getRegions);
     // router.get('/api/getAuthenticationData', controller.merchant.getAuthenticationData);
-    router.post('/api/:version/:module?/:controller/:method/:rest?', (ctx, next) => {
+    router.get('/api/:controller/:method/:rest?', (ctx, next) => {
         const { helper } = ctx;
         const p = helper.modifyValues(ctx.params, helper.camelize);
         try {
-            return (p.module ?
-                controller.api[p.version][p.module][p.controller][p.method] :
-                controller.api[p.version][p.controller][p.method]).apply(ctx, p.rest);
+            return (controller[p.controller][p.method]).apply(ctx,p);
+        } catch (e) {
+            return new helper.SysError(`'${ctx.url}' resource not found`);
+        }
+    });
+
+    router.post('/api/:controller/:method/:rest?', (ctx, next) => {
+        const { helper } = ctx;
+        const p = helper.modifyValues(ctx.params, helper.camelize);
+        try {
+            return (controller[p.controller][p.method]).apply(ctx, p);
         } catch (e) {
             // ctx.logger.error(e);
             return new helper.SysError(`'${ctx.url}' resource not found`);
