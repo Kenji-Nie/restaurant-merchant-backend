@@ -1,19 +1,19 @@
 namespace model.schema {
     export interface User {
-        type: {} & Type;
-        username: string;
-        password: string;
+        type_fid: string;
+        username?: string;
+        password?: string;
         name?: string;
-        wx_uid?: string;
+        wx_uid: string;
         phone?: string;
         email?: string;
-        registration_date: string;
+        sign_up_date: string;
         role_ids?: string[];
         order_ids?: string[];
         coupon_ids?: string[];
-        addresses?: Address[];
-        id_card?: string;       // admin only
-        merchants?: Merchant[]; // admin only
+        address_ids?: string[];
+        id_card?: string;
+        merchant_ids?: string[];
         deletion_flag?: boolean;
     }
 }

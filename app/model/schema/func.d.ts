@@ -4,6 +4,5 @@ namespace model.schema {
         code: string;
         url: string;
         parent_id: string;
-        deletion_flag?: boolean;
     }
 }
