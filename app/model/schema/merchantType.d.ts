@@ -1,5 +1,5 @@
 namespace model.schema {
-    interface Type {
+    export interface MerchantType {
         name: string;
     }
 }

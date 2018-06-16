@@ -1,8 +1,7 @@
 namespace model.schema {
     export interface Icon {
         name: string;
-        type: {} & Type;
+        type: number;
         url: string;
-        deletion_flag?: boolean;
     }
 }

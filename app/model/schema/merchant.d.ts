@@ -1,34 +1,32 @@
 namespace model.schema {
     export interface Merchant {
         name: string;
-        type: {} & Type;
-        legal_person: {
-            name: string;
-            id_card: string;
-        };
-        business_license: {
-            license_number: string;
-            image: string;
-        };
+        type_fid: string;
+        legal_person_name: string;
+        legal_person_id_card: string;
+        business_license_number: string;
+        business_license_img: string;
         phone?: string;
-        registration_date: string;
+        sign_up_date: string;
         snoring_flag: boolean;
         open_time: string;
         close_time: string;
-        takeaway: {
-            snoring_flag: boolean;
-            open_time: string;
-            close_time: string;
-            min_amount: number;
-            max_distance: number;
-        };
+        takeaway_snoring_flag: string;
+        takeaway_open_time: string;
+        takeaway_close_time: string;
+        min_takeaway_amount: string;
+        max_takeaway_distance: string;
         merchandise_ids?: string[];
-        merchandise_types?: string[];
-        coupon_ids?: string[];
         merchandiseType_ids?: string[];
+        user_ids?: string[];
+        coupon_ids?: string[];
         order_ids?: string[];
-        table_ids?: string[];
+        seat_ids?: string[];
+        seatType_ids?: string[];
         ad_ids?: string[];
+        role_ids?: string[];
+        theme_ids?: string[];
+        icon_ids?: string[];
         deletion_flag?: boolean;
     }
 }

@@ -3,6 +3,5 @@ namespace model.schema {
         name: string;
         desc: string;
         style_sheet: string;
-        deletion_flag?: boolean;
     }
 }
