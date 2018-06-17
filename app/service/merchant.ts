@@ -22,4 +22,13 @@ export default class MerchantService extends BaseService {
     public async get(mid: string) {
         return await this.model.merchant[mid];
     }
+
+    /**
+     * 通过店铺ID查找店铺及席位类型
+     * @param {string} id
+     * @returns {Promise<ArrayCursor>}
+     */
+    public async findMerchantAndSeatTypeById(id: string) {
+        return await (await this.findInnnerJoinById(id, ['seatType'])).next();
+    }
 }

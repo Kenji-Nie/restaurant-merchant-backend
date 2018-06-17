@@ -18,4 +18,5 @@ export default class MerchantController extends BaseController {
             status: true,
         };
     }
+
 }
