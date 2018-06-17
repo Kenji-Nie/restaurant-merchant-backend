@@ -3,6 +3,7 @@ import {aql} from "arangojs/lib/async/aql-query";
 
 export default class SeatService extends BaseService {
 
+
     /**
      * 根据席位IDS删除席位
      * @param {string[]} ids

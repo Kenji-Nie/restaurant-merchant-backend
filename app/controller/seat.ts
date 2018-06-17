@@ -41,4 +41,31 @@ export default class SeatController extends BaseController {
         }
     }
 
+
+    /**
+     * 根据店铺ID查询所有席位
+     * @returns {Promise<void>}
+     */
+    public async listSeat() {
+        try {
+            const merchant = await this.ctx.service.merchant.findMerchantAndSeatById(this.ctx.request.body.merchant_id);
+            const seats = merchant.seats;
+            this.ctx.body = {
+                status: true,
+                message: {
+                    seats
+                }
+            }
+        }
+        catch (e) {
+            this.ctx.body = {
+                status: false,
+                message: {
+                    seats: []
+                }
+            }
+
+        }
+    }
+
 }

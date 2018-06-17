@@ -44,12 +44,21 @@ export default class MerchantService extends BaseService {
     }
 
     /**
-     * 选择店铺---根据店铺ID删除对应的店铺
+     * 根据店铺ID查找店铺及席位类型
      * @param {string} mid
      * @returns {Promise<void>}
      */
-    public async findMerchantAndSeatTypeById(id: string) {
-        return await (await this.findInnnerJoinById(id, ['seatType'])).next();
+    public async findMerchantAndSeatTypeById(mid: string) {
+        return await (await this.findInnnerJoinById(mid, ['seatType'])).next();
+    }
+
+    /**
+     * 根据店铺ID查找店铺及席位类型
+     * @param {string} mid
+     * @returns {Promise<void>}
+     */
+    public async findMerchantAndSeatById(mid: string) {
+        return await (await this.findInnnerJoinById(mid, ['seat'])).next();
     }
 
 }
