@@ -5,9 +5,11 @@ export default class MerchantService extends BaseService {
     public async findMerchantAndMerchandiseTypeById(mid: string) {
         return await this.findInnnerJoinById(mid, ['merchandiseType']);
     }
+
     public async findMerchantAndMerchandiseById(mid: string) {
         return await this.findInnnerJoinById(mid, ['merchandise']);
     }
+
     // public async addMerchant(mt: Merchant) {
     //     mt.type = {name: '待认证'};
     //     try {
@@ -16,9 +18,12 @@ export default class MerchantService extends BaseService {
     //         return {_key: ''};
     //     }
     // }
+
     public async get(mid: string) {
         return await this.model.merchant[mid];
     }
+
+
     /**
      * 根据商家的id 更新该商家的商铺信息
      * @param {string} uid
@@ -37,4 +42,23 @@ export default class MerchantService extends BaseService {
     public async deleteMerchant(mid: string) {
         return await this.model.merchant.drop[mid];
     }
+
+    /**
+     * 根据店铺ID查找店铺及席位类型
+     * @param {string} mid
+     * @returns {Promise<void>}
+     */
+    public async findMerchantAndSeatTypeById(mid: string) {
+        return await (await this.findInnnerJoinById(mid, ['seatType'])).next();
+    }
+
+    /**
+     * 根据店铺ID查找店铺及席位类型
+     * @param {string} mid
+     * @returns {Promise<void>}
+     */
+    public async findMerchantAndSeatById(mid: string) {
+        return await (await this.findInnnerJoinById(mid, ['seat'])).next();
+    }
+
 }

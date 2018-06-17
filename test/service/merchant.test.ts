@@ -54,4 +54,8 @@ describe('merchantTest', async () => {
         const result = await ctx.service.merchant.deleteMerchant('561456');
         console.log(result);
     });
+    it('findMerchantAndSeatById', async () => {
+        const result = await ctx.service.merchant.findMerchantAndSeatById('461123');
+        console.log(result);
+    });
 });
