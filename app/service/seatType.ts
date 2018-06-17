@@ -1,6 +1,5 @@
-import BaseService from "./base";
+import BaseService from './base';
 import SeatType = model.schema.SeatType;
-
 
 export default class SeatTypeService extends BaseService {
 
@@ -22,5 +21,4 @@ export default class SeatTypeService extends BaseService {
     public async deleteSeatTypes(ids: string[]) {
         return !(await this.model.seatType.removeByKeys(ids, {})).error;
     }
-
 }
