@@ -7,6 +7,7 @@ import MerchandiseType from '../../../app/controller/merchandiseType';
 import Merchant from '../../../app/controller/merchant';
 import Order from '../../../app/controller/order';
 import Region from '../../../app/controller/region';
+import Seat from '../../../app/controller/seat';
 import User from '../../../app/controller/user';
 
 declare module 'egg' {
@@ -17,6 +18,7 @@ declare module 'egg' {
     merchant: Merchant;
     order: Order;
     region: Region;
+    seat: Seat;
     user: User;
   }
 }
