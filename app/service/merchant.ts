@@ -5,31 +5,36 @@ export default class MerchantService extends BaseService {
     public async findMerchantAndMerchandiseTypeById(mid: string) {
         return await this.findInnnerJoinById(mid, ['merchandiseType']);
     }
-
     public async findMerchantAndMerchandiseById(mid: string) {
         return await this.findInnnerJoinById(mid, ['merchandise']);
     }
-
     public async addMerchant(mt: Merchant) {
-        mt.type = {name: '待认证'};
+        // mt.type = {name: '待认证'};
         try {
             return await this.model.merchant.save(mt);
         } catch (e) {
             return {_key: ''};
         }
     }
-
     public async get(mid: string) {
         return await this.model.merchant[mid];
     }
+    /**
+     * 根据商家的id 更新该商家的商铺信息
+     * @param {string} uid
+     * @param {model.schema.Merchant} merchantMessage
+     * @returns {Promise<any>}
+     */
+    public async updateStore(mid: string, merchantMessage: Merchant) {
+        return await this.model.user.update(mid, merchantMessage);
+    }
 
     /**
-     * 通过管理员ID获取该用户的商铺信息
-     * @param {string} aid
+     * 选择店铺---根据店铺ID删除对应的店铺
+     * @param {string} mid
      * @returns {Promise<void>}
      */
-    public async getMerchantsByAdminId(aid: string ) {
-        const admin = await this.model.admin[aid];
-        return await this.findByProperty('merchants', admin.merchants);
+    public async deleteStore(mid: string) {
+        return await this.model.merchant.drop[mid];
     }
 }

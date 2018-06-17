@@ -7,7 +7,7 @@ describe('adminTest', async() => {
         ctx = app.mockContext();
     });
     it('getAdminDetail', async() => {
-        const admin = await ctx.service.admin.getAdminDetail('12564');
+        const admin = await ctx.service.admin.getAdminDetail('547110');
         console.log(admin);
     });
 });
