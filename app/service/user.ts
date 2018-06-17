@@ -134,7 +134,7 @@ export default class UserService extends BaseService {
      * @param {model.schema.Merchant} merchantMessage
      * @returns {Promise<void>}
      */
-    public async createStore(aid: string, merchantMessage: Merchant) {
+    public async createMerchant(aid: string, merchantMessage: Merchant) {
         const user = await this.model.user[aid];
         let merchants;
         merchants = user.merchant_ids;
@@ -171,7 +171,7 @@ export default class UserService extends BaseService {
      * @param {string} uid
      * @returns {Promise<void>}
      */
-    public async listsStore(uid: string) {
+    public async listMerchant(uid: string) {
         const user = await this.model.user[uid];
         let merchantIds ;
         merchantIds = user.merchant_ids;

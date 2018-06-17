@@ -18,10 +18,10 @@ export default class MerchantController extends BaseController {
             status: true,
         };
     }
-    public async updateStore() {
+    public async updateMerchant() {
         const merchantId = await this.ctx.request.body.id;
         const storeMessage = await this.ctx.request.body;
-        const result = await this.ctx.service.merchant.updateStore(merchantId, storeMessage);
+        const result = await this.ctx.service.merchant.updateMerchant(merchantId, storeMessage);
         if (result != null) {
             this.ctx.body = {
                 status: true,
@@ -34,9 +34,9 @@ export default class MerchantController extends BaseController {
             };
         }
     }
-    public async deleteStore() {
+    public async deleteMerchant() {
         const merchantId = await this.ctx.request.body.id;
-        const result = await this.ctx.service.merchant.deleteStore(merchantId);
+        const result = await this.ctx.service.merchant.deleteMerchant(merchantId);
         if (result != null) {
             this.ctx.body = {
                 status: true,

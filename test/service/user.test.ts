@@ -78,7 +78,7 @@ describe('userTest', () => {
         const result = await ctx.service.user.updateUserDetail('326752', message );
         console.log(result);
     });
-    it('createStore', async () => {
+    it('createMerchant', async () => {
         const message = {
             type_fid: 'merchantType/001',
             id: '001',
@@ -110,7 +110,7 @@ describe('userTest', () => {
                 detail: '夏家庄风和日丽小区9号楼10',
             },
         };
-        const result = await ctx.service.user.createStore('326752', message);
+        const result = await ctx.service.user.createMerchant('326752', message);
         console.log(result);
     });
     it('updatePassword', async () => {
@@ -121,9 +121,9 @@ describe('userTest', () => {
         const userId = await ctx.service.user.forgetPassword('123456789', '123', 1234);
         console.log(userId);
     });
-    it('listStore', async () => {
-        const stores = await ctx.service.user.listsStore('326752');
-        console.log(stores);
+    it('listMerchant', async () => {
+        const merchants = await ctx.service.user.listMerchant('326752');
+        console.log(merchants);
     });
     it('modifyRemark', async () => {
         const result = await ctx.service.user.modifyRemark(['326752', '209858'], '老朋友');

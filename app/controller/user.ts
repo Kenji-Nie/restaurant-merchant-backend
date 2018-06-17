@@ -85,10 +85,10 @@ export default class UserController extends BaseController {
             };
         }
     }
-    public async createStore() {
+    public async createMerchant() {
         const userId = await this.ctx.request.body.id;
         const merchantDetail = await this.ctx.request.body;
-        const result = await this.ctx.service.user.createStore(userId, merchantDetail);
+        const result = await this.ctx.service.user.createMerchant(userId, merchantDetail);
         if (result != null) {
             this.ctx.body = {
                 status: true,
@@ -136,13 +136,13 @@ export default class UserController extends BaseController {
             };
         }
     }
-    public async listStore() {
+    public async listMerchant() {
         const userId = await this.ctx.request.body.id;
-        const stores = await this.ctx.service.user.listsStore(userId);
-        if (stores != null) {
+        const merchants = await this.ctx.service.user.listMerchant(userId);
+        if (merchants != null) {
             this.ctx.body = {
                 status: true,
-                message: stores,
+                message: merchants,
             };
         } else {
             this.ctx.body = {

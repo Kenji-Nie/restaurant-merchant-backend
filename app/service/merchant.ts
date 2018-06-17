@@ -25,7 +25,7 @@ export default class MerchantService extends BaseService {
      * @param {model.schema.Merchant} merchantMessage
      * @returns {Promise<any>}
      */
-    public async updateStore(mid: string, merchantMessage: Merchant) {
+    public async updateMerchant(mid: string, merchantMessage: Merchant) {
         return await this.model.user.update(mid, merchantMessage);
     }
 
@@ -34,7 +34,7 @@ export default class MerchantService extends BaseService {
      * @param {string} mid
      * @returns {Promise<void>}
      */
-    public async deleteStore(mid: string) {
+    public async deleteMerchant(mid: string) {
         return await this.model.merchant.drop[mid];
     }
 }

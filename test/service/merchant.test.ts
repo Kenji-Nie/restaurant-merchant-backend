@@ -10,7 +10,7 @@ describe('merchantTest', async () => {
         const merchants = await ctx.service.merchant.getMerchants('121223');
         console.log(merchants);
     });*/
-    it('updateStore', async () => {
+    it('updateMerchant', async () => {
         const storeMessage = {
             type_fid: 'merchantType/001',
             name: '微笑宝贝1',
@@ -47,11 +47,11 @@ describe('merchantTest', async () => {
                 detail: '夏家庄风和日丽小区9号楼101',
             },
         };
-        const result = await ctx.service.merchant.updateStore('326752', storeMessage);
+        const result = await ctx.service.merchant.updateMerchant('326752', storeMessage);
         console.log(result);
     });
-    it('deleteStore', async () => {
-        const result = await ctx.service.merchant.deleteStore('561456');
+    it('deleteMerchant', async () => {
+        const result = await ctx.service.merchant.deleteMerchant('561456');
         console.log(result);
     });
 });
