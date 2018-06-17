@@ -26,9 +26,12 @@ async function initDb(app) {
                     const collection = db.collection(v);
                     await collection.create();
                     await collection.load();
-                } catch (e) {}
-            })
-        } catch (e) {}
+                } catch (e) {
+                    console.log(e);
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        }
     }
-
 }

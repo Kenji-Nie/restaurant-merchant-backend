@@ -28,8 +28,6 @@ export default (app: Application) => {
     // router.post('/api/user/login/loginData',controller.user.login);
     // router.get('/api/getAddress', controller.region.getRegions);
     // router.get('/api/getAuthenticationData', controller.merchant.getAuthenticationData);
-    // router.post('/user/findUserByEmail',controller.user.findUserByEamil);
-
     router.get('/api/:controller/:method/:rest?', (ctx, next) => {
         const { helper } = ctx;
         const p = helper.modifyValues(ctx.params, helper.camelize);

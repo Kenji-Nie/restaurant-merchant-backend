@@ -1,16 +1,13 @@
 namespace model.schema {
     export interface Admin {
-        type: {} & Type;
+        type_fid: string;
         username: string;
         password: string;
-        name: string;
-        id_card: string;
-        wx_uid: string;
-        phone: string;
-        email: string;
-        sign_ur_date: string;
-        role_ids?: string[];
-        merchants?: Merchant[];
-        delete_flag?: boolean;
+        name?: string;
+        wx_uid?: string;
+        phone?: string;
+        email?: string;
+        sign_up_date: string;
+        id_card?: string;
     }
 }

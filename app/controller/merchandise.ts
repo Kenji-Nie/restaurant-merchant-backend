@@ -28,6 +28,17 @@ export default class MerchandiseController extends BaseController {
         };
     }
 
+    public async modifyShelf() {
+        const params = this.ctx.params;
+        const newObj = Object.assign(
+            {}, await this.service.merchandise.get(params.merchandise_id), {shelf_flag: !params.shelf_flag});
+        const result = await this.service.merchandise.modifyMerchandise(params._key, newObj);
+        this.ctx.body = {
+            message: result,
+            status: !(result._key === ''),
+        };
+    }
+
     public async deleteCommodity() {
         const params = this.ctx.params;
         const result = await this.service.merchandise.deleteMerchandise(params.merchandise_id);

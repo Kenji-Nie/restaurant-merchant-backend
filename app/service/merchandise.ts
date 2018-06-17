@@ -30,4 +30,8 @@ export default class MerchandiseService extends BaseService {
             return {_key: ''};
         }
     }
+
+    public async get(mdiseId: string) {
+        return await this.model.merchandise[mdiseId];
+    }
 }
