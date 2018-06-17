@@ -18,9 +18,12 @@ export default class MerchantService extends BaseService {
     //         return {_key: ''};
     //     }
     // }
+
     public async get(mid: string) {
         return await this.model.merchant[mid];
     }
+
+
     /**
      * 根据商家的id 更新该商家的商铺信息
      * @param {string} uid
@@ -39,4 +42,14 @@ export default class MerchantService extends BaseService {
     public async deleteStore(mid: string) {
         return await this.model.merchant.drop[mid];
     }
+
+    /**
+     * 选择店铺---根据店铺ID删除对应的店铺
+     * @param {string} mid
+     * @returns {Promise<void>}
+     */
+    public async findMerchantAndSeatTypeById(id: string) {
+        return await (await this.findInnnerJoinById(id, ['seatType'])).next();
+    }
+
 }
