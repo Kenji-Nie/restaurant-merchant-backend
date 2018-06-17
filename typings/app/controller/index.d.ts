@@ -1,6 +1,7 @@
 // This file was auto created by egg-ts-helper
 // Do not modify this file!!!!!!!!!
 
+import Admin from '../../../app/controller/admin';
 import Base from '../../../app/controller/base';
 import Merchandise from '../../../app/controller/merchandise';
 import MerchandiseType from '../../../app/controller/merchandiseType';
@@ -11,6 +12,7 @@ import User from '../../../app/controller/user';
 
 declare module 'egg' {
   interface IController {
+    admin: Admin;
     base: Base;
     merchandise: Merchandise;
     merchandiseType: MerchandiseType;
