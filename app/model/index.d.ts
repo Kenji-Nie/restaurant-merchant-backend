@@ -15,5 +15,6 @@ namespace model {
         seatType: schema.SeatType;
         theme: schema.Theme;
         user: schema.User;
+        admin: schema.Admin;
     }
 }

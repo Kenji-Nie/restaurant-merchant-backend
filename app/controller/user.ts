@@ -21,8 +21,6 @@ export default class UserController extends BaseController {
             };
         }
     }
-
-
     public async findUserByEmail() {
         const email = await this.ctx.request.body.email;
         const user = await (await this.service.user.findUserByEmail(email)).next();
@@ -30,17 +28,172 @@ export default class UserController extends BaseController {
             this.ctx.body = {
                 status: true,
                 message: {
-                    user: user
-                }
-            }
+                    user: user,
+                },
+            };
         } else {
             this.ctx.body = {
                 status: false,
                 message: {
-                    user: null
-                }
-            }
+                    user: null,
+                },
+            };
         }
     }
-
+    public async getYanZhengMa() {
+        const phone = await this.ctx.request.body.phone;
+        const yanZhengMa = await this.service.user.getYanZhengMa(phone);
+        this.ctx.body = {
+            status: true,
+            message: {
+                YanZhengMa: yanZhengMa,
+            },
+        };
+    }
+    public async forgetPassword() {
+        const phone = await this.ctx.request.body.phone;
+        const password = await this.ctx.request.body.password;
+        const yanZhengMa = await this.ctx.request.body.YanZhengMa;
+        const userId = await this.service.user.forgetPassword(phone, password, yanZhengMa);
+        if (userId != null) {
+            this.ctx.body = {
+                status: true,
+                message: {
+                    id: userId,
+                },
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
+    }
+    public async updateUserDetail() {
+        const userId = await this.ctx.request.body.id;
+        const userDetail = await this.ctx.request.body;
+        const result = await this.ctx.service.user.updateUserDetail(userId, userDetail);
+        if (result != null) {
+            this.ctx.body = {
+                status: true,
+                message: userDetail,
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
+    }
+    public async createStore() {
+        const userId = await this.ctx.request.body.id;
+        const merchantDetail = await this.ctx.request.body;
+        const result = await this.ctx.service.user.createStore(userId, merchantDetail);
+        if (result != null) {
+            this.ctx.body = {
+                status: true,
+                message: {
+                    id: merchantDetail._key,
+                },
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
+    }
+    public async updatePassword() {
+        const userId = await this.ctx.request.body.id;
+        const newPassword = await this.ctx.request.body.newPassword;
+        const result = await this.ctx.service.user.updatePassword(userId, newPassword);
+        if ( result ) {
+           this.ctx.body = {
+               status: result,
+           };
+        }else {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
+    public async getUserId() {
+        const phone = await this.ctx.request.body.phone;
+        const password = await this.ctx.request.body.password;
+        const yanZhengMa = await this.ctx.request.body.YanZhengMa;
+        const userId = await this.service.user.forgetPassword(phone, password, yanZhengMa);
+        if (userId != null) {
+            this.ctx.body = {
+                status: true,
+                message: {
+                    id: userId,
+                },
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
+    }
+    public async listStore() {
+        const userId = await this.ctx.request.body.id;
+        const stores = await this.ctx.service.user.listsStore(userId);
+        if (stores != null) {
+            this.ctx.body = {
+                status: true,
+                message: stores,
+            };
+        } else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
+    }
+    public async modifyRemark() {
+        const userIds = await this.ctx.request.body.ids;
+        const remark = await this.ctx.request.body.remark;
+        const result = await this.ctx.service.user.modifyRemark(userIds, remark);
+        if (result) {
+            this.ctx.body = {
+                status: true,
+                message: '修改成功',
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: '修改失败',
+            };
+        }
+    }
+    public async addUserCoupon() {
+        const userIds = await this.ctx.request.body.user_ids;
+        const couponIds = await this.ctx.request.body.coupon_ids;
+        const result = await this.ctx.service.user.addUserCoupon(userIds, couponIds);
+        if (result) {
+            this.ctx.body = {
+                status: result,
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
+    public async getUserCoupon() {
+        const userId = await this.ctx.request.body.id;
+        const coupons = await this.ctx.service.user.getUserCoupon(userId);
+        if (coupons != null) {
+            this.ctx.body = {
+                user_id: userId,
+                message: coupons,
+            };
+        }else {
+            this.ctx.body = {
+                user_id: userId,
+                message: null,
+            };
+        }
+    }
 }

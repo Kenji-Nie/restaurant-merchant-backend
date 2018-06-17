@@ -18,17 +18,25 @@ export default class MerchantService extends BaseService {
     //         return {_key: ''};
     //     }
     // }
-
     public async get(mid: string) {
         return await this.model.merchant[mid];
     }
+    /**
+     * 根据商家的id 更新该商家的商铺信息
+     * @param {string} uid
+     * @param {model.schema.Merchant} merchantMessage
+     * @returns {Promise<any>}
+     */
+    public async updateStore(mid: string, merchantMessage: Merchant) {
+        return await this.model.user.update(mid, merchantMessage);
+    }
 
     /**
-     * 通过店铺ID查找店铺及席位类型
-     * @param {string} id
-     * @returns {Promise<ArrayCursor>}
+     * 选择店铺---根据店铺ID删除对应的店铺
+     * @param {string} mid
+     * @returns {Promise<void>}
      */
-    public async findMerchantAndSeatTypeById(id: string) {
-        return await (await this.findInnnerJoinById(id, ['seatType'])).next();
+    public async deleteStore(mid: string) {
+        return await this.model.merchant.drop[mid];
     }
 }
