@@ -8,11 +8,21 @@ describe('userTest', () => {
     });
 
     it('updateOrderStatus', async () => {
-        const result = await ctx.service.order.updateOrderStatus(['452418','452298'], 0);
+        // const result = await ctx.service.order.updateOrderStatus(['452418','452298'], 0);
     });
 
     it('listEatinOrder', async () => {
         const result = await ctx.service.order.listEatinOrder("461123");
+        // console.log(await result.all());
+    });
+
+    it('listTakeoutOrder', async () => {
+        const result = await ctx.service.order.listTakeoutOrder("561456");
+        // console.log(await result.all());
+    });
+
+    it('listReservedOrder', async () => {
+        const result = await ctx.service.order.listReservedOrder("561456");
         console.log(await result.all());
     });
 

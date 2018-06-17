@@ -8,14 +8,14 @@ export default class MerchantService extends BaseService {
     public async findMerchantAndMerchandiseById(mid: string) {
         return await this.findInnnerJoinById(mid, ['merchandise']);
     }
-    public async addMerchant(mt: Merchant) {
-        // mt.type = {name: '待认证'};
-        try {
-            return await this.model.merchant.save(mt);
-        } catch (e) {
-            return {_key: ''};
-        }
-    }
+    // public async addMerchant(mt: Merchant) {
+    //     mt.type = {name: '待认证'};
+    //     try {
+    //         return await this.model.merchant.save(mt);
+    //     } catch (e) {
+    //         return {_key: ''};
+    //     }
+    // }
     public async get(mid: string) {
         return await this.model.merchant[mid];
     }

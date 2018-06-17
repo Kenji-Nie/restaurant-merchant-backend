@@ -11,7 +11,7 @@ namespace model {
         order: schema.Order;
         region: schema.Region;
         role: schema.Role;
-        table: schema.Table;
+        seat: schema.Seat;
         theme: schema.Theme;
         user: schema.User;
         admin: schema.Admin;
