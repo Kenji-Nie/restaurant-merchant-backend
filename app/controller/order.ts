@@ -43,4 +43,77 @@ export default class OrderController extends BaseController {
         }
 
     }
+
+    /**
+     * 根据商户ID查询所有外卖订单
+     * @returns {Promise<void>}
+     */
+    public async listTakeoutOrder() {
+        try {
+            const orders = await (await this.service.order.listTakeoutOrder(this.ctx.request.body.merchant_id)).all();
+            this.ctx.body = {
+                status: true,
+                messages: {
+                    orders: orders
+                }
+            }
+        }
+        catch (e) {
+            this.ctx.body = {
+                status: false,
+                messages: {}
+            }
+
+        }
+
+    }
+
+    /**
+     * 根据商户ID查询所有预订订单
+     * @returns {Promise<void>}
+     */
+    public async listReservedOrder() {
+        try {
+            const orders = await (await this.service.order.listReservedOrder(this.ctx.request.body.merchant_id)).all();
+            this.ctx.body = {
+                status: true,
+                messages: {
+                    orders: orders
+                }
+            }
+        }
+        catch (e) {
+            this.ctx.body = {
+                status: false,
+                messages: {}
+            }
+
+        }
+
+    }
+
+
+    /**
+     * 根据商户ID查询所有订单
+     * @returns {Promise<void>}
+     */
+    public async listOrder() {
+        try {
+            const orders = await (await this.service.order.listOrderByMerchant(this.ctx.request.body.merchant_id)).all();
+            this.ctx.body = {
+                status: true,
+                messages: {
+                    orders: orders
+                }
+            }
+        }
+        catch (e) {
+            this.ctx.body = {
+                status: false,
+                messages: {}
+            }
+
+        }
+
+    }
 }
