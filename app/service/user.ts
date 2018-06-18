@@ -1,7 +1,7 @@
 import BaseService from './base';
 import User = model.schema.User;
-import {aql} from 'arangojs';
 import Merchant = model.schema.Merchant;
+import {aql} from 'arangojs/lib/async/aql-query';
 
 export default class UserService extends BaseService {
 
@@ -71,26 +71,13 @@ export default class UserService extends BaseService {
     }
 
     /**
-     * 通过eamil查询用户
+     * 通过email查询用户
      * @param {string} email 邮箱地地
      * @returns {Promise<ArrayCursor>}
      */
     public async findUserByEmail(email: string) {
         return await this.findByProperty('email', email);
     }
-
-    /**
-     * 通过phone和email查询用户
-     * @param {string} phone
-     * @param {string} email
-     * @returns {Promise<any | undefined>}
-     */
-    public async findUserByPhoneAndEamil(phone: string, email: string) {
-        const query = `for u in user filter u.phone==${phone} and u.email==${email}`;
-        const user = await (await this.query(query)).next();
-        return user;
-    }
-
     /**
      * 通过phone获取验证码
      * @param {string} phone
@@ -112,7 +99,7 @@ export default class UserService extends BaseService {
      * @returns {Promise<any>}
      */
     public async forgetPassword(phone: string, password: string, YanZhengMa: number) {
-        const query = `for u in user filter u.phone==${phone} and u.password==${password}`;
+        const query = `for u in user filter u.phone==${phone} and u.password==${password} return u`;
         if (YanZhengMa) {
             return await (await this.query(query)).all();
         }
@@ -134,11 +121,8 @@ export default class UserService extends BaseService {
      * @param {model.schema.Merchant} merchantMessage
      * @returns {Promise<void>}
      */
-    public async createMerchant(aid: string, merchantMessage: Merchant) {
-        const user = await this.model.user[aid];
-        let merchants;
-        merchants = user.merchant_ids;
-        return await merchants.push(merchantMessage);
+    public async createMerchant(uid: string, merchantMessage: Merchant) {
+        return await this.model.user.update(uid, merchantMessage);
     }
 
     /**
@@ -160,7 +144,7 @@ export default class UserService extends BaseService {
      * @returns {Promise<any>}
      */
     public async getUserId(phone: string, password: string, YanZhengMa: number) {
-        const query = `for u in user filter u.phone==${phone} and u.password==${password}`;
+        const query = `for u in user filter u.phone==${phone} and u.password==${password} return u`;
         if (YanZhengMa) {
             return await (await this.query(query)).all();
         }
@@ -172,10 +156,12 @@ export default class UserService extends BaseService {
      * @returns {Promise<void>}
      */
     public async listMerchant(uid: string) {
-        const user = await this.model.user[uid];
-        let merchantIds ;
+        /*const user = await this.model.user[uid];
+        return await user.merchant_ids;*/
+        return await this.model.user[uid].merchant_ids;
+        /*let merchantIds ;
         merchantIds = user.merchant_ids;
-        return await this.model.merchant[merchantIds];
+        return await this.model.merchant[merchantIds];*/
     }
 
     /**
@@ -185,12 +171,10 @@ export default class UserService extends BaseService {
      * @returns {Promise<boolean>}
      */
     public async modifyRemark(uids: string[], remark: string) {
-        for (let i = 0; i < uids.length; i++) {
-            await this.model.user.update(uids[i], remark);
-        }
-        return true;
+        const query = aql`for u in user filter u._key in ${uids}
+                       update u with { status: ${remark} } in user`;
+        await this.query(query);
     }
-
     /**
      * 根据用户id添加对应的优惠券
      * @param {string[]} uids
@@ -200,7 +184,7 @@ export default class UserService extends BaseService {
     public async addUserCoupon(uids: string[], cids: string[]) {
         for (let u = 0; u < uids.length; u++) {
             for (let c = 0; c < cids.length; c++) {
-                await this.model.user.update(uids[u], cids[c]);
+                await this.model.user.update(uids[u], await this.model.coupon[cids[c]]);
             }
         }
         return true;
@@ -213,8 +197,6 @@ export default class UserService extends BaseService {
      */
     public async getUserCoupon(uid: string) {
         const user = await this.model.user[uid];
-        let coupons ;
-        coupons = user.coupon_ids;
-        return await this.model.coupon[coupons];
+        return await user.coupon_ids;
     }
 }

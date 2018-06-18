@@ -3,10 +3,10 @@ import * as path from 'path';
 
 export default app => {
     initDb(app);
-}
+};
 
 async function initDb(app) {
-    const scanner = new Scanner()
+    const scanner = new Scanner();
     scanner.fileHandler = (o, fn, fp) => {
         o[fn] = path.basename(fn, '.d.ts');
     }

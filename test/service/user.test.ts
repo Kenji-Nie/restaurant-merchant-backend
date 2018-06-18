@@ -13,13 +13,13 @@ describe('userTest', () => {
     });
 
     it('findUserByUsername', async () => {
-        const u = await ctx.service.user.findUserByUsername('zhangsan');
+        const u = await ctx.service.user.findUserByUsername('mazi');
         // console.log('user');
         // console.log(u);
     });
 
     it('findUserByUsernameAndEmail', async () => {
-        const u = await ctx.service.user.findUserByUsernameAndEmail('lisi', 'zhangsan', true);
+        const u = await ctx.service.user.findUserByUsernameAndEmail('mazi', 'wanger', true);
         // console.log('user');
         // console.log(u);
     });
@@ -49,10 +49,6 @@ describe('userTest', () => {
         const corsor = await ctx.service.user.findUserByEmail('wanger');
         // console.log(await corsor.next());
         // console.log(u);
-    });
-    it('findUserByPhoneAndEamil', async () => {
-        const user = await ctx.service.user.findUserByPhoneAndEamil('13212341234', 'zhangsan');
-        console.log(user);
     });
     it('forgetPassword', async() => {
         const userId = await ctx.service.user.forgetPassword('123456789', '123', 1234);
@@ -122,7 +118,7 @@ describe('userTest', () => {
         console.log(userId);
     });
     it('listMerchant', async () => {
-        const merchants = await ctx.service.user.listMerchant('326752');
+        const merchants = await ctx.service.user.listMerchant('209858');
         console.log(merchants);
     });
     it('modifyRemark', async () => {
