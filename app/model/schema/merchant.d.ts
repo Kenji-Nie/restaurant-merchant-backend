@@ -27,6 +27,7 @@ namespace model.schema {
         role_ids?: string[];
         theme_ids?: string[];
         icon_ids?: string[];
+        status: number;
         deletion_flag?: boolean;
     }
 }

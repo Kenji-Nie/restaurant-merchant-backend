@@ -11,7 +11,7 @@ export default class MerchantService extends BaseService {
     }
 
     public async addMerchant(mt: Merchant) {
-        mt.type = {name: '待认证'};
+        mt.status = 0;
         try {
             return await this.model.merchant.save(mt);
         } catch (e) {
