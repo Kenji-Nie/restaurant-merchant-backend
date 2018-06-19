@@ -186,9 +186,15 @@ export default class UserService extends BaseService {
     public async modifyRemark(uids: string[], remark: string) {
         const query = aql`for u in user filter u._key in ${uids}
                        update u with { status: ${remark} } in user`;
-        await this.query(query);
+        return await this.query(query);
     }
 
+    /**
+     * 向user_id的用户添加coupon_id的优惠券
+     * @param {string} uid
+     * @param {string} cid
+     * @returns {Promise<any>}
+     */
     public async addUserCoupon(uid: string, cid: string) {
         const user = await this.model.user[uid];
         let couponId;
