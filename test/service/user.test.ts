@@ -110,7 +110,7 @@ describe('userTest', () => {
         console.log(result);
     });
     it('updatePassword', async () => {
-        const result = await ctx.service.user.updatePassword('326752', '123456');
+        const result = await ctx.service.user.updatePassword('326752', '123456', '123456789');
         console.log(result);
     });
     it('getUserId', async() => {

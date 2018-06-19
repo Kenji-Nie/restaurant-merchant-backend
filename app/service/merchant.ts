@@ -25,7 +25,7 @@ export default class MerchantService extends BaseService {
 
 
     /**
-     * 根据商家的id 更新该商家的商铺信息
+     * 根据店铺的ID更新该商家的商铺信息
      * @param {string} uid
      * @param {model.schema.Merchant} merchantMessage
      * @returns {Promise<any>}
@@ -59,6 +59,16 @@ export default class MerchantService extends BaseService {
      */
     public async findMerchantAndSeatById(mid: string) {
         return await (await this.findInnnerJoinById(mid, ['seat'])).next();
+    }
+
+    /**
+     * 根据该商铺的id查找针对该商家的所有客户信息
+     * @param {string} mid
+     * @returns {Promise<void>}
+     */
+    public async listMerchantUser(mid: string) {
+        const merchant = await this.model.merchant[mid];
+        return await merchant.user_ids;
     }
 
 }

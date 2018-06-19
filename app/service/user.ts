@@ -2,6 +2,7 @@ import BaseService from './base';
 import User = model.schema.User;
 import Merchant = model.schema.Merchant;
 import {aql} from 'arangojs/lib/async/aql-query';
+import {consoleTestResultHandler} from 'tslint/lib/test';
 
 export default class UserService extends BaseService {
 
@@ -111,8 +112,8 @@ export default class UserService extends BaseService {
      * @param {model.schema.User} userMessage
      * @returns {Promise<any>}
      */
-    public async updateUserDetail(aid: string, userMessage: User) {
-        return await this.model.user.update(aid, userMessage);
+    public async updateUserDetail(uid: string, userMessage: User) {
+        return await this.model.user.update(uid, userMessage);
     }
 
     /**
@@ -131,9 +132,14 @@ export default class UserService extends BaseService {
      * @param {string} newPassword
      * @returns {Promise<boolean>}
      */
-    public async updatePassword(uid: string, newPassword: string) {
-        (await this.model.user[uid]).password = newPassword;
-        return true;
+    public async updatePassword(uid: string, oldPassword: string, newPassword: string) {
+        let password = await this.model.user[uid].password;
+        if (password === oldPassword) {
+            password = newPassword;
+            return password;
+        }else {
+            return '';
+        }
     }
 
     /**
@@ -156,12 +162,7 @@ export default class UserService extends BaseService {
      * @returns {Promise<void>}
      */
     public async listMerchant(uid: string) {
-        /*const user = await this.model.user[uid];
-        return await user.merchant_ids;*/
         return await this.model.user[uid].merchant_ids;
-        /*let merchantIds ;
-        merchantIds = user.merchant_ids;
-        return await this.model.merchant[merchantIds];*/
     }
 
     /**
@@ -171,7 +172,7 @@ export default class UserService extends BaseService {
      * @returns {Promise<boolean>}
      */
     public async modifyRemark(uids: string[], remark: string) {
-        const query = aql`for u in user filter u._key in ${uids}
+        const query = `for u in user filter u._key in ${uids}
                        update u with { status: ${remark} } in user`;
         await this.query(query);
     }

@@ -58,4 +58,8 @@ describe('merchantTest', async () => {
         const result = await ctx.service.merchant.findMerchantAndSeatById('461123');
         console.log(result);
     });
+    it('listMerchantUser', async () => {
+        const users = await ctx.service.merchant.listMerchantUser('461123');
+        console.log(users);
+    });
 });

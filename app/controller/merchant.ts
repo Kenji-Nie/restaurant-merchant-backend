@@ -47,4 +47,21 @@ export default class MerchantController extends BaseController {
             };
         }
     }
+    public async listMerchantUser() {
+        const merchantId = await this.ctx.request.body.id;
+        const users = await this.ctx.service.merchant.listMerchantUser(merchantId);
+        if (users != null) {
+            this.ctx.body = {
+                status: true,
+                message: users,
+                countPeople: users.length,
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+                countPeople: 0,
+            };
+        }
+    }
 }

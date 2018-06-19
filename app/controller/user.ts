@@ -105,11 +105,12 @@ export default class UserController extends BaseController {
     }
     public async updatePassword() {
         const userId = await this.ctx.request.body.id;
+        const oldPassword = await this.ctx.request.body.oldPassword;
         const newPassword = await this.ctx.request.body.newPassword;
-        const result = await this.ctx.service.user.updatePassword(userId, newPassword);
-        if ( result ) {
+        const result = await this.ctx.service.user.updatePassword(userId, oldPassword, newPassword);
+        if ( result != null ) {
            this.ctx.body = {
-               status: result,
+               status: true,
            };
         }else {
             this.ctx.body = {
