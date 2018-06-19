@@ -2,6 +2,7 @@ namespace model {
     export interface schema {
         ad: schema.Ad;
         address: schema.Address;
+        admin: schema.Admin;
         coupon: schema.Coupon;
         func: schema.Func;
         icon: schema.Icon;
@@ -15,6 +16,6 @@ namespace model {
         seatType: schema.SeatType;
         theme: schema.Theme;
         user: schema.User;
-        admin: schema.Admin;
+        userType: schema.UserType;
     }
 }
