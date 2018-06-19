@@ -153,7 +153,6 @@ export default class UserService extends BaseService {
             return '';
         }
     }
-
     /**
      * 通过phone、密码和验证码来获取用户的id
      * @param {string} phone
