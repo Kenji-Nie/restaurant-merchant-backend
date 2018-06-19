@@ -3,6 +3,7 @@ import User = model.schema.User;
 import Merchant = model.schema.Merchant;
 import {aql} from 'arangojs/lib/async/aql-query';
 import {consoleTestResultHandler} from 'tslint/lib/test';
+import Coupon = model.schema.Coupon;
 
 export default class UserService extends BaseService {
 
@@ -123,7 +124,18 @@ export default class UserService extends BaseService {
      * @returns {Promise<void>}
      */
     public async createMerchant(uid: string, merchantMessage: Merchant) {
-        return await this.model.user.update(uid, merchantMessage);
+        const newMerchant = await this.model.merchant.save(merchantMessage);
+        const user = await this.model.user[uid];
+        let merchantId;
+        merchantId = user.merchant_ids;
+        if (merchantId !== undefined) {
+            merchantId.push(newMerchant._key);
+            return await this.model.user.update(uid, await this.model.merchant[merchantId]);
+        }else {
+            merchantId = [];
+            merchantId.push(newMerchant._key);
+            return await this.model.user.update(uid, await this.model.merchant[merchantId]);
+        }
     }
 
     /**
@@ -172,23 +184,23 @@ export default class UserService extends BaseService {
      * @returns {Promise<boolean>}
      */
     public async modifyRemark(uids: string[], remark: string) {
-        const query = `for u in user filter u._key in ${uids}
+        const query = aql`for u in user filter u._key in ${uids}
                        update u with { status: ${remark} } in user`;
         await this.query(query);
     }
-    /**
-     * 根据用户id添加对应的优惠券
-     * @param {string[]} uids
-     * @param {string[]} cids
-     * @returns {Promise<boolean>}
-     */
-    public async addUserCoupon(uids: string[], cids: string[]) {
-        for (let u = 0; u < uids.length; u++) {
-            for (let c = 0; c < cids.length; c++) {
-                await this.model.user.update(uids[u], await this.model.coupon[cids[c]]);
-            }
+
+    public async addUserCoupon(uid: string, cid: string) {
+        const user = await this.model.user[uid];
+        let couponId;
+        couponId = user.coupon_ids;
+        if (couponId !== undefined) {
+           couponId.push(cid);
+           return await this.model.user.update(uid, await this.model.coupon[couponId]);
+        }else {
+            couponId = [];
+            couponId.push(cid);
+            return await this.model.user.update(uid, await this.model.coupon[couponId]);
         }
-        return true;
     }
 
     /**

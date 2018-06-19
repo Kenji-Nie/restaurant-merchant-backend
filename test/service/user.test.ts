@@ -126,7 +126,7 @@ describe('userTest', () => {
         console.log(result);
     });
     it('addUserCoupon', async () => {
-        const result = await ctx.service.user.addUserCoupon(['326752', '209858'], ['469896', '470059']);
+        const result = await ctx.service.user.addUserCoupon('326752', '469896');
         console.log(result);
     });
     it('getUserCoupon', async () => {
