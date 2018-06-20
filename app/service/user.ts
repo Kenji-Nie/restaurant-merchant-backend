@@ -22,12 +22,8 @@ export default class UserService extends BaseService {
      * @returns {Promise<any>}
      */
     public async findUserByPhoneAndPassword(phone: string, password: string) {
-        const cursor = await this.findByProperies(['phone', 'password'], [phone, password]);
-        if (cursor.hasNext()) {
-            return cursor.next();
-        } else {
-            return null;
-        }
+        const query = aql`for u in user filter u.phone==${phone} and u.password==${password} return u`;
+        return await (await this.query(query)).next();
     }
 
     /**
@@ -208,7 +204,6 @@ export default class UserService extends BaseService {
             return false;
         }
     }
-
     /**
      * 向user_id的用户添加coupon_id的优惠券
      * @param {string} uid
@@ -249,4 +244,26 @@ export default class UserService extends BaseService {
             return null;
         }
     }
+
+    /**
+     * 根据用户id获取用户的订单记录
+     * @param {string} uid
+     * @returns {Promise<any>}
+     */
+    public async getOrder(uid: string) {
+        const user = await this.model.user[uid];
+        const orders = user.order_ids;
+        let allOrderMessage;
+        allOrderMessage = [];
+        if (orders !== undefined && orders.length !== 0) {
+            for (let o = 0; o < orders.length; o++) {
+                const order = await this.model.order[orders[o]];
+                allOrderMessage.push(order);
+            }
+            return allOrderMessage;
+        }else {
+            return null;
+        }
+    }
+
 }

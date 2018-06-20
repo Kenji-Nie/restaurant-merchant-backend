@@ -64,4 +64,20 @@ export default class MerchantController extends BaseController {
             };
         }
     }
+    public async getOrderIncomeAndRefond() {
+        const merchantId = await this.ctx.request.body.id;
+        const nowTime = await this.ctx.request.body.nowTime;
+        const inAndOut = await this.ctx.service.merchant.getOrderIncomeAndRefond(merchantId, nowTime);
+        if (inAndOut.order_income !== 0 || inAndOut.order_refond !== 0) {
+            this.ctx.body = {
+                status: true,
+                message: inAndOut,
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: inAndOut,
+            };
+        }
+    }
 }

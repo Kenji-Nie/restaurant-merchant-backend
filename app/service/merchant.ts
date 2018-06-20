@@ -86,4 +86,39 @@ export default class MerchantService extends BaseService {
         }
     }
 
+    /**
+     * 根据店铺ID和日期获取店铺今日收入
+     * @param {string} mid
+     * @param {string} nowTime
+     * @returns {Promise<any>}
+     */
+    public async getOrderIncomeAndRefond(mid: string, nowTime: string) {
+        const merchant = await this.model.merchant[mid];
+        let orders;
+        orders = merchant.order_ids;
+        let incomeCount;
+        let refondCount;
+        incomeCount = 0;
+        refondCount = 0;
+        if (orders !== undefined && orders.length !== 0) {
+            for (let o = 0; o < orders.length; o++) {
+                const order = await this.model.order[orders[o]];
+                if (order.status === 5 && nowTime === order.expense_date) {
+                    incomeCount += order.paid;
+                }
+                if (order.status === 8 && nowTime === order.expense_date) {
+                    refondCount += order.paid;
+                }
+            }
+            return {
+                order_income: incomeCount,
+                order_refond: refondCount,
+            };
+        }else {
+            return {
+                order_income: 0,
+                order_refond: 0,
+            };;
+        }
+    }
 }

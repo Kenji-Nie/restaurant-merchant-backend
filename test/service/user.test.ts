@@ -9,7 +9,7 @@ describe('userTest', () => {
 
     it('findUserByPhoneAndPassword', async () => {
         const u = await ctx.service.user.findUserByPhoneAndPassword('13212341234', '123456');
-        // console.log(u);
+        console.log(u);
     });
 
     it('findUserByUsername', async () => {
@@ -18,7 +18,7 @@ describe('userTest', () => {
         // console.log(u);
     });
 
-    it('findUserByUsernameAndEmail', async () => {
+    it('userLogin', async () => {
         const u = await ctx.service.user.findUserByUsernameAndEmail('mazi', 'wanger', true);
         // console.log('user');
         // console.log(u);
@@ -133,5 +133,9 @@ describe('userTest', () => {
     it('getUserCoupon', async () => {
         const coupons = await ctx.service.user.getUserCoupon('326752');
         console.log(coupons);
+    });
+    it('getOrder', async () => {
+        const orders = await ctx.service.user.getOrder('326752');
+        console.log(orders);
     });
 });

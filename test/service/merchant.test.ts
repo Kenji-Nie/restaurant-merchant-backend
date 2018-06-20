@@ -63,4 +63,8 @@ describe('merchantTest', async () => {
         const users = await ctx.service.merchant.listMerchantUser('461123');
         console.log(users);
     });
+    it('getOrderIncomeAndRefond', async () => {
+        const income = await ctx.service.merchant.getOrderIncomeAndRefond('461123', '2018-1-1');
+        console.log(income);
+    });
 });
