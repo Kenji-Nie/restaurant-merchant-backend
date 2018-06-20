@@ -1,5 +1,8 @@
 import BaseService from './base';
 import Merchant = model.schema.Merchant;
+import object from '../extend/lib/object';
+import User = model.schema.User;
+import string from '../extend/lib/string';
 
 export default class MerchantService extends BaseService {
     public async findMerchantAndMerchandiseTypeById(mid: string) {
@@ -31,7 +34,7 @@ export default class MerchantService extends BaseService {
      * @returns {Promise<any>}
      */
     public async updateMerchant(mid: string, merchantMessage: Merchant) {
-        return await this.model.user.update(mid, merchantMessage);
+        return await this.model.merchant.update(mid, merchantMessage);
     }
 
     /**
@@ -40,7 +43,7 @@ export default class MerchantService extends BaseService {
      * @returns {Promise<void>}
      */
     public async deleteMerchant(mid: string) {
-        return await this.model.merchant.drop[mid];
+        return await this.model.merchant.remove(mid);
     }
 
     /**
@@ -68,7 +71,19 @@ export default class MerchantService extends BaseService {
      */
     public async listMerchantUser(mid: string) {
         const merchant = await this.model.merchant[mid];
-        return await merchant.user_ids;
+        let users;
+        users = merchant.user_ids;
+        let allUserMessage;
+        allUserMessage = [];
+        if (users !== undefined && users.length !== 0) {
+            for (let u = 0; u < users.length; u++) {
+                const user = await this.model.user[users[u]];
+                allUserMessage.push(user);
+            }
+            return allUserMessage;
+        }else {
+            return null;
+        }
     }
 
 }

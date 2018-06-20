@@ -59,7 +59,7 @@ export default class UserController extends BaseController {
             this.ctx.body = {
                 status: true,
                 message: {
-                    id: userId,
+                    id: userId._key,
                 },
             };
         }else {
@@ -71,7 +71,7 @@ export default class UserController extends BaseController {
     }
     public async updateUserDetail() {
         const userId = await this.ctx.request.body.id;
-        const userDetail = await this.ctx.request.body;
+        const userDetail = await this.ctx.request.body.userMessage;
         const result = await this.ctx.service.user.updateUserDetail(userId, userDetail);
         if (result != null) {
             this.ctx.body = {
@@ -87,14 +87,12 @@ export default class UserController extends BaseController {
     }
     public async createMerchant() {
         const userId = await this.ctx.request.body.id;
-        const merchantDetail = await this.ctx.request.body;
+        const merchantDetail = await this.ctx.request.body.merchantMessage;
         const result = await this.ctx.service.user.createMerchant(userId, merchantDetail);
         if (result != null) {
             this.ctx.body = {
                 status: true,
-                message: {
-                    id: merchantDetail._key,
-                },
+                message: merchantDetail,
             };
         }else {
             this.ctx.body = {
@@ -105,10 +103,10 @@ export default class UserController extends BaseController {
     }
     public async updatePassword() {
         const userId = await this.ctx.request.body.id;
-        const oldPassword = await this.ctx.request.body.oldPassword;
-        const newPassword = await this.ctx.request.body.newPassword;
-        const result = await this.ctx.service.user.updatePassword(userId, oldPassword, newPassword);
-        if ( result != null ) {
+        const userOldPassword = await this.ctx.request.body.oldPassword;
+        const userNewPassword = await this.ctx.request.body.newPassword;
+        const result = await this.ctx.service.user.updatePassword(userId, userOldPassword, userNewPassword);
+        if ( result !== 0 ) {
            this.ctx.body = {
                status: true,
            };
@@ -127,7 +125,7 @@ export default class UserController extends BaseController {
             this.ctx.body = {
                 status: true,
                 message: {
-                    id: userId,
+                    id: userId._key,
                 },
             };
         }else {
@@ -185,7 +183,7 @@ export default class UserController extends BaseController {
     public async getUserCoupon() {
         const userId = await this.ctx.request.body.id;
         const coupons = await this.ctx.service.user.getUserCoupon(userId);
-        if (coupons != null) {
+        if (coupons !== null) {
             this.ctx.body = {
                 user_id: userId,
                 message: coupons,

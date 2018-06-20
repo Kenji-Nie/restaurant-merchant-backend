@@ -20,12 +20,12 @@ export default class MerchantController extends BaseController {
     }
     public async updateMerchant() {
         const merchantId = await this.ctx.request.body.id;
-        const storeMessage = await this.ctx.request.body;
-        const result = await this.ctx.service.merchant.updateMerchant(merchantId, storeMessage);
+        const merchantDetail = await this.ctx.request.body.merchantMessage;
+        const result = await this.ctx.service.merchant.updateMerchant(merchantId, merchantDetail);
         if (result != null) {
             this.ctx.body = {
                 status: true,
-                message: storeMessage,
+                message: merchantDetail,
             };
         }else {
             this.ctx.body = {
@@ -50,7 +50,7 @@ export default class MerchantController extends BaseController {
     public async listMerchantUser() {
         const merchantId = await this.ctx.request.body.id;
         const users = await this.ctx.service.merchant.listMerchantUser(merchantId);
-        if (users != null) {
+        if (users !== null) {
             this.ctx.body = {
                 status: true,
                 message: users,

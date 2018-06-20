@@ -97,6 +97,7 @@ describe('userTest', () => {
             storeStatus: '营业中',
             storeAvatar: 'http://img3.imgtn.bdimg.com/it/u=4014972976,3855810213&fm=27&gp=0.jpg',
             snoring_flag: true,
+            status: 1,
             phone_number: '18165359296',
             callSendPhone: '18165359296',
             address: {

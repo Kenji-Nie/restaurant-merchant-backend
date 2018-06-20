@@ -30,6 +30,7 @@ describe('merchantTest', async () => {
             takeaway_close_time: '',
             min_takeaway_amount: '',
             max_takeaway_distance: '',
+            status: 1,
             storeAvatar: 'http://img3.imgtn.bdimg.com/it/u=4014972976,3855810213&fm=27&gp=0.jpg',
             workTimes: {
                 week: [

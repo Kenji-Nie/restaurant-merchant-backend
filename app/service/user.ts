@@ -87,8 +87,7 @@ export default class UserService extends BaseService {
      */
     public async getYanZhengMa(phone: string) {
         if (phone) {
-            let yanZhengMa ;
-            yanZhengMa = 1234;
+            const yanZhengMa = 1234;
             return yanZhengMa;
         }
     }
@@ -103,7 +102,7 @@ export default class UserService extends BaseService {
     public async forgetPassword(phone: string, password: string, YanZhengMa: number) {
         const query = `for u in user filter u.phone==${phone} and u.password==${password} return u`;
         if (YanZhengMa) {
-            return await (await this.query(query)).all();
+            return await (await this.query(query)).next();
         }
     }
 
@@ -130,27 +129,28 @@ export default class UserService extends BaseService {
         merchantId = user.merchant_ids;
         if (merchantId !== undefined) {
             merchantId.push(newMerchant._key);
-            return await this.model.user.update(uid, await this.model.merchant[merchantId]);
+            return await this.model.user.update(uid, {merchant_ids: merchantId});
         }else {
             merchantId = [];
             merchantId.push(newMerchant._key);
-            return await this.model.user.update(uid, await this.model.merchant[merchantId]);
+            return await this.model.user.update(uid, {merchant_ids: merchantId});
         }
     }
 
     /**
-     * 根据用户id修改用户的密码
+     * 更改user_ID的用户的密码
      * @param {string} uid
-     * @param {string} newPassword
-     * @returns {Promise<boolean>}
+     * @param {string} userOldPassword
+     * @param {string} userNewPassword
+     * @returns {Promise<any>}
      */
-    public async updatePassword(uid: string, oldPassword: string, newPassword: string) {
-        let password = await this.model.user[uid].password;
-        if (password === oldPassword) {
-            password = newPassword;
-            return password;
+    public async updatePassword(uid: string, userOldPassword: string, userNewPassword: string) {
+        const user = await this.model.user[uid];
+        const password = user.password;
+        if (password === userOldPassword) {
+            return await this.model.user.update(uid, {password: userNewPassword});
         }else {
-            return '';
+            return 0;
         }
     }
     /**
@@ -163,7 +163,7 @@ export default class UserService extends BaseService {
     public async getUserId(phone: string, password: string, YanZhengMa: number) {
         const query = `for u in user filter u.phone==${phone} and u.password==${password} return u`;
         if (YanZhengMa) {
-            return await (await this.query(query)).all();
+            return await (await this.query(query)).next();
         }
     }
 
@@ -173,19 +173,40 @@ export default class UserService extends BaseService {
      * @returns {Promise<void>}
      */
     public async listMerchant(uid: string) {
-        return await this.model.user[uid].merchant_ids;
+        const user = await this.model.user[uid];
+        const merchants = user.merchant_ids;
+        let allMerchantMessage;
+        allMerchantMessage = [];
+        if (merchants !== undefined && merchants.length !== 0) {
+            for (let m = 0; m < merchants.length; m++) {
+                const merchant = await this.model.merchant[merchants[m]];
+                allMerchantMessage.push(merchant);
+            }
+            return allMerchantMessage;
+        }else {
+            return null;
+        }
     }
 
     /**
      * 根据该用户的id集修改该用户的备注
      * @param {string[]} uids
-     * @param {string} remark
+     * @param {string} remarkMessage
      * @returns {Promise<boolean>}
      */
-    public async modifyRemark(uids: string[], remark: string) {
+    public async modifyRemark(uids: string[], remarkMessage: string) {
+        /*for ( let u = 0; u < uids.length; u++) {
+            await this.model.user.update(uids[u], {remark: remarkMessage});
+        }
+        return true;*/
         const query = aql`for u in user filter u._key in ${uids}
-                       update u with { status: ${remark} } in user`;
-        return await this.query(query);
+                       update u with { remark: ${remarkMessage} } in user`;
+        try {
+            await this.query(query);
+            return true;
+        }catch (e) {
+            return false;
+        }
     }
 
     /**
@@ -200,11 +221,11 @@ export default class UserService extends BaseService {
         couponId = user.coupon_ids;
         if (couponId !== undefined) {
            couponId.push(cid);
-           return await this.model.user.update(uid, await this.model.coupon[couponId]);
+           return await this.model.user.update(uid, {coupon_ids: couponId});
         }else {
             couponId = [];
             couponId.push(cid);
-            return await this.model.user.update(uid, await this.model.coupon[couponId]);
+            return await this.model.user.update(uid, {coupon_ids: couponId});
         }
     }
 
@@ -215,6 +236,17 @@ export default class UserService extends BaseService {
      */
     public async getUserCoupon(uid: string) {
         const user = await this.model.user[uid];
-        return await user.coupon_ids;
+        const coupons = user.coupon_ids;
+        let allCouponMessage;
+        allCouponMessage = [];
+        if (coupons !== undefined && coupons.length !== 0) {
+            for (let c = 0; c < coupons.length; c++) {
+                const coupon = await this.model.coupon[coupons[c]];
+                allCouponMessage.push(coupon);
+            }
+            return allCouponMessage;
+        }else {
+            return null;
+        }
     }
 }
