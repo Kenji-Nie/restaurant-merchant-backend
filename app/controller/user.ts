@@ -151,9 +151,9 @@ export default class UserController extends BaseController {
         }
     }
     public async modifyRemark() {
-        const userIds = await this.ctx.request.body.ids;
+        const userIds = this.ctx.request.body.ids.toString();
         const remark = await this.ctx.request.body.remark;
-        const result = await this.ctx.service.user.modifyRemark(userIds, remark);
+        const result = await this.ctx.service.user.modifyRemark(userIds.split(','), remark);
         if (result) {
             this.ctx.body = {
                 status: true,
