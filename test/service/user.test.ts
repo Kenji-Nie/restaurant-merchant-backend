@@ -18,7 +18,7 @@ describe('userTest', () => {
         // console.log(u);
     });
 
-    it('userLogin', async () => {
+    it('findUserByUsernameAndEmail', async () => {
         const u = await ctx.service.user.findUserByUsernameAndEmail('mazi', 'wanger', true);
         // console.log('user');
         // console.log(u);
