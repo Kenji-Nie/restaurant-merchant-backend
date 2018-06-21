@@ -12,15 +12,15 @@ export default class MerchandiseTypeController extends BaseController {
         };
     }
 
-    public async getGroupData() {
-        const params = this.ctx.params;
+    public async group() {
+        const param = this.ctx.params.rset;
         this.ctx.body = {
-            message: await this.service.merchandiseType.getMerchandiseTypesByMerchantId(params.user_id),
+            message: await this.service.merchandiseType.getMerchandiseTypesByMerchantId(param),
             status: true,
         };
     }
 
-    public async modifyGroup() {
+    public async modify() {
         const params = this.ctx.request.body;
         const result = await this.service.merchandiseType.modifyMerchandiseType(params._key, params);
         this.ctx.body = {
@@ -29,9 +29,9 @@ export default class MerchandiseTypeController extends BaseController {
         };
     }
 
-    public async deleteGroup() {
-        const params = this.ctx.params;
-        const result = await this.service.merchandiseType.deleteMerchandiseType(params.merchandise_type_id);
+    public async delete() {
+        const param = this.ctx.params.rset;
+        const result = await this.service.merchandiseType.deleteMerchandiseType(param);
         this.ctx.body = {
             message: result,
             status: !(result._key === ''),

@@ -2,7 +2,7 @@ import BaseController from './base';
 
 export default class MerchandiseController extends BaseController {
 
-    public async addCommodity() {
+    public async add() {
         const params = this.ctx.request.body;
         const result = await this.service.merchandise.addMerchandise(params);
         this.ctx.body = {
@@ -11,15 +11,15 @@ export default class MerchandiseController extends BaseController {
         };
     }
 
-    public async getCommodityData() {
-        const params = this.ctx.params;
+    public async get() {
+        const param = this.ctx.params.rest;
         this.ctx.body = {
-            message: await this.service.merchandise.getMerchandiseByMerchantId(params.merchant_id),
+            message: await this.service.merchandise.getMerchandiseByMerchantId(param),
             status: true,
         };
     }
 
-    public async modifyCommodity() {
+    public async modify() {
         const params = this.ctx.request.body;
         const result = await this.service.merchandise.modifyMerchandise(params._key, params);
         this.ctx.body = {
@@ -28,20 +28,22 @@ export default class MerchandiseController extends BaseController {
         };
     }
 
-    public async modifyShelf() {
-        const params = this.ctx.params;
+    public async shelf() {
+        const param = this.ctx.params.rest;
+        const oldObj = await this.service.merchandise.get(param);
+        const shelfFlag: boolean =  (oldObj.shelf_flag === undefined) ? false : oldObj.shelf_flag;
         const newObj = Object.assign(
-            {}, await this.service.merchandise.get(params.merchandise_id), {shelf_flag: !params.shelf_flag});
-        const result = await this.service.merchandise.modifyMerchandise(params._key, newObj);
+            {}, oldObj, {shelf_flag: !shelfFlag});
+        const result = await this.service.merchandise.modifyMerchandise(param, newObj);
         this.ctx.body = {
             message: result,
             status: !(result._key === ''),
         };
     }
 
-    public async deleteCommodity() {
-        const params = this.ctx.params;
-        const result = await this.service.merchandise.deleteMerchandise(params.merchandise_id);
+    public async delete() {
+        const param = this.ctx.params.rest;
+        const result = await this.service.merchandise.deleteMerchandise(param);
         this.ctx.body = {
             message: result,
             status: !(result._key === ''),
