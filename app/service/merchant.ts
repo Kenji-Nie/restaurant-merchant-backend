@@ -85,7 +85,7 @@ export default class MerchantService extends BaseService {
     }
 
     /**
-     * 根据店铺ID和日期获取店铺今日收入
+     * 根据店铺ID和日期获取店铺今日收入和退款金额
      * @param {string} mid
      * @param {string} nowTime
      * @returns {Promise<any>}

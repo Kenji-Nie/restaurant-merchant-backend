@@ -2,22 +2,36 @@ import BaseController from './base';
 
 export default class UserController extends BaseController {
 
-    public async userLogin() {
+    public async findUserByPhoneAndPassword() {
         const phone = await this.ctx.request.body.phone;
         const password = await this.ctx.request.body.password;
         const user = await this.ctx.service.user.findUserByPhoneAndPassword(phone, password);
-        if (user != null) {
-            this.ctx.body = {
-                status: true,
-                message: {
-                    uid: user._key,
-                },
-            };
+        let userId;
+        userId = [];
+        if (user != null && user.length !== 0) {
+            if ( user.length === 1) {
+                this.ctx.body = {
+                    status: true,
+                    message: {
+                        user_id: user[0]._key,
+                    },
+                };
+            }else {
+                for (let u = 0; u < user.length; u++) {
+                    userId.push(user[u]._key);
+                }
+                this.ctx.body = {
+                    status: true,
+                    message: {
+                        user_id: userId,
+                    },
+                };
+            }
         } else {
             this.ctx.body = {
                 status: false,
                 message: {
-                    uid: '',
+                    message: null,
                 },
             };
         }

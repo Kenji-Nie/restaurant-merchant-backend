@@ -23,7 +23,7 @@ export default class UserService extends BaseService {
      */
     public async findUserByPhoneAndPassword(phone: string, password: string) {
         const query = aql`for u in user filter u.phone==${phone} and u.password==${password} return u`;
-        return await (await this.query(query)).next();
+        return await (await this.query(query)).all();
     }
 
     /**
