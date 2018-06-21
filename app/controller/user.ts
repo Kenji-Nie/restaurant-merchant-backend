@@ -69,15 +69,29 @@ export default class UserController extends BaseController {
         const phone = await this.ctx.request.body.phone;
         const password = await this.ctx.request.body.password;
         const yanZhengMa = await this.ctx.request.body.YanZhengMa;
-        const userId = await this.service.user.forgetPassword(phone, password, yanZhengMa);
-        if (userId != null) {
-            this.ctx.body = {
-                status: true,
-                message: {
-                    id: userId._key,
-                },
-            };
-        }else {
+        const userMessage = await this.service.user.forgetPassword(phone, password, yanZhengMa);
+        let userId;
+        userId = [];
+        if (userMessage != null && userMessage.length !== 0) {
+            if ( userMessage.length === 1) {
+                this.ctx.body = {
+                    status: true,
+                    message: {
+                        id: userMessage[0]._key,
+                    },
+                };
+            }else {
+                for(let u = 0; u < userMessage.length; u ++) {
+                    userId.push(userMessage[u]._key);
+                }
+                this.ctx.body = {
+                    status: true,
+                    message: {
+                        id: userId,
+                    },
+                };
+            }
+        } else {
             this.ctx.body = {
                 status: false,
                 message: null,
@@ -135,15 +149,29 @@ export default class UserController extends BaseController {
         const phone = await this.ctx.request.body.phone;
         const password = await this.ctx.request.body.password;
         const yanZhengMa = await this.ctx.request.body.YanZhengMa;
-        const userId = await this.service.user.forgetPassword(phone, password, yanZhengMa);
-        if (userId != null) {
-            this.ctx.body = {
-                status: true,
-                message: {
-                    id: userId._key,
-                },
-            };
-        }else {
+        const userMessage = await this.service.user.forgetPassword(phone, password, yanZhengMa);
+        let userId;
+        userId = [];
+        if (userMessage != null && userMessage.length !== 0) {
+            if ( userMessage.length === 1) {
+                this.ctx.body = {
+                    status: true,
+                    message: {
+                        id: userMessage[0]._key,
+                    },
+                };
+            }else {
+                for(let u = 0; u < userMessage.length; u ++) {
+                    userId.push(userMessage[u]._key);
+                }
+                this.ctx.body = {
+                    status: true,
+                    message: {
+                        id: userId,
+                    },
+                };
+            }
+        } else {
             this.ctx.body = {
                 status: false,
                 message: null,
