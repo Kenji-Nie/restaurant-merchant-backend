@@ -8,16 +8,25 @@ export default class UserController extends BaseController {
         const user = await this.ctx.service.user.findUserByPhoneAndPassword(phone, password);
         let userId;
         userId = [];
-        if (user != null ) {
-            for (let u = 0; u < user.length; u++) {
-                userId.push(user[u]._key);
+        if (user != null && user.length !== 0) {
+            if ( user.length === 1) {
+                this.ctx.body = {
+                    status: true,
+                    message: {
+                        user_id: user[0]._key,
+                    },
+                };
+            }else {
+                for (let u = 0; u < user.length; u++) {
+                    userId.push(user[u]._key);
+                }
+                this.ctx.body = {
+                    status: true,
+                    message: {
+                        user_id: userId,
+                    },
+                };
             }
-            this.ctx.body = {
-                status: true,
-                message: {
-                    user_id: userId,
-                },
-            };
         } else {
             this.ctx.body = {
                 status: false,
