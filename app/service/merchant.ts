@@ -1,7 +1,5 @@
 import BaseService from './base';
 import Merchant = model.schema.Merchant;
-import object from '../extend/lib/object';
-import User = model.schema.User;
 import string from '../extend/lib/string';
 
 export default class MerchantService extends BaseService {
@@ -118,7 +116,7 @@ export default class MerchantService extends BaseService {
             return {
                 order_income: 0,
                 order_refond: 0,
-            };;
+            };
         }
     }
 }

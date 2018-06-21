@@ -29,7 +29,6 @@ export default (app: Application) => {
     // router.get('/api/getAddress', controller.region.getRegions);
     // router.get('/api/getAuthenticationData', controller.merchant.getAuthenticationData);
     router.get('/api/:controller/:method/:rest?', (ctx, next) => {
-        console.log('get request');
         const { helper } = ctx;
         const p = helper.modifyValues(ctx.params, helper.camelize);
         try {
@@ -40,13 +39,11 @@ export default (app: Application) => {
     });
 
     router.post('/api/:controller/:method/:rest?', (ctx, next) => {
-        console.log('post request');
         const { helper } = ctx;
         const p = helper.modifyValues(ctx.params, helper.camelize);
         try {
             return (controller[p.controller][p.method]).apply(ctx, p);
         } catch (e) {
-            // ctx.logger.error(e);
             return new helper.SysError(`'${ctx.url}' resource not found`);
         }
     });
