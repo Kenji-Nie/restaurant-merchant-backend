@@ -96,9 +96,9 @@ export default class UserService extends BaseService {
      * @returns {Promise<any>}
      */
     public async forgetPassword(phone: string, password: string, YanZhengMa: number) {
-        const query = `for u in user filter u.phone==${phone} and u.password==${password} return u`;
+        const query = aql`for u in user filter u.phone==${phone} and u.password==${password} return u`;
         if (YanZhengMa) {
-            return await (await this.query(query)).next();
+            return await (await this.query(query)).all();
         }
     }
 
@@ -157,9 +157,9 @@ export default class UserService extends BaseService {
      * @returns {Promise<any>}
      */
     public async getUserId(phone: string, password: string, YanZhengMa: number) {
-        const query = `for u in user filter u.phone==${phone} and u.password==${password} return u`;
+        const query = aql`for u in user filter u.phone==${phone} and u.password==${password} return u`;
         if (YanZhengMa) {
-            return await (await this.query(query)).next();
+            return await (await this.query(query)).all();
         }
     }
 
