@@ -22,4 +22,6 @@ describe('merchandiseTypeTest', () => {
         const u = await ctx.service.merchandiseType.modifyMerchandiseType(id, x);
         // console.log(u);
     });
+
+
 });

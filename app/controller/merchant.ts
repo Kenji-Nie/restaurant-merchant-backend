@@ -19,6 +19,7 @@ export default class MerchantController extends BaseController {
             status: true,
         };
     }
+
     public async updateMerchant() {
         const merchantId = this.ctx.request.body.merchant_id;
         const merchantMessage = this.ctx.request.body.merchantMessage;
@@ -35,6 +36,7 @@ export default class MerchantController extends BaseController {
             };
         }
     }
+
     public async deleteMerchant() {
         const merchantId = this.ctx.request.body.merchant_id;
         const result = await this.ctx.service.merchant.deleteMerchant(merchantId);
@@ -48,6 +50,7 @@ export default class MerchantController extends BaseController {
             };
         }
     }
+
     public async listMerchantUser() {
         const merchantId = this.ctx.request.body.merchant_id;
         const users = await this.ctx.service.merchant.listMerchantUser(merchantId);
@@ -57,7 +60,7 @@ export default class MerchantController extends BaseController {
                 message: users,
                 countPeople: users.length,
             };
-        }else {
+        } else {
             this.ctx.body = {
                 status: false,
                 message: null,
@@ -65,6 +68,7 @@ export default class MerchantController extends BaseController {
             };
         }
     }
+
     public async getOrderIncomeAndRefond() {
         const merchantId = this.ctx.request.body.merchant_id;
         const nowTime = this.ctx.request.body.nowTime;
@@ -74,11 +78,62 @@ export default class MerchantController extends BaseController {
                 status: true,
                 message: inAndOut,
             };
-        }else {
+        } else {
             this.ctx.body = {
                 status: false,
                 message: inAndOut,
             };
+        }
+    }
+
+    /**
+     * 根据店铺ID修改最低起送金额
+     * @returns {Promise<void>}
+     */
+    public async updateTakeoutAmount() {
+        try {
+            const merchant = await this.ctx.service.merchant.updateTakeoutAmount(this.ctx.request.body.merchant_id, this.ctx.request.body.min_takeaway_amount);
+            this.ctx.body = {
+                status: true,
+                message: {
+                    merchant
+                }
+            }
+        }
+        catch (e) {
+            this.ctx.body = {
+                status: false,
+                message: {
+                    seats: []
+                }
+            }
+
+        }
+    }
+
+
+    /**
+     * 根据店铺ID修改预约锁定时间
+     * @returns {Promise<void>}
+     */
+    public async updateReservedLockTime() {
+        try {
+            const merchant = await this.ctx.service.merchant.updateReservedLockTime(this.ctx.request.body.merchant_id, this.ctx.request.body.reservd_lock_time);
+            this.ctx.body = {
+                status: true,
+                message: {
+                    merchant
+                }
+            }
+        }
+        catch (e) {
+            this.ctx.body = {
+                status: false,
+                message: {
+                    seats: []
+                }
+            }
+
         }
     }
 }
