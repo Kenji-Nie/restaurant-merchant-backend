@@ -4,6 +4,7 @@
 import Ad from '../../../app/controller/ad';
 import Admin from '../../../app/controller/admin';
 import Base from '../../../app/controller/base';
+import Coupon from '../../../app/controller/coupon';
 import Func from '../../../app/controller/func';
 import Merchandise from '../../../app/controller/merchandise';
 import MerchandiseType from '../../../app/controller/merchandiseType';
@@ -19,6 +20,7 @@ declare module 'egg' {
     ad: Ad;
     admin: Admin;
     base: Base;
+    coupon: Coupon;
     func: Func;
     merchandise: Merchandise;
     merchandiseType: MerchandiseType;

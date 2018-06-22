@@ -15,6 +15,10 @@ export default class MerchantService extends BaseService {
         return await this.findInnnerJoinById(mid, ['ad']);
     }
 
+    public async findMerchantAndCouponById(mid: string) {
+        return await this.findInnnerJoinById(mid, ['coupon']);
+    }
+
     public async addMerchant(mt: Merchant) {
         mt.status = 0;
         try {
