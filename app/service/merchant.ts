@@ -24,7 +24,10 @@ export default class MerchantService extends BaseService {
         try {
             return await this.model.merchant.save(mt);
         } catch (e) {
-            return {_key: ''};
+            return {
+                _key: '',
+                error: e.toString(),
+            };
         }
     }
 
@@ -43,7 +46,10 @@ export default class MerchantService extends BaseService {
         try {
             return await this.model.merchant.update(mid, merchantMessage);
         } catch (e) {
-            return {_key: ''};
+            return {
+                _key: '',
+                error: e.toString(),
+            };
         }
     }
 

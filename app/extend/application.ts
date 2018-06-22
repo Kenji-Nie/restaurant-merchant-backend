@@ -17,5 +17,5 @@ export default {
 
     get model() {
         return proxy(this.arango);
-    },
+    }
 };

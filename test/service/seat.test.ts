@@ -6,14 +6,20 @@ describe('seatTest', () => {
     before(async () => {
         ctx = app.mockContext();
     });
+    //
+    // it('deleteSeats', async () => {
+    //     // const r = await ctx.service.seat.deleteSeats(['1','2']);
+    //     // console.log(r);
+    // });
+    //
+    // it('updateSeatStatus', async () => {
+    //     const r = await ctx.service.seat.updateSeatStatus(['464560','464443'],0);
+    // });
 
-    it('deleteSeats', async () => {
-        // const r = await ctx.service.seat.deleteSeats(['1','2']);
-        // console.log(r);
-    });
 
-    it('updateSeatStatus', async () => {
-        const r = await ctx.service.seat.updateSeatStatus(['464560','464443'],0);
+    it('createSeat', async () => {
+        const r = await ctx.service.seat.createSeat('587085', 'T6','461123',12);
+        console.log(r);
     });
 
 

@@ -1,5 +1,7 @@
 import BaseService from './base';
-import {aql} from "arangojs/lib/async/aql-query";
+import string from "../extend/lib/string";
+import ArrayUtils from "../utils/arrayUtils";
+import {aql} from "arangojs";
 
 export default class SeatService extends BaseService {
 
@@ -23,5 +25,20 @@ export default class SeatService extends BaseService {
         const query = aql`for s in seat filter s._key in ${ids}
                        update s with { status: ${status} } in seat`;
         await this.query(query);
+    }
+
+    /**
+     * 根据店铺ID，席位类型ID,席位编号创建席位
+     * @param {string} type_fid
+     * @param {string} sequence_number
+     * @param {string} merchant_id
+     * @returns {Promise<void>}
+     */
+    public async createSeat(type_fid: string, sequence_number: string, merchant_id: string, people_num: number) {
+        const query = `let seatId = (insert {sequence_number: '${sequence_number}',
+        type_fid: '${type_fid}', people_num: ${people_num},qrcode_url:'',stauts:1} into seat return NEW._key)  
+        for m in merchant filter m._key == '${merchant_id}' 
+        update m with { seat_ids: APPEND(m.seat_ids,seatId)} in merchant return seatId`;
+        return await (await this.query(query)).next();
     }
 }

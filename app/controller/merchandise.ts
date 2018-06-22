@@ -4,7 +4,8 @@ export default class MerchandiseController extends BaseController {
 
     public async add() {
         const params = this.ctx.request.body;
-        const result = await this.service.merchandise.addMerchandise(params);
+        console.log(params);
+        const result = await this.service.merchandise.add(params.merchant_id, params.merchandise);
         this.ctx.body = {
             message: result,
             status: !(result._key === ''),

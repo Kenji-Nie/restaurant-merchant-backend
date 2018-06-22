@@ -14,8 +14,9 @@ export default class OrderService extends BaseService {
      * @param {number} order_status
      * @returns {Promise<void>}
      */
-    public async updateOrderStatus(ids: string[], order_status: number) {
-        const query = `for o in order filter o._key in ${ids} update o with {order_status: ${order_status}} in order`;
+    public async updateOrderStatus(ids: string[], status: number) {
+        console.log(ids);
+        const query = `for o in order filter o._key in [${ids}] update o with {status: ${status}} in order`;
         console.log(query);
         try {
             await this.query(query);
