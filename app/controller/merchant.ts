@@ -20,33 +20,20 @@ export default class MerchantController extends BaseController {
         };
     }
     public async updateMerchant() {
-        const merchantId = await this.ctx.request.body.id;
-        const merchantDetail = await this.ctx.request.body.merchantMessage;
-        const result = await this.ctx.service.merchant.updateMerchant(merchantId, merchantDetail);
-        if (result != null) {
-            this.ctx.body = {
-                status: true,
-                message: merchantDetail,
-            };
-        }else {
-            this.ctx.body = {
-                status: false,
-                message: null,
-            };
-        }
+        const params = this.ctx.request.body;
+        const result = await this.service.merchandise.modifyMerchandise(params._key, params);
+        this.ctx.body = {
+            message: result,
+            status: !(result._key === ''),
+        };
     }
     public async deleteMerchant() {
-        const merchantId = await this.ctx.request.body.id;
-        const result = await this.ctx.service.merchant.deleteMerchant(merchantId);
-        if (result != null) {
-            this.ctx.body = {
-                status: true,
-            };
-        }else {
-            this.ctx.body = {
-                status: false,
-            };
-        }
+        const param = this.ctx.params.rest;
+        const result = await this.ctx.service.merchant.deleteMerchant(param);
+        this.ctx.body = {
+            message: result,
+            status: !(result._key === ''),
+        };
     }
     public async listMerchantUser() {
         const merchantId = await this.ctx.request.body.id;

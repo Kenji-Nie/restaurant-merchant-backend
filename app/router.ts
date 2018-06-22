@@ -38,7 +38,7 @@ export default (app: Application) => {
         }
     });
 
-    router.post('/api/:controller/:method/:rest?', (ctx, next) => {
+    router.post('/api/:controller/:method', (ctx, next) => {
         const { helper } = ctx;
         const p = helper.modifyValues(ctx.params, helper.camelize);
         try {

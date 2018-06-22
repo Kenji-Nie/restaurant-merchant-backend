@@ -13,7 +13,7 @@ export default class MerchandiseService extends BaseService {
 
     public async getMerchandiseByMerchantId(mid: string) {
         const merchant = await (await this.service.merchant.findMerchantAndMerchandiseById(mid)).next();
-        return merchant.merchandises;
+        return merchant === undefined ? [] : merchant.merchandises;
     }
     public async modifyMerchandise(mdiseId: string, mdise: Merchandise) {
         try {
