@@ -112,17 +112,16 @@ export default class MerchantController extends BaseController {
             this.ctx.body = {
                 status: true,
                 message: {
-                    merchant
-                }
-            }
-        }
-        catch (e) {
+                    merchant,
+                },
+            };
+        } catch (e) {
             this.ctx.body = {
                 status: false,
                 message: {
-                    seats: []
-                }
-            }
+                    seats: [],
+                },
+            };
 
         }
     }
@@ -138,17 +137,16 @@ export default class MerchantController extends BaseController {
             this.ctx.body = {
                 status: true,
                 message: {
-                    merchant
-                }
-            }
-        }
-        catch (e) {
+                    merchant,
+                },
+            };
+        } catch (e) {
             this.ctx.body = {
                 status: false,
                 message: {
-                    seats: []
-                }
-            }
+                    seats: [],
+                },
+            };
 
         }
     }
