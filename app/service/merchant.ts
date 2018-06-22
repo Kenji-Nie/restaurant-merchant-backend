@@ -97,7 +97,7 @@ export default class MerchantService extends BaseService {
                 allUserMessage.push(user);
             }
             return allUserMessage;
-        }else {
+        } else {
             return null;
         }
     }
@@ -130,11 +130,31 @@ export default class MerchantService extends BaseService {
                 order_income: incomeCount,
                 order_refond: refondCount,
             };
-        }else {
+        } else {
             return {
                 order_income: 0,
                 order_refond: 0,
             };
         }
+    }
+
+    /**
+     * 根据店铺ID修改最低起送金额
+     * @param {string} merchant_id
+     * @param {number} min_takeaway_amount
+     * @returns {Promise<any>}
+     */
+    public async updateTakeoutAmount(merchant_id: string, min_takeaway_amount: number) {
+        return this.model.merchant.update(merchant_id, {min_takeaway_amount});
+    }
+
+    /**
+     * 根据店铺ID修改预约锁定时间
+     * @param {string} merchant_id
+     * @param {number} reservd_lock_time
+     * @returns {Promise<any>}
+     */
+    public async updateReservedLockTime(merchant_id: string, reservd_lock_time: number) {
+        return this.model.merchant.update(merchant_id, {reservd_lock_time});
     }
 }

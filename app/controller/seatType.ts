@@ -67,6 +67,29 @@ export default class SeatTypeController extends BaseController {
         }
     }
 
+    /**
+     * 根据店铺ID及席位名称添加席位
+     * @returns {Promise<void>}
+     */
+    public async creatSeatType() {
+        try {
+            const seatTypeId = await this.ctx.service.seatType.creatSeatType(this.ctx.request.body.merchant_id, this.ctx.request.body.name);
+            this.ctx.body = {
+                status: true,
+                message: {
+                    seatTypeId
+                }
+            }
+        }
+        catch (e) {
+            this.ctx.body = {
+                status: false,
+                message: {
+                    seats: ''
+                }
+            }
 
+        }
+    }
 
 }
