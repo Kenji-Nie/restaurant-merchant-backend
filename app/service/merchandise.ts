@@ -1,13 +1,32 @@
 import BaseService from './base';
 import Merchandise = model.schema.Merchandise;
+import Merchant = model.schema.Merchant;
 
 export default class MerchandiseService extends BaseService {
 
-    public async addMerchandise(mdise: Merchandise) {
+    public async add(mid: string, mdise: Merchant) {
+        let newMdiseId;
         try {
-            return await this.model.merchandiseType.save(mdise);
+            newMdiseId = await this.model.merchandise.save(mdise);
         } catch (e) {
-            return {_key: ''};
+            return {
+                _key: '',
+                error: e.toString(),
+            };
+        }
+        const mert = await this.service.merchant.get(mid);
+        if (mert.merchandise_ids === undefined) {
+            mert.merchandise_ids = [newMdiseId._key];
+        } else {
+            mert.merchandise_ids.push(newMdiseId._key);
+        }
+        try {
+            return await this.model.merchant.update(mid, mert);
+        } catch (e) {
+            return {
+                _key: '',
+                error: e.toString(),
+            };
         }
     }
 
@@ -19,7 +38,10 @@ export default class MerchandiseService extends BaseService {
         try {
             return await this.model.merchandise.update(mdiseId, mdise);
         } catch (e) {
-            return {_key: ''};
+            return {
+                _key: '',
+                error: e.toString(),
+            };
         }
     }
 
@@ -27,7 +49,10 @@ export default class MerchandiseService extends BaseService {
         try {
             return await this.model.merchandise.remove(mdiseId);
         } catch (e) {
-            return {_key: ''};
+            return {
+                _key: '',
+                error: e.toString(),
+            };
         }
     }
 
