@@ -20,23 +20,24 @@ export default class MerchantController extends BaseController {
         };
     }
     public async updateMerchant() {
-        const params = this.ctx.request.body;
-        const result = await this.service.merchandise.modifyMerchandise(params._key, params);
+        const merchantId = this.ctx.request.body.merchant_id;
+        const merchantMessage = this.ctx.request.body.merchantMessage;
+        const result = await this.service.merchandise.modifyMerchandise(merchantId, merchantMessage);
         this.ctx.body = {
             message: result,
             status: !(result._key === ''),
         };
     }
     public async deleteMerchant() {
-        const param = this.ctx.params.rest;
-        const result = await this.ctx.service.merchant.deleteMerchant(param);
+        const merchantId = this.ctx.request.body.merchant_id;
+        const result = await this.ctx.service.merchant.deleteMerchant(merchantId);
         this.ctx.body = {
             message: result,
             status: !(result._key === ''),
         };
     }
     public async listMerchantUser() {
-        const merchantId = await this.ctx.request.body.id;
+        const merchantId = this.ctx.request.body.merchant_id;
         const users = await this.ctx.service.merchant.listMerchantUser(merchantId);
         if (users !== null) {
             this.ctx.body = {
@@ -53,8 +54,8 @@ export default class MerchantController extends BaseController {
         }
     }
     public async getOrderIncomeAndRefond() {
-        const merchantId = await this.ctx.request.body.id;
-        const nowTime = await this.ctx.request.body.nowTime;
+        const merchantId = this.ctx.request.body.merchant_id;
+        const nowTime = this.ctx.request.body.nowTime;
         const inAndOut = await this.ctx.service.merchant.getOrderIncomeAndRefond(merchantId, nowTime);
         if (inAndOut.order_income !== 0 || inAndOut.order_refond !== 0) {
             this.ctx.body = {
