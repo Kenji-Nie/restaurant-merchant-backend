@@ -1,4 +1,5 @@
 import BaseController from './base';
+import ArrayUtils from "../utils/arrayUtils";
 
 export default class OrderController extends BaseController {
 
@@ -15,8 +16,9 @@ export default class OrderController extends BaseController {
      * @returns {Promise<void>}
      */
     public async updateOrderStatus() {
+        const ids = this.ctx.request.body.order_ids.toString().split(',');
         this.ctx.body = {
-            status: await this.service.order.updateOrderStatus(this.ctx.request.body.order_ids, this.ctx.request.body.order_status)
+            status: await this.service.order.updateOrderStatus((await ArrayUtils.numberToString(ids)), this.ctx.request.body.status)
         }
     }
 
