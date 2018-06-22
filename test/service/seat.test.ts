@@ -18,7 +18,7 @@ describe('seatTest', () => {
 
 
     it('createSeat', async () => {
-        const r = await ctx.service.seat.createSeat('587085', 'T1','461123');
+        const r = await ctx.service.seat.createSeat('587085', 'T1','461123',10);
 
     });
 
