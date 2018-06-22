@@ -114,8 +114,8 @@ describe('userTest', () => {
         const result = await ctx.service.user.updatePassword('326752', '123456', '123456789');
         console.log(result);
     });
-    it('getUserId', async() => {
-        const userId = await ctx.service.user.forgetPassword('123456789', '123', 1234);
+    it('userRegister', async() => {
+        const userId = await ctx.service.user.userRegister('123456789', '123', 1234);
         console.log(userId);
     });
     it('listMerchant', async () => {
@@ -137,5 +137,9 @@ describe('userTest', () => {
     it('getOrder', async () => {
         const orders = await ctx.service.user.getOrder('326752');
         console.log(orders);
+    });
+    it('findUserById', async () => {
+        const user = await ctx.service.user.findUserById('326752');
+        console.log(user);
     });
 });

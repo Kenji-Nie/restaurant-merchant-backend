@@ -6,7 +6,7 @@ import ResponseWrapper from '../../../app/middleware/response_wrapper';
 
 declare module 'egg' {
   interface IMiddleware {
-    errorHandler: typeof ErrorHandler;
-    responseWrapper: typeof ResponseWrapper;
+    errorHandler: ReturnType<typeof ErrorHandler>;
+    responseWrapper: ReturnType<typeof ResponseWrapper>;
   }
 }
