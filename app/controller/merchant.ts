@@ -22,11 +22,18 @@ export default class MerchantController extends BaseController {
     public async updateMerchant() {
         const merchantId = this.ctx.request.body.merchant_id;
         const merchantMessage = this.ctx.request.body.merchantMessage;
-        const result = await this.service.merchandise.modifyMerchandise(merchantId, merchantMessage);
-        this.ctx.body = {
-            message: result,
-            status: !(result._key === ''),
-        };
+        const result = await this.service.merchant.updateMerchant(merchantId, merchantMessage);
+        if (result != null) {
+            this.ctx.body = {
+                status: true,
+                message: merchantMessage,
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
     }
     public async deleteMerchant() {
         const merchantId = this.ctx.request.body.merchant_id;
