@@ -35,28 +35,10 @@ export default class SeatService extends BaseService {
      * @returns {Promise<void>}
      */
     public async createSeat(type_fid: string, sequence_number: string, merchant_id: string, people_num: number) {
-        const action = function (params) {
-            const db = require('@arangodb').db;
-            const seat = db._query(`insert {sequence_number: '${params.sequence_number}', type_fid: '${params.type_fid}', people_num: ${params.people_num},qrcode_url:'${params.qrcode_url}',stauts:1} into seat`);
-            const merchant = db._query(`for o in merchant filter o._key == '461123' return o`).next();
-            let seat_ids = new Array();
-            if (merchant.seat_ids !== undefined) {
-                seat_ids.push(merchant.seat_ids);
-                seat_ids.push(seat._key);
-                for (let i = 0; i < seat_ids.length; i++) {
-                    seat_ids[i] = '\'' + seat_ids[i] + '\'';
-                }
-            } else {
-                seat_ids.push(seat._key);
-            }
-            const query = `update { _key: '461123' } with { seat_ids: [${seat_ids}]} in merchant`;
-            return db._query(query);
-        };
-        const result = await this.db.transaction({write: ['seat', 'merchant']}, String(action), {
-            type_fid,
-            sequence_number,
-            people_num,
-            qrcode_url: ''
-        });
+        const query = `let seatId = (insert {sequence_number: '${sequence_number}',
+        type_fid: '${type_fid}', people_num: ${people_num},qrcode_url:'',stauts:1} into seat return NEW._key)  
+        for m in merchant filter m._key == '${merchant_id}' 
+        update m with { seat_ids: APPEND(m.seat_ids,seatId)} in merchant return seatId`;
+        return await (await this.query(query)).next();
     }
 }
