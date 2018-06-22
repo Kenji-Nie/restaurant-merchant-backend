@@ -20,6 +20,10 @@ export default class MerchantController extends BaseController {
         };
     }
 
+    /**
+     * 根据店铺id更新店铺信息
+     * @returns {Promise<void>}
+     */
     public async updateMerchant() {
         const merchantId = this.ctx.request.body.merchant_id;
         const merchantMessage = this.ctx.request.body.merchantMessage;
@@ -37,6 +41,10 @@ export default class MerchantController extends BaseController {
         }
     }
 
+    /**
+     * 根据店铺id删除相应店铺
+     * @returns {Promise<void>}
+     */
     public async deleteMerchant() {
         const merchantId = this.ctx.request.body.merchant_id;
         const result = await this.ctx.service.merchant.deleteMerchant(merchantId);
@@ -51,6 +59,10 @@ export default class MerchantController extends BaseController {
         }
     }
 
+    /**
+     * 根据店铺id列出店铺的用户记录
+     * @returns {Promise<void>}
+     */
     public async listMerchantUser() {
         const merchantId = this.ctx.request.body.merchant_id;
         const users = await this.ctx.service.merchant.listMerchantUser(merchantId);
@@ -69,6 +81,10 @@ export default class MerchantController extends BaseController {
         }
     }
 
+    /**
+     * 根据店铺merchant_id和今天的的时间（time）获取今日收入和退款金额
+     * @returns {Promise<void>}
+     */
     public async getOrderIncomeAndRefond() {
         const merchantId = this.ctx.request.body.merchant_id;
         const nowTime = this.ctx.request.body.nowTime;

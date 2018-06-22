@@ -51,13 +51,13 @@ describe('merchantTest', async () => {
     //     const result = await ctx.service.merchant.updateMerchant('326752', storeMessage);
     //     // console.log(result);
     // });
-    // it('deleteMerchant', async () => {
-    //     const result = await ctx.service.merchant.deleteMerchant('561456');
-    //     // console.log(result);
-    // });
+     it ('deleteMerchant', async () => {
+         const result = await ctx.service.merchant.deleteMerchant('561456');
+         // console.log(result);
+     });
     // it('findMerchantAndSeatById', async () => {
-    //     const result = await ctx.service.merchant.findMerchantAndSeatById('461123');
-    //     // console.log(result);
+    //    const result = await ctx.service.merchant.findMerchantAndSeatById('461123');
+    // console.log(result);
     // });
     // it('listMerchantUser', async () => {
     //     const users = await ctx.service.merchant.listMerchantUser('461123');
