@@ -11,4 +11,13 @@ describe('merchandiseTest', () => {
         // const u = await ctx.service.merchandise.deleteMerchandise('228175');
         // console.log(u);
     });
+
+    it('add', async () => {
+        const u = await ctx.service.merchandise.add('461123', {
+            dsdsde:'ssdsdsdsdsdsd',
+            dvvrf:23232323,
+            fgtg:'dfdfdfdfdf',
+        })
+        console.log(u);
+    });
 });

@@ -15,12 +15,19 @@ export default class MerchantService extends BaseService {
         return await this.findInnnerJoinById(mid, ['ad']);
     }
 
+    public async findMerchantAndCouponById(mid: string) {
+        return await this.findInnnerJoinById(mid, ['coupon']);
+    }
+
     public async addMerchant(mt: Merchant) {
         mt.status = 0;
         try {
             return await this.model.merchant.save(mt);
         } catch (e) {
-            return {_key: ''};
+            return {
+                _key: '',
+                error: e.toString(),
+            };
         }
     }
 
@@ -39,7 +46,10 @@ export default class MerchantService extends BaseService {
         try {
             return await this.model.merchant.update(mid, merchantMessage);
         } catch (e) {
-            return {_key: ''};
+            return {
+                _key: '',
+                error: e.toString(),
+            };
         }
     }
 

@@ -16,8 +16,7 @@ export default class SeatTypeController extends BaseController {
                     seatTypes
                 }
             }
-        }
-        catch (e) {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
                 message: {

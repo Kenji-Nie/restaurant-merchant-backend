@@ -8,11 +8,11 @@ import Coupon = model.schema.Coupon;
 export default class UserService extends BaseService {
 
     /**
-     * 通过uid查找用户
+     * 通过用户id查找用户详细信息
      * @param {number} uid
      * @returns {Promise<void>}
      */
-    public async findUser(uid: number) {
+    public async findUserById(uid: string) {
         return await this.model.user[uid];
     }
     /**
@@ -150,16 +150,19 @@ export default class UserService extends BaseService {
         }
     }
     /**
-     * 通过phone、密码和验证码来获取用户的id
+     * 通过phone、密码和验证码注册用户信息并返回注册后的用户id
      * @param {string} phone
      * @param {string} password
      * @param {number} YanZhengMa
      * @returns {Promise<any>}
      */
-    public async getUserId(phone: string, password: string, YanZhengMa: number) {
-        const query = aql`for u in user filter u.phone==${phone} and u.password==${password} return u`;
+    public async userRegister(phone: string, password: string, YanZhengMa: number) {
         if (YanZhengMa) {
-            return await (await this.query(query)).all();
+            const user = {
+                phone: phone,
+                password: password,
+            };
+            return await this.model.user.save(user);
         }
     }
 

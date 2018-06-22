@@ -49,22 +49,26 @@ describe('merchantTest', async () => {
             },
         };
         const result = await ctx.service.merchant.updateMerchant('326752', storeMessage);
-        console.log(result);
+        // console.log(result);
     });
     it('deleteMerchant', async () => {
         const result = await ctx.service.merchant.deleteMerchant('561456');
-        console.log(result);
+        // console.log(result);
     });
     it('findMerchantAndSeatById', async () => {
         const result = await ctx.service.merchant.findMerchantAndSeatById('461123');
-        console.log(result);
+        // console.log(result);
     });
     it('listMerchantUser', async () => {
         const users = await ctx.service.merchant.listMerchantUser('461123');
-        console.log(users);
+        // console.log(users);
     });
     it('getOrderIncomeAndRefond', async () => {
         const income = await ctx.service.merchant.getOrderIncomeAndRefond('461123', '2018-1-1');
-        console.log(income);
+        // console.log(income);
+    });
+    it('getOrderIncomeAndRefond', async () => {
+        const income = await ctx.service.merchant.getOrderIncomeAndRefond('461123', '2018-1-1');
+        // console.log(income);
     });
 });

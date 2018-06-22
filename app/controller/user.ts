@@ -1,40 +1,65 @@
 import BaseController from './base';
 
 export default class UserController extends BaseController {
-
+    public async findUserById() {
+        const userId = await this.ctx.request.body.id;
+        const user = await this.ctx.service.user.findUserById(userId);
+        if (user != null) {
+            this.ctx.body = {
+                status: true,
+                message: user,
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
+    }
     public async findUserByPhoneAndPassword() {
         const phone = this.ctx.request.body.phone;
         const password = this.ctx.request.body.password;
         const user = await this.ctx.service.user.findUserByPhoneAndPassword(phone, password);
-        let userId;
-        userId = [];
+        if (user.length !== 0) {
+            this.ctx.body = {
+                status: true,
+                message: {
+                    user: user,
+                },
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
+        /*let userMessage;
+        userMessage = [];
         if (user != null && user.length !== 0) {
-            if ( user.length === 1) {
+            if (user.length === 1) {
                 this.ctx.body = {
                     status: true,
                     message: {
-                        user_id: user[0]._key,
+                        user: user[0],
                     },
                 };
             }else {
                 for (let u = 0; u < user.length; u++) {
-                    userId.push(user[u]._key);
+                    userMessage.push(user[u]);
                 }
                 this.ctx.body = {
                     status: true,
                     message: {
-                        user_id: userId,
+                        user: userMessage,
                     },
                 };
             }
         } else {
             this.ctx.body = {
                 status: false,
-                message: {
-                    message: null,
-                },
+                message: null,
             };
-        }
+        }*/
     }
     public async findUserByEmail() {
         const email = await this.ctx.request.body.email;
@@ -145,36 +170,24 @@ export default class UserController extends BaseController {
             };
         }
     }
-    public async getUserId() {
+    public async userRegister() {
         const phone = await this.ctx.request.body.phone;
         const password = await this.ctx.request.body.password;
         const yanZhengMa = await this.ctx.request.body.YanZhengMa;
-        const userMessage = await this.service.user.forgetPassword(phone, password, yanZhengMa);
-        let userId;
-        userId = [];
-        if (userMessage != null && userMessage.length !== 0) {
-            if ( userMessage.length === 1) {
-                this.ctx.body = {
-                    status: true,
-                    message: {
-                        id: userMessage[0]._key,
-                    },
-                };
-            }else {
-                for(let u = 0; u < userMessage.length; u ++) {
-                    userId.push(userMessage[u]._key);
-                }
-                this.ctx.body = {
-                    status: true,
-                    message: {
-                        id: userId,
-                    },
-                };
-            }
-        } else {
+        const userLogin = await this.service.user.userRegister(phone, password, yanZhengMa);
+        if (userLogin != null) {
+            this.ctx.body = {
+                status: true,
+                message: {
+                    user_id: userLogin._key,
+                },
+            };
+        }else {
             this.ctx.body = {
                 status: false,
-                message: null,
+                message: {
+                    user_id: '',
+                },
             };
         }
     }
