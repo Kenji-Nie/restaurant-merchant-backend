@@ -7,15 +7,20 @@ describe('seatTypeTest', () => {
         ctx = app.mockContext();
     });
 
-    it('updateSeatType', async () => {
-        const r = await ctx.service.seatType.updateSeatType('587057',{name:'雅座'});
-        // console.log(r);
-    });
+    // it('updateSeatType', async () => {
+    //     const r = await ctx.service.seatType.updateSeatType('587057',{name:'雅座'});
+    //     // console.log(r);
+    // });
+    //
+    //
+    // it('deleteSeatTypes', async () => {
+    //     const r = await ctx.service.seatType.deleteSeatTypes(['1','2']);
+    //     console.log(r);
+    // });
 
-
-    it('deleteSeatTypes', async () => {
-        const r = await ctx.service.seatType.deleteSeatTypes(['1','2']);
-        console.log(r);
+    it('creatSeatType', async () => {
+        const result = await ctx.service.seatType.creatSeatType('893033', '雅座');
+        console.log(result);
     });
 
 });

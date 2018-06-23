@@ -16,6 +16,7 @@ namespace model.schema {
         takeaway_close_time: string;
         min_takeaway_amount: string;
         max_takeaway_distance: string;
+        reservd_lock_time: number,
         merchandise_ids?: string[];
         merchandiseType_ids?: string[];
         user_ids?: string[];

@@ -2,7 +2,7 @@ import BaseController from './base';
 
 export default class UserController extends BaseController {
     public async findUserById() {
-        const userId = await this.ctx.request.body.id;
+        const userId = this.ctx.request.body.user_id;
         const user = await this.ctx.service.user.findUserById(userId);
         if (user != null) {
             this.ctx.body = {
@@ -62,7 +62,7 @@ export default class UserController extends BaseController {
         }*/
     }
     public async findUserByEmail() {
-        const email = await this.ctx.request.body.email;
+        const email = this.ctx.request.body.email;
         const user = await (await this.service.user.findUserByEmail(email)).next();
         if (user != null) {
             this.ctx.body = {
@@ -81,7 +81,7 @@ export default class UserController extends BaseController {
         }
     }
     public async getYanZhengMa() {
-        const phone = await this.ctx.request.body.phone;
+        const phone = this.ctx.request.body.phone;
         const yanZhengMa = await this.service.user.getYanZhengMa(phone);
         this.ctx.body = {
             status: true,
@@ -91,9 +91,9 @@ export default class UserController extends BaseController {
         };
     }
     public async forgetPassword() {
-        const phone = await this.ctx.request.body.phone;
-        const password = await this.ctx.request.body.password;
-        const yanZhengMa = await this.ctx.request.body.YanZhengMa;
+        const phone = this.ctx.request.body.phone;
+        const password = this.ctx.request.body.password;
+        const yanZhengMa = this.ctx.request.body.YanZhengMa;
         const userMessage = await this.service.user.forgetPassword(phone, password, yanZhengMa);
         let userId;
         userId = [];
@@ -124,8 +124,8 @@ export default class UserController extends BaseController {
         }
     }
     public async updateUserDetail() {
-        const userId = await this.ctx.request.body.id;
-        const userDetail = await this.ctx.request.body.userMessage;
+        const userId = this.ctx.request.body.user_id;
+        const userDetail = this.ctx.request.body.userMessage;
         const result = await this.ctx.service.user.updateUserDetail(userId, userDetail);
         if (result != null) {
             this.ctx.body = {
@@ -140,8 +140,8 @@ export default class UserController extends BaseController {
         }
     }
     public async createMerchant() {
-        const userId = await this.ctx.request.body.id;
-        const merchantDetail = await this.ctx.request.body.merchantMessage;
+        const userId = this.ctx.request.body.user_id;
+        const merchantDetail = this.ctx.request.body.merchantMessage;
         const result = await this.ctx.service.user.createMerchant(userId, merchantDetail);
         if (result != null) {
             this.ctx.body = {
@@ -156,9 +156,9 @@ export default class UserController extends BaseController {
         }
     }
     public async updatePassword() {
-        const userId = await this.ctx.request.body.id;
-        const userOldPassword = await this.ctx.request.body.oldPassword;
-        const userNewPassword = await this.ctx.request.body.newPassword;
+        const userId = this.ctx.request.body.user_id;
+        const userOldPassword = this.ctx.request.body.oldPassword;
+        const userNewPassword = this.ctx.request.body.newPassword;
         const result = await this.ctx.service.user.updatePassword(userId, userOldPassword, userNewPassword);
         if ( result !== 0 ) {
            this.ctx.body = {
@@ -171,9 +171,9 @@ export default class UserController extends BaseController {
         }
     }
     public async userRegister() {
-        const phone = await this.ctx.request.body.phone;
-        const password = await this.ctx.request.body.password;
-        const yanZhengMa = await this.ctx.request.body.YanZhengMa;
+        const phone = this.ctx.request.body.phone;
+        const password = this.ctx.request.body.password;
+        const yanZhengMa = this.ctx.request.body.YanZhengMa;
         const userLogin = await this.service.user.userRegister(phone, password, yanZhengMa);
         if (userLogin != null) {
             this.ctx.body = {
@@ -192,7 +192,7 @@ export default class UserController extends BaseController {
         }
     }
     public async listMerchant() {
-        const userId = await this.ctx.request.body.id;
+        const userId = this.ctx.request.body.user_id;
         const merchants = await this.ctx.service.user.listMerchant(userId);
         if (merchants != null) {
             this.ctx.body = {
@@ -207,8 +207,8 @@ export default class UserController extends BaseController {
         }
     }
     public async modifyRemark() {
-        const userIds = this.ctx.request.body.ids.toString();
-        const remark = await this.ctx.request.body.remark;
+        const userIds = this.ctx.request.body.user_ids.toString();
+        const remark = this.ctx.request.body.remark;
         const result = await this.ctx.service.user.modifyRemark(userIds.split(','), remark);
         if (result) {
             this.ctx.body = {
@@ -223,8 +223,8 @@ export default class UserController extends BaseController {
         }
     }
     public async addUserCoupon() {
-        const userId = await this.ctx.request.body.user_id;
-        const couponId = await this.ctx.request.body.coupon_id;
+        const userId = this.ctx.request.body.user_id;
+        const couponId = this.ctx.request.body.coupon_id;
         const result = await this.ctx.service.user.addUserCoupon(userId, couponId);
         if (result != null) {
             this.ctx.body = {
@@ -237,7 +237,7 @@ export default class UserController extends BaseController {
         }
     }
     public async getUserCoupon() {
-        const userId = await this.ctx.request.body.id;
+        const userId = this.ctx.request.body.user_id;
         const coupons = await this.ctx.service.user.getUserCoupon(userId);
         if (coupons !== null) {
             this.ctx.body = {
@@ -252,7 +252,7 @@ export default class UserController extends BaseController {
         }
     }
     public async getOrder() {
-        const userId = await this.ctx.request.body.id;
+        const userId = this.ctx.request.body.user_id;
         const orders = await this.ctx.service.user.getOrder(userId);
         if (orders != null) {
             this.ctx.body = {
