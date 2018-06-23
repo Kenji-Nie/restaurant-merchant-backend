@@ -2,11 +2,29 @@ import BaseService from './base';
 import Coupon = model.schema.Coupon;
 
 export default class MerchandiseService extends BaseService {
-    public async add(coup: Coupon) {
+    public async add(mid: string, coup: Coupon) {
+        let newCouponId;
         try {
-            return await this.model.coupon.save(coup);
+            newCouponId = await this.model.coupon.save(coup);
         } catch (e) {
-            return {_key: ''};
+            return {
+                _key: '',
+                error: e.toString(),
+            };
+        }
+        const merchant = await this.service.merchant.get(mid);
+        if (merchant.coupon_ids === undefined) {
+            merchant.coupon_ids = [newCouponId._key];
+        } else {
+            merchant.coupon_ids.push(newCouponId._key);
+        }
+        try {
+            return await this.model.merchant.update(mid, merchant);
+        } catch (e) {
+            return {
+                _key: '',
+                error: e.toString(),
+            };
         }
     }
     public async modify(couId: string, coup: Coupon) {

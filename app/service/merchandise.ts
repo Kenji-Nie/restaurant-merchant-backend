@@ -45,15 +45,48 @@ export default class MerchandiseService extends BaseService {
         }
     }
 
-    public async deleteMerchandise(mdiseId: string) {
+    public async deleteMerchandise(mdiseIds: string[]) {
+        const result: Array<object> = [];
+        let state: boolean = true;
         try {
-            return await this.model.merchandise.remove(mdiseId);
+            for (const id of mdiseIds) {
+                result.push(await this.model.merchandise.remove(id));
+            }
         } catch (e) {
-            return {
+            result.push({
                 _key: '',
                 error: e.toString(),
-            };
+            });
+            state = false;
         }
+        return {
+            message: result,
+            status: state,
+        };
+    }
+
+    public async shelfMerchandise(mdiseIds: string[]) {
+        const result: Array<object> = [];
+        let state: boolean = true;
+        try {
+            for (const id of mdiseIds) {
+                const oldObj = await this.service.merchandise.get(id);
+                const shelfFlag: boolean =  (oldObj.shelf_flag === undefined) ? false : oldObj.shelf_flag;
+                const newObj = Object.assign(
+                    {}, oldObj, {shelf_flag: !shelfFlag});
+                result.push(await this.service.merchandise.modifyMerchandise(id, newObj));
+            }
+        } catch (e) {
+            result.push({
+                _key: '',
+                error: e.toString(),
+            });
+            state = false;
+        }
+        return {
+            message: result,
+            status: state,
+        };
     }
 
     public async get(mdiseId: string) {

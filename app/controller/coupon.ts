@@ -4,7 +4,7 @@ export default class CouponController extends BaseController {
 
     public async add() {
         const params = this.ctx.request.body;
-        const result = await this.service.coupon.add(params);
+        const result = await this.service.coupon.add(params.merchant_id, params.coupon);
         this.ctx.body = {
             message: result,
             status: !(result._key === ''),

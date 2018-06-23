@@ -13,7 +13,7 @@ export default class MerchandiseTypeController extends BaseController {
     }
 
     public async group() {
-        const param = this.ctx.params.rset;
+        const param = this.ctx.params.rest;
         this.ctx.body = {
             message: await this.service.merchandiseType.getMerchandiseTypesByMerchantId(param),
             status: true,
@@ -30,7 +30,7 @@ export default class MerchandiseTypeController extends BaseController {
     }
 
     public async delete() {
-        const param = this.ctx.params.rset;
+        const param = this.ctx.params.rest;
         const result = await this.service.merchandiseType.deleteMerchandiseType(param);
         this.ctx.body = {
             message: result,
