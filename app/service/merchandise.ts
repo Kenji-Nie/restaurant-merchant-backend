@@ -14,14 +14,14 @@ export default class MerchandiseService extends BaseService {
                 error: e.toString(),
             };
         }
-        const mert = await this.service.merchant.get(mid);
-        if (mert.merchandise_ids === undefined) {
-            mert.merchandise_ids = [newMdiseId._key];
+        const merchant = await this.service.merchant.get(mid);
+        if (merchant.merchandise_ids === undefined) {
+            merchant.merchandise_ids = [newMdiseId._key];
         } else {
-            mert.merchandise_ids.push(newMdiseId._key);
+            merchant.merchandise_ids.push(newMdiseId._key);
         }
         try {
-            return await this.model.merchant.update(mid, mert);
+            return await this.model.merchant.update(mid, merchant);
         } catch (e) {
             return {
                 _key: '',

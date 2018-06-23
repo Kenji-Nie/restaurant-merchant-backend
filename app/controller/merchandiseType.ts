@@ -5,7 +5,7 @@ export default class MerchandiseTypeController extends BaseController {
     public async addGroup() {
         const params = this.ctx.request.body;
         const result = await this.service.merchandiseType.addMerchandiseType(
-            params.merchandise_type_name, params.merchandise_type_icon);
+            params.merchant_id, params.merchandise_type_name, params.merchandise_type_icon);
         this.ctx.body = {
             message: result,
             status: !(result._key === ''),

@@ -13,9 +13,9 @@ export default class MerchandiseController extends BaseController {
     }
 
     public async get() {
-        const param = this.ctx.params.rest;
+        const param = this.ctx.request.body;
         this.ctx.body = {
-            message: await this.service.merchandise.getMerchandiseByMerchantId(param),
+            message: await this.service.merchandise.getMerchandiseByMerchantId(param.merchant_id),
             status: true,
         };
     }

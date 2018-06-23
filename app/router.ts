@@ -24,6 +24,7 @@ export default (app: Application) => {
             // passHeader: `'Authorization': 'Bearer lorem ipsum'`,
         }),
     );
+    router.post('api/merchandise/add', controller.merchandise.add);
     // router.get('/', controller.home.index);
     // router.post('/api/user/login/loginData',controller.user.login);
     // router.get('/api/getAddress', controller.region.getRegions);
