@@ -156,13 +156,9 @@ export default class UserService extends BaseService {
      * @param {number} YanZhengMa
      * @returns {Promise<any>}
      */
-    public async userRegister(phone: string, password: string, YanZhengMa: number) {
+    public async userRegister(YanZhengMa: number, userMessage: User) {
         if (YanZhengMa) {
-            const user = {
-                phone: phone,
-                password: password,
-            };
-            return await this.model.user.save(user);
+            return await this.model.user.save(userMessage);
         }
     }
 

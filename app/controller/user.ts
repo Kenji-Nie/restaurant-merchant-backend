@@ -171,10 +171,9 @@ export default class UserController extends BaseController {
         }
     }
     public async userRegister() {
-        const phone = this.ctx.request.body.phone;
-        const password = this.ctx.request.body.password;
         const yanZhengMa = this.ctx.request.body.YanZhengMa;
-        const userLogin = await this.service.user.userRegister(phone, password, yanZhengMa);
+        const userMessage = this.ctx.request.body.userMessage;
+        const userLogin = await this.service.user.userRegister(yanZhengMa, userMessage);
         if (userLogin != null) {
             this.ctx.body = {
                 status: true,
