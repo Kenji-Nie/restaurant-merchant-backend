@@ -157,4 +157,25 @@ export default class MerchantService extends BaseService {
     public async updateReservedLockTime(merchant_id: string, reservd_lock_time: number) {
         return this.model.merchant.update(merchant_id, {reservd_lock_time});
     }
+
+    /**
+     * 根据商户merchant_id获取针对该商家的所有优惠卷数据
+     * @param {string} mid
+     * @returns {Promise<any>}
+     */
+    public async getMerchantCoupon(mid: string) {
+        const merchant = await this.model.merchant[mid];
+        const coupons = merchant.coupon_ids;
+        let allCouponMessage;
+        allCouponMessage = [];
+        if (coupons !== undefined && coupons.length !== 0) {
+            for (let c = 0; c < coupons.length; c++) {
+                const coupon = await this.model.coupon[coupons[c]];
+                allCouponMessage.push(coupon);
+            }
+            return allCouponMessage;
+        }else {
+            return null;
+        }
+    }
 }

@@ -81,4 +81,8 @@ describe('merchantTest', async () => {
         const result = await ctx.service.merchant.updateReservedLockTime('1188314', 30);
         console.log(result);
     });
+    it('getMerchantCoupon', async () => {
+        const coupons = await ctx.service.merchant.getMerchantCoupon('1188314');
+        console.log(coupons);
+    })
 });

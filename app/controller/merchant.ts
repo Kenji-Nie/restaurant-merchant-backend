@@ -150,4 +150,19 @@ export default class MerchantController extends BaseController {
 
         }
     }
+    public async getMerchantCoupon() {
+        const merchantId = this.ctx.request.body.merchant_id;
+        const coupons = await this.ctx.service.merchant.getMerchantCoupon(merchantId);
+        if (coupons !== null) {
+            this.ctx.body = {
+                status: true,
+                message: coupons,
+            };
+        }else {
+            this.ctx.body = {
+                status: true,
+                message: null,
+            };
+        }
+    }
 }
