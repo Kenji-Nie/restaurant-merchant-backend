@@ -4,6 +4,7 @@ export default class MerchandiseController extends BaseController {
 
     public async add() {
         const params = this.ctx.request.body;
+        console.log(params);
         const result = await this.service.merchandise.add(params.merchant_id, params.merchandise);
         this.ctx.body = {
             message: result,
@@ -36,7 +37,9 @@ export default class MerchandiseController extends BaseController {
 
     public async delete() {
         const param = this.ctx.request.body;
+        console.log(param.ids);
         const result = await this.service.merchandise.deleteMerchandise(param.ids);
+        console.log(result);
         this.ctx.body = result;
     }
 }
