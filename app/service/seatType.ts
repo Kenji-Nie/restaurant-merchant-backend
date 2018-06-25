@@ -40,11 +40,11 @@ export default class SeatTypeService extends BaseService {
      * @param {string} merchant_id
      * @returns {Promise<any>}
      */
-    public async findSeatTypeById(merchant_id: string) {
+    public async listSeatTypeByMerchantId(merchant_id: string) {
         const query = `for m in merchant filter m._key == "${merchant_id}" 
             for st in seatType filter st._key in m.seatType_ids 
-            let scount = (for s in seat filter s.type_fid == st._key return s) 
-            return merge(st,{seatCount:LENGTH(scount)})`;
+            let s = (for s in seat filter s.type_fid == st._key return s) 
+            return merge(st,{seatCount:LENGTH(s)})`;
         return await (await this.query(query)).all();
     }
 }
