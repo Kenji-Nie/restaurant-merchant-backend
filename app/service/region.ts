@@ -2,7 +2,7 @@ import BaseService from './base';
 
 export default class RegionService extends BaseService {
 
-    public async getRegions() {
+    public async listRegions() {
         const provinces = await (await this.findByProperty('parent_id', '1')).all();
 
         for (const provience of provinces) {
@@ -10,7 +10,7 @@ export default class RegionService extends BaseService {
             provience.children = cities;
             for (const city of cities) {
                 const areas = await (await this.findByProperty('parent_id', city._key)).all();
-                city.children = areas;
+                city.areas = areas;
             }
         }
         return provinces;
