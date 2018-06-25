@@ -10,7 +10,7 @@ export default class RegionService extends BaseService {
             provience.children = cities;
             for (const city of cities) {
                 const areas = await (await this.findByProperty('parent_id', city._key)).all();
-                city.areas = areas;
+                city.children = areas;
             }
         }
         return provinces;
