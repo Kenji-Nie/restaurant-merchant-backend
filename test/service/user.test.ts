@@ -114,10 +114,10 @@ describe('userTest', () => {
         const result = await ctx.service.user.updatePassword('326752', '123456', '123456789');
         console.log(result);
     });
-    it('userRegister', async() => {
-        const userId = await ctx.service.user.userRegister('123456789', '123', 1234);
-        console.log(userId);
-    });
+    // it('userRegister', async() => {
+    //     const userId = await ctx.service.user.userRegister('123456789', '123', 1234);
+    //     console.log(userId);
+    // });
     it('listMerchant', async () => {
         const merchants = await ctx.service.user.listMerchant('209858');
         console.log(merchants);

@@ -9,13 +9,14 @@ export default class UserController extends BaseController {
                 status: true,
                 message: user,
             };
-        }else {
+        } else {
             this.ctx.body = {
                 status: false,
                 message: null,
             };
         }
     }
+
     public async findUserByPhoneAndPassword() {
         const phone = this.ctx.request.body.phone;
         const password = this.ctx.request.body.password;
@@ -27,7 +28,7 @@ export default class UserController extends BaseController {
                     user: user,
                 },
             };
-        }else {
+        } else {
             this.ctx.body = {
                 status: false,
                 message: null,
@@ -61,6 +62,7 @@ export default class UserController extends BaseController {
             };
         }*/
     }
+
     public async findUserByEmail() {
         const email = this.ctx.request.body.email;
         const user = await (await this.service.user.findUserByEmail(email)).next();
@@ -80,6 +82,7 @@ export default class UserController extends BaseController {
             };
         }
     }
+
     public async getYanZhengMa() {
         const phone = this.ctx.request.body.phone;
         const yanZhengMa = await this.service.user.getYanZhengMa(phone);
@@ -90,6 +93,7 @@ export default class UserController extends BaseController {
             },
         };
     }
+
     public async forgetPassword() {
         const phone = this.ctx.request.body.phone;
         const password = this.ctx.request.body.password;
@@ -98,15 +102,15 @@ export default class UserController extends BaseController {
         let userId;
         userId = [];
         if (userMessage != null && userMessage.length !== 0) {
-            if ( userMessage.length === 1) {
+            if (userMessage.length === 1) {
                 this.ctx.body = {
                     status: true,
                     message: {
                         id: userMessage[0]._key,
                     },
                 };
-            }else {
-                for(let u = 0; u < userMessage.length; u ++) {
+            } else {
+                for (let u = 0; u < userMessage.length; u++) {
                     userId.push(userMessage[u]._key);
                 }
                 this.ctx.body = {
@@ -123,6 +127,7 @@ export default class UserController extends BaseController {
             };
         }
     }
+
     public async updateUserDetail() {
         const userId = this.ctx.request.body.user_id;
         const userDetail = this.ctx.request.body.userMessage;
@@ -132,13 +137,14 @@ export default class UserController extends BaseController {
                 status: true,
                 message: userDetail,
             };
-        }else {
+        } else {
             this.ctx.body = {
                 status: false,
                 message: null,
             };
         }
     }
+
     public async createMerchant() {
         const userId = this.ctx.request.body.user_id;
         const merchantDetail = this.ctx.request.body.merchantMessage;
@@ -148,28 +154,30 @@ export default class UserController extends BaseController {
                 status: true,
                 message: merchantDetail,
             };
-        }else {
+        } else {
             this.ctx.body = {
                 status: false,
                 message: null,
             };
         }
     }
+
     public async updatePassword() {
         const userId = this.ctx.request.body.user_id;
         const userOldPassword = this.ctx.request.body.oldPassword;
         const userNewPassword = this.ctx.request.body.newPassword;
         const result = await this.ctx.service.user.updatePassword(userId, userOldPassword, userNewPassword);
-        if ( result !== 0 ) {
-           this.ctx.body = {
-               status: true,
-           };
-        }else {
+        if (result !== 0) {
+            this.ctx.body = {
+                status: true,
+            };
+        } else {
             this.ctx.body = {
                 status: false,
             };
         }
     }
+
     public async userRegister() {
         const yanZhengMa = this.ctx.request.body.YanZhengMa;
         const userMessage = this.ctx.request.body.userMessage;
@@ -181,7 +189,7 @@ export default class UserController extends BaseController {
                     user_id: userLogin._key,
                 },
             };
-        }else {
+        } else {
             this.ctx.body = {
                 status: false,
                 message: {
@@ -190,21 +198,24 @@ export default class UserController extends BaseController {
             };
         }
     }
+
     public async listMerchant() {
-        const userId = this.ctx.request.body.user_id;
-        const merchants = await this.ctx.service.user.listMerchant(userId);
-        if (merchants != null) {
+        // const userId = this.ctx.request.body.user_id;
+        // const merchants = await this.ctx.service.user.listMerchant(userId);
+        try {
+            const merchants = (await this.ctx.service.user.listMerchant(this.ctx.request.body.user_id)).merchants;
             this.ctx.body = {
                 status: true,
                 message: merchants,
             };
-        } else {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
                 message: null,
             };
         }
     }
+
     public async modifyRemark() {
         const userIds = this.ctx.request.body.user_ids.toString();
         const remark = this.ctx.request.body.remark;
@@ -214,13 +225,14 @@ export default class UserController extends BaseController {
                 status: true,
                 message: '修改成功',
             };
-        }else {
+        } else {
             this.ctx.body = {
                 status: false,
                 message: '修改失败',
             };
         }
     }
+
     public async addUserCoupon() {
         const userId = this.ctx.request.body.user_id;
         const couponId = this.ctx.request.body.coupon_id;
@@ -229,12 +241,13 @@ export default class UserController extends BaseController {
             this.ctx.body = {
                 status: true,
             };
-        }else {
+        } else {
             this.ctx.body = {
                 status: false,
             };
         }
     }
+
     public async getUserCoupon() {
         const userId = this.ctx.request.body.user_id;
         const coupons = await this.ctx.service.user.getUserCoupon(userId);
@@ -243,13 +256,14 @@ export default class UserController extends BaseController {
                 user_id: userId,
                 message: coupons,
             };
-        }else {
+        } else {
             this.ctx.body = {
                 user_id: userId,
                 message: null,
             };
         }
     }
+
     public async getOrder() {
         const userId = this.ctx.request.body.user_id;
         const orders = await this.ctx.service.user.getOrder(userId);
@@ -257,7 +271,7 @@ export default class UserController extends BaseController {
             this.ctx.body = {
                 message: orders,
             };
-        }else {
+        } else {
             this.ctx.body = {
                 message: null,
             };
