@@ -125,11 +125,13 @@ export default class UserService extends BaseService {
         merchantId = user.merchant_ids;
         if (merchantId !== undefined) {
             merchantId.push(newMerchant._key);
-            return await this.model.user.update(uid, {merchant_ids: merchantId});
+            await this.model.user.update(uid, {merchant_ids: merchantId});
+            return newMerchant._key;
         }else {
             merchantId = [];
             merchantId.push(newMerchant._key);
-            return await this.model.user.update(uid, {merchant_ids: merchantId});
+            await this.model.user.update(uid, {merchant_ids: merchantId});
+            return newMerchant._key;
         }
     }
 
