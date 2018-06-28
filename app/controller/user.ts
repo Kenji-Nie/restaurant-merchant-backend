@@ -236,10 +236,10 @@ export default class UserController extends BaseController {
     }
 
     public async addUserCoupon() {
-        const userId = this.ctx.request.body.user_id;
-        const couponId = this.ctx.request.body.coupon_id;
-        const result = await this.ctx.service.user.addUserCoupon(userId, couponId);
-        if (result != null) {
+        const userIds = this.ctx.request.body.user_ids.toString();
+        const couponIds = this.ctx.request.body.coupon_ids.toString();
+        const result = await this.ctx.service.user.addUserCoupon(userIds.split(','), couponIds.split(','));
+        if (result) {
             this.ctx.body = {
                 status: true,
             };
