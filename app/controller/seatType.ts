@@ -8,8 +8,7 @@ export default class SeatTypeController extends BaseController {
      */
     public async listSeatType() {
         try {
-            const merchant = await this.ctx.service.merchant.findMerchantAndSeatTypeById(this.ctx.request.body.merchant_id);
-            const seatTypes = merchant.seatTypes;
+            const seatTypes = await this.ctx.service.seatType.listSeatTypeByMerchantId(this.ctx.request.body.merchant_id);
             this.ctx.body = {
                 status: true,
                 message: {

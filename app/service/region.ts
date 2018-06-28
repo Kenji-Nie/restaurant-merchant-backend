@@ -2,7 +2,7 @@ import BaseService from './base';
 
 export default class RegionService extends BaseService {
 
-    public async getRegions() {
+    public async listRegions() {
         const provinces = await (await this.findByProperty('parent_id', '1')).all();
 
         for (const provience of provinces) {

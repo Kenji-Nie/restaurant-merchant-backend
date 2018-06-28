@@ -41,4 +41,17 @@ export default class SeatService extends BaseService {
         update m with { seat_ids: APPEND(m.seat_ids,seatId)} in merchant return seatId`;
         return await (await this.query(query)).next();
     }
+
+    /**
+     * 根据店铺ID查询席位
+     * @param {string} merchant_id
+     * @returns {Promise<any>}
+     */
+    public async listSeatByMerchantId(merchant_id: string) {
+        const query = `for m in merchant filter m._key == "${merchant_id}" 
+        for s in seat filter s._key in m.seat_ids 
+        let st = (for st in seatType filter st._key ==  s.type_fid return st.name) 
+        return merge(s,{seatType:FIRST(st)})`;
+        return await (await this.query(query)).all();
+    }
 }

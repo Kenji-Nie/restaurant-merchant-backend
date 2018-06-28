@@ -48,8 +48,7 @@ export default class SeatController extends BaseController {
      */
     public async listSeat() {
         try {
-            const merchant = await this.ctx.service.merchant.findMerchantAndSeatById(this.ctx.request.body.merchant_id);
-            const seats = merchant.seats;
+            const seats = await this.ctx.service.seat.listSeatByMerchantId(this.ctx.request.body.merchant_id);
             this.ctx.body = {
                 status: true,
                 message: {

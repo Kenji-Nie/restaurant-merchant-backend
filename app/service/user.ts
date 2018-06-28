@@ -170,19 +170,21 @@ export default class UserService extends BaseService {
      * @returns {Promise<void>}
      */
     public async listMerchant(uid: string) {
-        const user = await this.model.user[uid];
-        const merchants = user.merchant_ids;
-        let allMerchantMessage;
-        allMerchantMessage = [];
-        if (merchants !== undefined && merchants.length !== 0) {
-            for (let m = 0; m < merchants.length; m++) {
-                const merchant = await this.model.merchant[merchants[m]];
-                allMerchantMessage.push(merchant);
-            }
-            return allMerchantMessage;
-        }else {
-            return null;
-        }
+        // const user = await this.model.user[uid];
+        // const merchants = user.merchant_ids;
+        // let allMerchantMessage;
+        // allMerchantMessage = [];
+        // if (merchants !== undefined && merchants.length !== 0) {
+        //     for (let m = 0; m < merchants.length; m++) {
+        //         const merchant = await this.model.merchant[merchants[m]];
+        //         allMerchantMessage.push(merchant);
+        //     }
+        //     return allMerchantMessage;
+        // }else {
+        //     return null;
+        // }
+
+        return await (await this.findInnnerJoinById(uid,['merchant'])).next();
     }
 
     /**
