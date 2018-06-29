@@ -125,11 +125,13 @@ export default class UserService extends BaseService {
         merchantId = user.merchant_ids;
         if (merchantId !== undefined) {
             merchantId.push(newMerchant._key);
-            return await this.model.user.update(uid, {merchant_ids: merchantId});
+            await this.model.user.update(uid, {merchant_ids: merchantId});
+            return newMerchant._key;
         }else {
             merchantId = [];
             merchantId.push(newMerchant._key);
-            return await this.model.user.update(uid, {merchant_ids: merchantId});
+            await this.model.user.update(uid, {merchant_ids: merchantId});
+            return newMerchant._key;
         }
     }
 
@@ -211,18 +213,24 @@ export default class UserService extends BaseService {
      * @param {string} cid
      * @returns {Promise<any>}
      */
-    public async addUserCoupon(uid: string, cid: string) {
-        const user = await this.model.user[uid];
-        let couponId;
-        couponId = user.coupon_ids;
-        if (couponId !== undefined) {
-           couponId.push(cid);
-           return await this.model.user.update(uid, {coupon_ids: couponId});
-        }else {
-            couponId = [];
-            couponId.push(cid);
-            return await this.model.user.update(uid, {coupon_ids: couponId});
+    public async addUserCoupon(uids: string[], cids: string[]) {
+        for (let u = 0; u < uids.length; u ++) {
+            const user = await this.model.user[uids[u]];
+            let coupons;
+            coupons = user.coupon_ids;
+            if (coupons !== undefined && coupons.length !== 0) {
+                for (let c = 0; c < cids.length; c ++) {
+                    coupons.push(cids[c]);
+                }
+            }else {
+                coupons = [];
+                for (let c = 0; c < cids.length; c ++) {
+                    coupons.push(cids[c]);
+                }
+            }
+            await this.model.user.update(uids[u], {coupon_ids: coupons});
         }
+        return true;
     }
 
     /**

@@ -149,14 +149,16 @@ export default class UserController extends BaseController {
         const userId = this.ctx.request.body.user_id;
         const merchantDetail = this.ctx.request.body.merchantMessage;
         const result = await this.ctx.service.user.createMerchant(userId, merchantDetail);
-        if (result != null) {
+        if (result) {
             this.ctx.body = {
                 status: true,
+                merchant_id: result,
                 message: merchantDetail,
             };
         } else {
             this.ctx.body = {
                 status: false,
+                merchant_id: '',
                 message: null,
             };
         }
@@ -234,10 +236,10 @@ export default class UserController extends BaseController {
     }
 
     public async addUserCoupon() {
-        const userId = this.ctx.request.body.user_id;
-        const couponId = this.ctx.request.body.coupon_id;
-        const result = await this.ctx.service.user.addUserCoupon(userId, couponId);
-        if (result != null) {
+        const userIds = this.ctx.request.body.user_ids.toString();
+        const couponIds = this.ctx.request.body.coupon_ids.toString();
+        const result = await this.ctx.service.user.addUserCoupon(userIds.split(','), couponIds.split(','));
+        if (result) {
             this.ctx.body = {
                 status: true,
             };
