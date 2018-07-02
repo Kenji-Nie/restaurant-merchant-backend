@@ -59,7 +59,62 @@ export default class MerchantService extends BaseService {
      * @returns {Promise<void>}
      */
     public async deleteMerchant(mid: string) {
-        return await this.model.merchant.remove(mid);
+        const merchant = await this.model.merchant[mid];
+        try {
+            if (merchant.merchandise_ids !== undefined) {
+                for (const merchandiseId of merchant.merchandise_ids) {
+                    await this.model.merchandise.remove(merchandiseId);
+                }
+            }
+            if (merchant.merchandiseType_ids !== undefined) {
+                for (const merchandiseTypeId of merchant.merchandiseType_ids) {
+                    await this.model.merchandiseType.remove(merchandiseTypeId);
+                }
+            }
+            if (merchant.coupon_ids !== undefined) {
+                for (const couponId of merchant.coupon_ids) {
+                    await this.model.coupon.remove(couponId);
+                }
+            }
+            if (merchant.seat_ids !== undefined) {
+                for (const saetId of merchant.seat_ids) {
+                    await this.model.seat.remove(saetId);
+                }
+            }
+            if (merchant.seatType_ids !== undefined) {
+                for (const saetTypeId of merchant.seatType_ids) {
+                    await this.model.seatType.remove(saetTypeId);
+                }
+            }
+            if (merchant.ad_ids !== undefined) {
+                for (const adId of merchant.ad_ids) {
+                    await this.model.ad.remove(adId);
+                }
+            }
+            if (merchant.role_ids !== undefined) {
+                for (const roleId of merchant.role_ids) {
+                    await this.model.role.remove(roleId);
+                }
+            }
+            if (merchant.icon_ids !== undefined) {
+                for (const iconId of merchant.icon_ids) {
+                    await this.model.role.remove(iconId);
+                }
+            }
+            const result = await this.model.merchant.remove(mid);
+            return {
+                message: result,
+                status: true,
+            };
+        } catch (e) {
+            return {
+                error: e.toString(),
+                status: false,
+                message: {
+                    _key: '',
+                },
+            };
+        }
     }
 
     /**

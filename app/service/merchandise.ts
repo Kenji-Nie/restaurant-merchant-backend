@@ -4,9 +4,11 @@ import Merchant = model.schema.Merchant;
 
 export default class MerchandiseService extends BaseService {
 
-    public async add(mid: string, mdise: Merchant) {
+    public async add(mid: string, mdise: Merchandise) {
         let newMdiseId;
         try {
+            mdise.shelf_flag = false;
+            mdise.sale_volume = 0;
             newMdiseId = await this.model.merchandise.save(mdise);
         } catch (e) {
             return {
@@ -45,13 +47,19 @@ export default class MerchandiseService extends BaseService {
         }
     }
 
-    public async deleteMerchandise(mdiseIds: string[]) {
+    public async deleteMerchandise(merchantId: string, mdiseIds: string[]) {
         const result: Array<object> = [];
+        const merchant: Merchant = await this.model.merchant[merchantId];
+        if (merchant.merchandise_ids === undefined) {merchant.merchandise_ids = []; }
         let state: boolean = true;
         try {
             for (const id of mdiseIds) {
                 result.push(await this.model.merchandise.remove(id));
+                merchant.merchandise_ids = merchant.merchandise_ids.filter((item) => (
+                    item !== id
+                ));
             }
+            result.push(await this.model.merchant.update(merchantId, merchant));
         } catch (e) {
             result.push({
                 _key: '',

@@ -36,7 +36,7 @@ export default class SeatService extends BaseService {
      */
     public async createSeat(type_fid: string, sequence_number: string, merchant_id: string, people_num: number) {
         const query = `let seatId = (insert {sequence_number: '${sequence_number}',
-        type_fid: '${type_fid}', people_num: ${people_num},qrcode_url:'',stauts:1} into seat return NEW._key)  
+        type_fid: '${type_fid}', people_num: ${people_num},qrcode_url:'',status:1} into seat return NEW._key)  
         for m in merchant filter m._key == '${merchant_id}' 
         update m with { seat_ids: APPEND(m.seat_ids,seatId)} in merchant return seatId`;
         return await (await this.query(query)).next();
