@@ -178,4 +178,13 @@ export default class MerchantService extends BaseService {
             return null;
         }
     }
+
+    /**
+     * 根据店铺id获取店铺信息
+     * @param {string} mid
+     * @returns {Promise<void>}
+     */
+    public async getMerchant(mid: string) {
+        return await this.model.merchant[mid];
+    }
 }

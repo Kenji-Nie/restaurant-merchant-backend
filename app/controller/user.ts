@@ -239,13 +239,15 @@ export default class UserController extends BaseController {
         const userIds = this.ctx.request.body.user_ids.toString();
         const couponIds = this.ctx.request.body.coupon_ids.toString();
         const result = await this.ctx.service.user.addUserCoupon(userIds.split(','), couponIds.split(','));
-        if (result) {
+        if (result != null) {
             this.ctx.body = {
                 status: true,
+                usernames: result,
             };
         } else {
             this.ctx.body = {
                 status: false,
+                usernames: '',
             };
         }
     }
@@ -276,6 +278,82 @@ export default class UserController extends BaseController {
         } else {
             this.ctx.body = {
                 message: null,
+            };
+        }
+    }
+    public async getUser() {
+        const user = await this.ctx.service.user.getUser(this.ctx.request.body.wx_uid);
+        if ( user != null) {
+            this.ctx.body = {
+                status: true,
+                message: user,
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: null,
+            };
+        }
+    }
+    public async addPhone() {
+        try {
+            await this.ctx.service.user.addPhone(this.ctx.request.body.phone, this.ctx.request.body.user_id, this.ctx.request.body.YanZhengMa);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
+    public async addAddress() {
+        try {
+            const addressId = await this.ctx.service.user.addAddress(this.ctx.request.body.user_id, this.ctx.request.body.addressMessage);
+            this.ctx.body = {
+                status: true,
+                address_id: addressId,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+                address_id: '',
+            };
+        }
+    }
+    public async updateAddress() {
+        try {
+            const result = await this.ctx.service.user.updateAddress(this.ctx.request.body.user_id, this.ctx.request.body.address_id, this.ctx.request.body.addressMessage);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
+    public async deleteAddress() {
+        try {
+            await this.ctx.service.user.deleteAddress(this.ctx.request.body.user_id, this.ctx.request.body.address_id);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
+    public async deleteOrder() {
+        try {
+            await this.ctx.service.user.deleteOrder(this.ctx.request.body.user_id, this.ctx.request.body.order_id);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
             };
         }
     }

@@ -84,5 +84,9 @@ describe('merchantTest', async () => {
     it('getMerchantCoupon', async () => {
         const coupons = await ctx.service.merchant.getMerchantCoupon('1188314');
         console.log(coupons);
-    })
+    });
+    it('getMerchant', async () => {
+        const merchant = await ctx.service.merchant.getMerchant('1188314');
+        console.log(merchant);
+    });
 });

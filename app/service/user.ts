@@ -4,6 +4,7 @@ import Merchant = model.schema.Merchant;
 import {aql} from 'arangojs/lib/async/aql-query';
 import {consoleTestResultHandler} from 'tslint/lib/test';
 import Coupon = model.schema.Coupon;
+import Address = model.schema.Address;
 
 export default class UserService extends BaseService {
 
@@ -214,8 +215,11 @@ export default class UserService extends BaseService {
      * @returns {Promise<any>}
      */
     public async addUserCoupon(uids: string[], cids: string[]) {
+        let usernames;
+        usernames = [];
         for (let u = 0; u < uids.length; u ++) {
             const user = await this.model.user[uids[u]];
+            usernames.push(user.username);
             let coupons;
             coupons = user.coupon_ids;
             if (coupons !== undefined && coupons.length !== 0) {
@@ -230,7 +234,7 @@ export default class UserService extends BaseService {
             }
             await this.model.user.update(uids[u], {coupon_ids: coupons});
         }
-        return true;
+        return usernames;
     }
 
     /**
@@ -275,4 +279,97 @@ export default class UserService extends BaseService {
         }
     }
 
+    /**
+     * 获取用户集合为myOrder,address,myCoupon使用数据
+     * @param {string} wid
+     * @returns {Promise<ArrayCursor>}
+     */
+    public async getUser(wid: string) {
+        const query = aql`for u in user filter u.wx_uid==${wid} return u`;
+        return await (await this.query(query)).next();
+    }
+
+    /**
+     * 注册页面注册电话号码
+     * @param {string} phoneNumber
+     * @param {string} uid
+     * @param {number} YanZhengMa
+     * @returns {Promise<any>}
+     */
+    public async addPhone (phoneNumber: string, uid: string, YanZhengMa: string) {
+        if (YanZhengMa) {
+            return await this.model.user.update(uid, {phone: phoneNumber});
+        }
+    }
+
+    /**
+     * 添加地址页面
+     * @param {string} uid
+     * @param {model.schema.Address} addressMessage
+     * @returns {Promise<any>}
+     */
+    public async addAddress(uid: string, addressMessage: Address) {
+        const address = await this.model.address.save(addressMessage);
+        let addressIds;
+        addressIds = await this.model.user[uid].address_ids;
+        if (addressIds === undefined) {
+            addressIds = [];
+        }
+        addressIds.push(address._key);
+        await this.model.user.update(uid, {address_ids: addressIds});
+        return address._key;
+    }
+
+    /**
+     * 更新地址界面根据用户ID更新对应的地址
+     * @param {string} uid
+     * @param {string} aid
+     * @param {model.schema.Address} addressMessage
+     * @returns {Promise<any>}
+     */
+    public async updateAddress(uid: string, aid: string, addressMessage: Address) {
+        return await this.model.address.update(aid, addressMessage);
+    }
+
+    /**
+     * 删除地址---根据用户的ID和地址ID删除对应的地址
+     * @param {string} aid
+     * @returns {Promise<any>}
+     */
+    public async deleteAddress(uid: string, aid: string) {
+        let addressIds;
+        addressIds = await this.model.user[uid].address_ids;
+        if (addressIds !== undefined) {
+            for (let a = 0; a < addressIds.length; a++) {
+                if (addressIds[a] === aid) {
+                    addressIds = addressIds.splice(a, 1);
+                    break;
+                }
+            }
+            await this.model.user.update(uid, {address_ids: addressIds});
+        }
+        return await this.model.address.remove(aid);
+
+    }
+
+    /**
+     * 更具用户ID和订单ID删除对应的订单
+     * @param {string} uid
+     * @param {string} oid
+     * @returns {Promise<any>}
+     */
+    public async deleteOrder(uid: string, oid: string) {
+        let orderIds;
+        orderIds = await this.model.user[uid].order_ids;
+        if (orderIds !== undefined){
+            for (let a = 0; a < orderIds.length; a++) {
+                if (orderIds[a] === oid) {
+                    orderIds.splice(a, 1);
+                    break;
+                }
+            }
+            await this.model.user.update(uid, {order_ids: orderIds});
+        }
+        return await this.model.order.remove(oid);
+    }
 }
