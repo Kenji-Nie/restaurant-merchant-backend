@@ -254,11 +254,11 @@ export default class UserController extends BaseController {
 
     public async getUserCoupon() {
         const userId = this.ctx.request.body.user_id;
-        const coupons = await this.ctx.service.user.getUserCoupon(userId);
-        if (coupons !== null) {
+        const result = await this.ctx.service.user.getUserCoupon(userId);
+        if (result !== null) {
             this.ctx.body = {
                 user_id: userId,
-                message: coupons,
+                message: result,
             };
         } else {
             this.ctx.body = {

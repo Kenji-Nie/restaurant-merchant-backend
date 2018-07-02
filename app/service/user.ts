@@ -16,6 +16,7 @@ export default class UserService extends BaseService {
     public async findUserById(uid: string) {
         return await this.model.user[uid];
     }
+
     /**
      * 通过电话号码及密码查询用户
      * @param {string} phone
@@ -77,6 +78,7 @@ export default class UserService extends BaseService {
     public async findUserByEmail(email: string) {
         return await this.findByProperty('email', email);
     }
+
     /**
      * 通过phone获取验证码
      * @param {string} phone
@@ -128,7 +130,7 @@ export default class UserService extends BaseService {
             merchantId.push(newMerchant._key);
             await this.model.user.update(uid, {merchant_ids: merchantId});
             return newMerchant._key;
-        }else {
+        } else {
             merchantId = [];
             merchantId.push(newMerchant._key);
             await this.model.user.update(uid, {merchant_ids: merchantId});
@@ -148,10 +150,11 @@ export default class UserService extends BaseService {
         const password = user.password;
         if (password === userOldPassword) {
             return await this.model.user.update(uid, {password: userNewPassword});
-        }else {
+        } else {
             return 0;
         }
     }
+
     /**
      * 通过phone、密码和验证码注册用户信息并返回注册后的用户id
      * @param {string} phone
@@ -185,7 +188,7 @@ export default class UserService extends BaseService {
         //     return null;
         // }
 
-        return await (await this.findInnnerJoinById(uid,['merchant'])).next();
+        return await (await this.findInnnerJoinById(uid, ['merchant'])).next();
     }
 
     /**
@@ -204,10 +207,11 @@ export default class UserService extends BaseService {
         try {
             await this.query(query);
             return true;
-        }catch (e) {
+        } catch (e) {
             return false;
         }
     }
+
     /**
      * 向user_id的用户添加coupon_id的优惠券
      * @param {string} uid
@@ -217,18 +221,18 @@ export default class UserService extends BaseService {
     public async addUserCoupon(uids: string[], cids: string[]) {
         let usernames;
         usernames = [];
-        for (let u = 0; u < uids.length; u ++) {
+        for (let u = 0; u < uids.length; u++) {
             const user = await this.model.user[uids[u]];
             usernames.push(user.username);
             let coupons;
             coupons = user.coupon_ids;
             if (coupons !== undefined && coupons.length !== 0) {
-                for (let c = 0; c < cids.length; c ++) {
+                for (let c = 0; c < cids.length; c++) {
                     coupons.push(cids[c]);
                 }
-            }else {
+            } else {
                 coupons = [];
-                for (let c = 0; c < cids.length; c ++) {
+                for (let c = 0; c < cids.length; c++) {
                     coupons.push(cids[c]);
                 }
             }
@@ -252,8 +256,8 @@ export default class UserService extends BaseService {
                 const coupon = await this.model.coupon[coupons[c]];
                 allCouponMessage.push(coupon);
             }
-            return allCouponMessage;
-        }else {
+            return {username: user.username, coupons: allCouponMessage};
+        } else {
             return null;
         }
     }
@@ -274,7 +278,7 @@ export default class UserService extends BaseService {
                 allOrderMessage.push(order);
             }
             return allOrderMessage;
-        }else {
+        } else {
             return null;
         }
     }
@@ -296,7 +300,7 @@ export default class UserService extends BaseService {
      * @param {number} YanZhengMa
      * @returns {Promise<any>}
      */
-    public async addPhone (phoneNumber: string, uid: string, YanZhengMa: string) {
+    public async addPhone(phoneNumber: string, uid: string, YanZhengMa: string) {
         if (YanZhengMa) {
             return await this.model.user.update(uid, {phone: phoneNumber});
         }
@@ -337,19 +341,8 @@ export default class UserService extends BaseService {
      * @returns {Promise<any>}
      */
     public async deleteAddress(uid: string, aid: string) {
-        let addressIds;
-        addressIds = await this.model.user[uid].address_ids;
-        if (addressIds !== undefined) {
-            for (let a = 0; a < addressIds.length; a++) {
-                if (addressIds[a] === aid) {
-                    addressIds = addressIds.splice(a, 1);
-                    break;
-                }
-            }
-            await this.model.user.update(uid, {address_ids: addressIds});
-        }
-        return await this.model.address.remove(aid);
-
+        const query = aql`for u in user filter u._key==${uid} let add_ids = REMOVE_VALUE(u.address_ids,${aid}) update u with {address_ids:add_ids} in user remove ${aid} in address`;
+        return await this.query(query);
     }
 
     /**
@@ -359,17 +352,7 @@ export default class UserService extends BaseService {
      * @returns {Promise<any>}
      */
     public async deleteOrder(uid: string, oid: string) {
-        let orderIds;
-        orderIds = await this.model.user[uid].order_ids;
-        if (orderIds !== undefined){
-            for (let a = 0; a < orderIds.length; a++) {
-                if (orderIds[a] === oid) {
-                    orderIds.splice(a, 1);
-                    break;
-                }
-            }
-            await this.model.user.update(uid, {order_ids: orderIds});
-        }
-        return await this.model.order.remove(oid);
+        const query = aql`for u in user filter u._key==${uid} let ord_ids = REMOVE_VALUE(u.order_ids,${oid}) update u with {order_ids:ord_ids} in user remove ${oid} in order`;
+        return await this.query(query);
     }
 }
