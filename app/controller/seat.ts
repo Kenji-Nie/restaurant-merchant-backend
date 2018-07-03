@@ -28,7 +28,7 @@ export default class SeatController extends BaseController {
     public async updateSeatStatus() {
         const ids = this.ctx.request.body.seat_ids.toString();
         try {
-            await this.service.seat.updateSeatStatus(ids.split(','), this.ctx.request.body.status);
+            await this.service.seat.updateSeatStatus(ids.split(','), Number(this.ctx.request.body.status));
             this.ctx.body = {
                 status: true
             }
