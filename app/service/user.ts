@@ -6,6 +6,8 @@ import {consoleTestResultHandler} from 'tslint/lib/test';
 import Coupon = model.schema.Coupon;
 import Address = model.schema.Address;
 import Order = model.schema.Order;
+import Role = model.schema.Role;
+import Merchandise = model.schema.Merchandise;
 
 export default class UserService extends BaseService {
 
@@ -287,58 +289,50 @@ export default class UserService extends BaseService {
      * 获取用户集合为myOrder,address,myCoupon使用数据
      * @param {string} wid
      * @returns {Promise<ArrayCursor>}
+     *
+     * 此方法已经由 Hale D. Lee 修改
+     *
      */
     public async getUser(wid: string) {
-        const user = await this.findByProperty('wx_uid', wid);
-        while (user.hasNext()) {
-            const userMessage = await user.next();
-            const roleIds = userMessage.role_ids;
-            let roleMessage;
-            roleMessage = [];
-            if (roleIds !== undefined) {
-                for (let i = 0; i < roleIds.length; i++) {
-                    const role = await this.model.role[roleIds[i]];
-                    roleMessage.push(role);
-                }
-            }
-            const orderIds = userMessage.order_ids;
-            let orderMessage;
-            orderMessage = [];
-            if (orderIds !== undefined) {
-                for (let i = 0; i < orderIds.length; i++) {
-                    const order = await this.model.order[orderIds[i]];
-                    orderMessage.push(order);
-                }
-            }
-            const couponIds = userMessage.coupon_ids;
-            let couponMessage;
-            couponMessage = [];
-            if (couponIds !== undefined) {
-                for (let i = 0; i < couponIds.length; i++) {
-                    const coupon = await this.model.coupon[couponIds[i]];
-                    couponMessage.push(coupon);
-                }
-            }
-            const addressIds = userMessage.address_ids;
-            let addressMessage;
-            addressMessage = [];
-            if (addressIds !== undefined) {
-                for (let i = 0; i < addressIds.length; i++) {
-                    const address = await this.model.address[addressIds[i]];
-                    addressMessage.push(address);
-                }
-            }
-            const merchantIds = userMessage.merchant_ids;
-            let merchantMessage;
-            merchantMessage = [];
-            if (merchantIds !== undefined) {
-                for (let i = 0; i < merchantIds.length; i++) {
-                    const merchant = await this.model.merchant[merchantIds[i]];
-                    merchantMessage.push(merchant);
-                }
-            }
-            return {userMessage: userMessage, role_ids: roleMessage, order_ids: orderMessage, coupon_ids: couponMessage, address_ids: addressMessage, merchant_ids: merchantMessage};
-        }
+        const user = await (await this.findByProperty('wx_uid', wid)).next();
+        let roleIds = user.role_ids || [];
+        let couponIds = user.coupon_ids || [];
+        let addressIds = user.address_ids || [];
+        let orderIds = user.order_ids || [];
+        // 华丽的分割线
+        roleIds = roleIds.map((item) =>
+            this.model.role[item],
+        );
+        couponIds = couponIds.map((item) =>
+            this.model.coupon[item],
+        );
+        addressIds = addressIds.map((item) =>
+            this.model.address[item],
+        );
+        orderIds = orderIds.map(async (item) => {
+            const order = await this.model.order[item];
+            let oCouponIds: any[] = order.coupon_ids || [];
+            let merchandiseIds: any[] = order.merchandise_ids || [];
+            // 华丽的分割线
+            oCouponIds = oCouponIds.map((o) =>
+                this.model.coupon[o],
+            );
+            merchandiseIds = merchandiseIds.map((o) =>
+                this.model.merchandise[o],
+            );
+            // 华丽的分割线
+            return Object.assign({}, order, {
+                coupons: await Promise.all(oCouponIds),
+                merchandises: await Promise.all(merchandiseIds),
+            });
+        });
+        // 华丽的分割线
+        return Object.assign({}, user, {
+            roles: await Promise.all(roleIds),
+            coupons: await Promise.all(couponIds),
+            addresses: await Promise.all(addressIds),
+            orders: await Promise.all(orderIds),
+        });
     }
 
     /**
