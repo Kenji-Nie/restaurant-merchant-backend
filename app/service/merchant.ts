@@ -34,8 +34,6 @@ export default class MerchantService extends BaseService {
     public async get(mid: string) {
         return await this.model.merchant[mid];
     }
-
-
     /**
      * 根据店铺的ID更新该商家的商铺信息
      * @param {string} uid
