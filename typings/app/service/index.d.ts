@@ -15,6 +15,7 @@ import Region from '../../../app/service/region';
 import Seat from '../../../app/service/seat';
 import SeatType from '../../../app/service/seatType';
 import User from '../../../app/service/user';
+import WxPay from '../../../app/service/wxPay';
 
 declare module 'egg' {
   interface IService {
@@ -32,5 +33,6 @@ declare module 'egg' {
     seat: Seat;
     seatType: SeatType;
     user: User;
+    wxPay: WxPay;
   }
 }
