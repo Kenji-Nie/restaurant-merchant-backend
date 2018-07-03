@@ -240,6 +240,8 @@ export default class MerchantService extends BaseService {
      * @returns {Promise<void>}
      */
     public async getMerchant(mid: string) {
-        return await this.model.merchant[mid];
+        const merchant = await this.model.merchant[mid];
+        const couponIds = merchant.coupon_ids;
+        const orderIds = merchant.order_ids;
     }
 }

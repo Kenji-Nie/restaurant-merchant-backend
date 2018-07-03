@@ -176,11 +176,15 @@ describe('userTest', () => {
         console.log(result);
     });
     it('deleteAddress', async () => {
-        const result = await ctx.service.user.deleteAddress('123456');
+        const result = await ctx.service.user.deleteAddress('123456', '123456');
         console.log(result);
     });
     it('deleteOrder', async () => {
-        const result = await ctx.service.user.deleteOrder('123456');
+        const result = await ctx.service.user.deleteOrder('123456', '123456');
+        console.log(result);
+    });
+    it('addCoupon', async () => {
+        const result = await ctx.service.user.addCoupon('123456', '123456');
         console.log(result);
     });
 });

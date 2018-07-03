@@ -357,4 +357,30 @@ export default class UserController extends BaseController {
             };
         }
     }
+    public async addOrder() {
+        try {
+            const order = await this.ctx.service.user.addOrder(this.ctx.request.body.user_id, this.ctx.request.body.merchant_id, this.ctx.request.body.orderMessage);
+            this.ctx.body = {
+                status: true,
+                order_id: order,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+                order_id: '',
+            };
+        }
+    }
+    public async addCoupon() {
+        try {
+            const result = await this.ctx.service.user.addCoupon(this.ctx.request.body.user_id, this.ctx.request.body.coupon_id);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
 }

@@ -5,6 +5,7 @@ import {aql} from 'arangojs/lib/async/aql-query';
 import {consoleTestResultHandler} from 'tslint/lib/test';
 import Coupon = model.schema.Coupon;
 import Address = model.schema.Address;
+import Order = model.schema.Order;
 
 export default class UserService extends BaseService {
 
@@ -289,8 +290,7 @@ export default class UserService extends BaseService {
      * @returns {Promise<ArrayCursor>}
      */
     public async getUser(wid: string) {
-        const query = aql`for u in user filter u.wx_uid==${wid} return u`;
-        return await (await this.query(query)).next();
+        return await this.findByProperty('wx_uid', wid);
     }
 
     /**
@@ -354,5 +354,50 @@ export default class UserService extends BaseService {
     public async deleteOrder(uid: string, oid: string) {
         const query = aql`for u in user filter u._key==${uid} let ord_ids = REMOVE_VALUE(u.order_ids,${oid}) update u with {order_ids:ord_ids} in user remove ${oid} in order`;
         return await this.query(query);
+    }
+
+    /**
+     * 新建订单
+     * @param {string} uid
+     * @param {string} mid
+     * @param {model.schema.Order} orderMessage
+     * @returns {Promise<any>}
+     */
+    public async addOrder(uid: string, mid: string, orderMessage: Order) {
+        const newOrder = await this.model.order.save(orderMessage);
+        const user = await this.model.user[uid];
+        const merchant = await this.model.merchant[mid];
+        let userOrderIds;
+        userOrderIds = user.order_ids;
+        let merchantOrderIds;
+        merchantOrderIds = merchant.order_ids;
+        if (userOrderIds === undefined) {
+            userOrderIds = [];
+        }
+        userOrderIds.push(newOrder._key);
+        if (merchantOrderIds === undefined) {
+            merchantOrderIds = [];
+        }
+        merchantOrderIds.push(newOrder._key);
+        await this.model.user.update(uid, {order_ids: userOrderIds});
+        await this.model.merchant.update(mid, {order_ids: merchantOrderIds});
+        return newOrder._key;
+    }
+
+    /**
+     * 为用户新增优惠券
+     * @param {string} uid
+     * @param {string} cid
+     * @returns {Promise<any>}
+     */
+    public async addCoupon(uid: string, cid: string) {
+        const user = await this.model.user[uid];
+        let couponIds;
+        couponIds = user.coupon_ids;
+        if (couponIds === undefined) {
+            couponIds = [];
+        }
+        couponIds.push(cid);
+        return await this.model.user.update(uid, {coupon_ids: couponIds});
     }
 }
