@@ -337,7 +337,7 @@ export default class UserService extends BaseService {
                     merchantMessage.push(merchant);
                 }
             }
-            return {userMessage: user.next(), role_ids: roleMessage, order_ids: orderMessage, coupon_ids: couponMessage, address_ids: addressMessage, merchant_ids: merchantMessage};
+            return {userMessage: userMessage, role_ids: roleMessage, order_ids: orderMessage, coupon_ids: couponMessage, address_ids: addressMessage, merchant_ids: merchantMessage};
         }
     }
 
