@@ -362,12 +362,15 @@ export default class UserService extends BaseService {
      */
     public async addAddress(uid: string, addressMessage: Address) {
         const address = await this.model.address.save(addressMessage);
+        const user = await this.model.user[uid];
         let addressIds;
-        addressIds = await this.model.user[uid].address_ids;
-        if (addressIds === undefined) {
+        addressIds = user.address_ids;
+        if (addressIds !== undefined && addressIds.length !== 0) {
+            addressIds.push(address._key);
+        }else {
             addressIds = [];
+            addressIds.push(address._key);
         }
-        addressIds.push(address._key);
         await this.model.user.update(uid, {address_ids: addressIds});
         return address._key;
     }
