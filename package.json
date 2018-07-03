@@ -32,7 +32,8 @@
     "graphql-tools": "^2.24.0",
     "mocha": "^5.2.0",
     "uuid": "^3.2.1",
-    "xml-js": "^1.6.2"
+    "xml-js": "^1.6.2",
+    "cryptojs": "2.5.3"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.40",

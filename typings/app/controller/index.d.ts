@@ -14,6 +14,7 @@ import Region from '../../../app/controller/region';
 import Seat from '../../../app/controller/seat';
 import SeatType from '../../../app/controller/seatType';
 import User from '../../../app/controller/user';
+import Wechat from '../../../app/controller/wechat';
 import WxPay from '../../../app/controller/wxPay';
 
 declare module 'egg' {
@@ -31,6 +32,7 @@ declare module 'egg' {
     seat: Seat;
     seatType: SeatType;
     user: User;
+    wechat: Wechat;
     wxPay: WxPay;
   }
 }
