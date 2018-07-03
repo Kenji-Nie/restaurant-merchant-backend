@@ -184,7 +184,7 @@ export default class MerchantController extends BaseController {
         }catch (e) {
             this.ctx.body = {
                 status: false,
-                message: null,
+                message: '',
             };
         }
     }

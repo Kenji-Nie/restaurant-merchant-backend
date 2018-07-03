@@ -282,7 +282,19 @@ export default class UserController extends BaseController {
         }
     }
     public async getUser() {
-        const user = await this.ctx.service.user.getUser(this.ctx.request.body.wx_uid);
+        try {
+            const user = await this.ctx.service.user.getUser(this.ctx.request.body.wx_uid);
+            this.ctx.body = {
+                status: true,
+                message: user,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+                message: '',
+            };
+        }
+        /*const user = await this.ctx.service.user.getUser(this.ctx.request.body.wx_uid);
         if ( user != null) {
             this.ctx.body = {
                 status: true,
@@ -291,9 +303,9 @@ export default class UserController extends BaseController {
         }else {
             this.ctx.body = {
                 status: false,
-                message: null,
+                message: '',
             };
-        }
+        }*/
     }
     public async addPhone() {
         try {

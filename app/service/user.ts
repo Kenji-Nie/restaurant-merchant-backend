@@ -283,14 +283,62 @@ export default class UserService extends BaseService {
             return null;
         }
     }
-
     /**
      * 获取用户集合为myOrder,address,myCoupon使用数据
      * @param {string} wid
      * @returns {Promise<ArrayCursor>}
      */
     public async getUser(wid: string) {
-        return await this.findByProperty('wx_uid', wid);
+        const user = await this.findByProperty('wx_uid', wid);
+        while (user.hasNext()) {
+            const userMessage = await user.next();
+            const roleIds = userMessage.role_ids;
+            let roleMessage;
+            roleMessage = [];
+            if (roleIds !== undefined) {
+                for (let i = 0; i < roleIds.length; i++) {
+                    const role = await this.model.role[roleIds[i]];
+                    roleMessage.push(role);
+                }
+            }
+            const orderIds = userMessage.order_ids;
+            let orderMessage;
+            orderMessage = [];
+            if (orderIds !== undefined) {
+                for (let i = 0; i < orderIds.length; i++) {
+                    const order = await this.model.order[orderIds[i]];
+                    orderMessage.push(order);
+                }
+            }
+            const couponIds = userMessage.coupon_ids;
+            let couponMessage;
+            couponMessage = [];
+            if (couponIds !== undefined) {
+                for (let i = 0; i < couponIds.length; i++) {
+                    const coupon = await this.model.coupon[couponIds[i]];
+                    couponMessage.push(coupon);
+                }
+            }
+            const addressIds = userMessage.address_ids;
+            let addressMessage;
+            addressMessage = [];
+            if (addressIds !== undefined) {
+                for (let i = 0; i < addressIds.length; i++) {
+                    const address = await this.model.address[addressIds[i]];
+                    addressMessage.push(address);
+                }
+            }
+            const merchantIds = userMessage.merchant_ids;
+            let merchantMessage;
+            merchantMessage = [];
+            if (merchantIds !== undefined) {
+                for (let i = 0; i < merchantIds.length; i++) {
+                    const merchant = await this.model.merchant[merchantIds[i]];
+                    merchantMessage.push(merchant);
+                }
+            }
+            return {userMessage: user.next(), role_ids: roleMessage, order_ids: orderMessage, coupon_ids: couponMessage, address_ids: addressMessage, merchant_ids: merchantMessage};
+        }
     }
 
     /**
