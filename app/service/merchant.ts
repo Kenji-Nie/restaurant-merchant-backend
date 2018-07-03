@@ -34,8 +34,6 @@ export default class MerchantService extends BaseService {
     public async get(mid: string) {
         return await this.model.merchant[mid];
     }
-
-
     /**
      * 根据店铺的ID更新该商家的商铺信息
      * @param {string} uid
@@ -59,7 +57,62 @@ export default class MerchantService extends BaseService {
      * @returns {Promise<void>}
      */
     public async deleteMerchant(mid: string) {
-        return await this.model.merchant.remove(mid);
+        const merchant = await this.model.merchant[mid];
+        try {
+            if (merchant.merchandise_ids !== undefined) {
+                for (const merchandiseId of merchant.merchandise_ids) {
+                    await this.model.merchandise.remove(merchandiseId);
+                }
+            }
+            if (merchant.merchandiseType_ids !== undefined) {
+                for (const merchandiseTypeId of merchant.merchandiseType_ids) {
+                    await this.model.merchandiseType.remove(merchandiseTypeId);
+                }
+            }
+            if (merchant.coupon_ids !== undefined) {
+                for (const couponId of merchant.coupon_ids) {
+                    await this.model.coupon.remove(couponId);
+                }
+            }
+            if (merchant.seat_ids !== undefined) {
+                for (const saetId of merchant.seat_ids) {
+                    await this.model.seat.remove(saetId);
+                }
+            }
+            if (merchant.seatType_ids !== undefined) {
+                for (const saetTypeId of merchant.seatType_ids) {
+                    await this.model.seatType.remove(saetTypeId);
+                }
+            }
+            if (merchant.ad_ids !== undefined) {
+                for (const adId of merchant.ad_ids) {
+                    await this.model.ad.remove(adId);
+                }
+            }
+            if (merchant.role_ids !== undefined) {
+                for (const roleId of merchant.role_ids) {
+                    await this.model.role.remove(roleId);
+                }
+            }
+            if (merchant.icon_ids !== undefined) {
+                for (const iconId of merchant.icon_ids) {
+                    await this.model.role.remove(iconId);
+                }
+            }
+            const result = await this.model.merchant.remove(mid);
+            return {
+                message: result,
+                status: true,
+            };
+        } catch (e) {
+            return {
+                error: e.toString(),
+                status: false,
+                message: {
+                    _key: '',
+                },
+            };
+        }
     }
 
     /**
@@ -177,5 +230,114 @@ export default class MerchantService extends BaseService {
         }else {
             return null;
         }
+    }
+
+    /**
+     * 根据店铺id获取店铺信息
+     * @param {string} mid
+     * @returns {Promise<void>}
+     */
+    public async getMerchant(mid: string) {
+        const merchant = await this.model.merchant[mid];
+        const orderIds = merchant.order_ids;
+        let orderMessages;
+        orderMessages = [];
+        if (orderIds !== undefined && orderIds.length !== 0) {
+            for (let i = 0; i < orderIds.length; i++) {
+                const order = await this.model.order[orderIds[i]];
+                orderMessages.push(order);
+            }
+        }
+        const couponIds = merchant.coupon_ids;
+        let couponMessages;
+        couponMessages = [];
+        if (couponIds !== undefined && couponIds.length !== 0) {
+            for (let i = 0; i < couponIds.length; i++) {
+                const coupon = await this.model.coupon[couponIds[i]];
+                couponMessages.push(coupon);
+            }
+        }
+        const merchandiseIds = merchant.merchandise_ids;
+        let merchandiseMessages;
+        merchandiseMessages = [];
+        if (merchandiseIds !== undefined && merchandiseIds.length !== 0) {
+            for (let i = 0; i < merchandiseIds.length; i++) {
+                const merchandise = await this.model.merchandise[merchandiseIds[i]];
+                merchandiseMessages.push(merchandise);
+            }
+        }
+        const userIds = merchant.user_ids;
+        let userMessages;
+        userMessages = [];
+        if (userIds !== undefined && userIds.length !== 0) {
+            for (let i = 0; i < userIds.length; i++) {
+                const user = await this.model.user[userIds[i]];
+                userMessages.push(user);
+            }
+        }
+        const merchandiseTypeIds = merchant.merchandiseType_ids;
+        let merchandiseTypeMessages;
+        merchandiseTypeMessages = [];
+        if (merchandiseTypeIds !== undefined && merchandiseTypeIds.length !== 0) {
+            for (let i = 0; i < merchandiseTypeIds.length; i++) {
+                const merchandiseType = await this.model.merchandiseType[merchandiseTypeIds[i]];
+                merchandiseTypeMessages.push(merchandiseType);
+            }
+        }
+        const seatIds = merchant.seat_ids;
+        let seatMessages;
+        seatMessages = [];
+        if (seatIds !== undefined && seatIds.length !== 0) {
+            for (let i = 0; i < seatIds.length; i++) {
+                const seat = await this.model.seat[seatIds[i]];
+                seatMessages.push(seat);
+            }
+        }
+        const seatTypeIds = merchant.seatType_ids;
+        let seatTypeMessages;
+        seatTypeMessages = [];
+        if (seatTypeIds !== undefined && seatTypeIds.length !== 0) {
+            for (let i = 0; i < seatTypeIds.length; i++) {
+                const seatType = await this.model.seatType[seatTypeIds[i]];
+                seatTypeMessages.push(seatType);
+            }
+        }
+        const adIds = merchant.ad_ids;
+        let adMessages;
+        adMessages = [];
+        if (adIds !== undefined && adIds.length !== 0) {
+            for (let i = 0; i < adIds.length; i++) {
+                const ad = await this.model.ad[adIds[i]];
+                adMessages.push(ad);
+            }
+        }
+        const roleIds = merchant.role_ids;
+        let roleMessages;
+        roleMessages = [];
+        if (roleIds !== undefined && roleIds.length !== 0) {
+            for (let i = 0; i < roleIds.length; i++) {
+                const role = await this.model.role[roleIds[i]];
+                roleMessages.push(role);
+            }
+        }
+        const themeIds = merchant.theme_ids;
+        let themeMessages;
+        themeMessages = [];
+        if (themeIds !== undefined && themeIds.length !== 0) {
+            for (let i = 0; i < themeIds.length; i++) {
+                const theme = await this.model.theme[themeIds[i]];
+                themeMessages.push(theme);
+            }
+        }
+        const iconIds = merchant.icon_ids;
+        let iconMessages;
+        iconMessages = [];
+        if (iconIds !== undefined && iconIds.length !== 0) {
+            for (let i = 0; i < iconIds.length; i++) {
+                const icon = await this.model.icon[iconIds[i]];
+                iconMessages.push(icon);
+            }
+        }
+        return  {merchantMessage: merchant, merchandise_ids: merchandiseMessages, user_ids: userMessages, merchandiseType_ids: merchandiseTypeMessages, coupon_ids: couponMessages, order_ids: orderMessages, seat_ids: seatMessages, seatType_ids: seatTypeMessages, ad_ids: adMessages, role_ids: roleMessages, theme_ids: themeMessages, icon_ids: iconMessages};
     }
 }

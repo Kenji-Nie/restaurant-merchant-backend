@@ -1,5 +1,6 @@
 import {Context} from 'egg';
 import {app} from 'egg-mock/bootstrap';
+import {concatAST} from 'graphql';
 
 describe('userTest', () => {
     let ctx: Context;
@@ -127,7 +128,7 @@ describe('userTest', () => {
         console.log(result);
     });
     it('addUserCoupon', async () => {
-        const result = await ctx.service.user.addUserCoupon('326752', '469896');
+        const result = await ctx.service.user.addUserCoupon(['326752', '123456'], ['469896', '123456']);
         console.log(result);
     });
     it('getUserCoupon', async () => {
@@ -141,5 +142,49 @@ describe('userTest', () => {
     it('findUserById', async () => {
         const user = await ctx.service.user.findUserById('326752');
         console.log(user);
+    });
+    it('getUser', async () => {
+        const user = await ctx.service.user.getUser('123456');
+        console.log(user);
+    });
+    it('addPhone', async () => {
+        const result = await ctx.service.user.addPhone('123456', '326752', '1234');
+        console.log(result);
+    });
+    it('addAddress', async () => {
+        const addressMessage = {
+            longitude: '',
+            latitude: '',
+            province_id: '87296',
+            city_id: '87315',
+            county_id: '87685',
+            detail: 'JUlOWPq8Ph',
+        };
+        const result = await ctx.service.user.addAddress('326752', addressMessage );
+        console.log(result);
+    });
+    it('updateAddress', async () => {
+        const addressMessage = {
+            longitude: '',
+            latitude: '',
+            province_id: '87296',
+            city_id: '87315',
+            county_id: '87685',
+            detail: 'JUlOWPq8Ph',
+        };
+        const result = await ctx.service.user.updateAddress('326752', '123456', addressMessage);
+        console.log(result);
+    });
+    it('deleteAddress', async () => {
+        const result = await ctx.service.user.deleteAddress('123456', '123456');
+        console.log(result);
+    });
+    it('deleteOrder', async () => {
+        const result = await ctx.service.user.deleteOrder('123456', '123456');
+        console.log(result);
+    });
+    it('addCoupon', async () => {
+        const result = await ctx.service.user.addCoupon('123456', '123456');
+        console.log(result);
     });
 });

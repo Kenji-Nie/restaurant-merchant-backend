@@ -14,6 +14,7 @@ import Region from '../../../app/controller/region';
 import Seat from '../../../app/controller/seat';
 import SeatType from '../../../app/controller/seatType';
 import User from '../../../app/controller/user';
+import WxPay from '../../../app/controller/wxPay';
 
 declare module 'egg' {
   interface IController {
@@ -30,5 +31,6 @@ declare module 'egg' {
     seat: Seat;
     seatType: SeatType;
     user: User;
+    wxPay: WxPay;
   }
 }

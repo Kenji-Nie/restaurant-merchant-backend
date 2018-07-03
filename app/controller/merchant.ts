@@ -150,18 +150,41 @@ export default class MerchantController extends BaseController {
 
         }
     }
+
+    /**
+     * 根据店铺id获取店铺优惠券信息
+     * @returns {Promise<void>}
+     */
     public async getMerchantCoupon() {
-        const merchantId = this.ctx.request.body.merchant_id;
-        const coupons = await this.ctx.service.merchant.getMerchantCoupon(merchantId);
-        if (coupons !== null) {
+        try {
+            const coupons = await this.ctx.service.merchant.getMerchantCoupon(this.ctx.request.body.merchant_id);
             this.ctx.body = {
                 status: true,
                 message: coupons,
             };
-        }else {
+        }catch (e) {
             this.ctx.body = {
                 status: true,
                 message: null,
+            };
+        }
+    }
+
+    /**
+     * 根据店铺id查看店铺信息
+     * @returns {Promise<void>}
+     */
+    public async getMerchant() {
+        try {
+            const merchant = await this.ctx.service.merchant.getMerchant(this.ctx.request.body.merchant_id);
+            this.ctx.body = {
+                status: true,
+                message: merchant,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+                message: '',
             };
         }
     }

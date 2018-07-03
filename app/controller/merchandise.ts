@@ -4,7 +4,6 @@ export default class MerchandiseController extends BaseController {
 
     public async add() {
         const params = this.ctx.request.body;
-        console.log(params);
         const result = await this.service.merchandise.add(params.merchant_id, params.merchandise);
         this.ctx.body = {
             message: result,
@@ -14,6 +13,7 @@ export default class MerchandiseController extends BaseController {
 
     public async get() {
         const param = this.ctx.params.rest;
+
         this.ctx.body = {
             message: await this.service.merchandise.getMerchandiseByMerchantId(param),
             status: true,
@@ -31,15 +31,13 @@ export default class MerchandiseController extends BaseController {
 
     public async shelf() {
         const param = this.ctx.request.body.ids;
-        const result = await this.service.merchandise.shelfMerchandise(param.ids);
+        const result = await this.service.merchandise.shelfMerchandise(param);
         this.ctx.body = result;
     }
 
     public async delete() {
         const param = this.ctx.request.body;
-        console.log(param.ids);
-        const result = await this.service.merchandise.deleteMerchandise(param.ids);
-        console.log(result);
+        const result = await this.service.merchandise.deleteMerchandise(param.merchant_id, param.ids);
         this.ctx.body = result;
     }
 }

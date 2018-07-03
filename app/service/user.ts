@@ -4,6 +4,8 @@ import Merchant = model.schema.Merchant;
 import {aql} from 'arangojs/lib/async/aql-query';
 import {consoleTestResultHandler} from 'tslint/lib/test';
 import Coupon = model.schema.Coupon;
+import Address = model.schema.Address;
+import Order = model.schema.Order;
 
 export default class UserService extends BaseService {
 
@@ -15,6 +17,7 @@ export default class UserService extends BaseService {
     public async findUserById(uid: string) {
         return await this.model.user[uid];
     }
+
     /**
      * 通过电话号码及密码查询用户
      * @param {string} phone
@@ -76,6 +79,7 @@ export default class UserService extends BaseService {
     public async findUserByEmail(email: string) {
         return await this.findByProperty('email', email);
     }
+
     /**
      * 通过phone获取验证码
      * @param {string} phone
@@ -125,11 +129,13 @@ export default class UserService extends BaseService {
         merchantId = user.merchant_ids;
         if (merchantId !== undefined) {
             merchantId.push(newMerchant._key);
-            return await this.model.user.update(uid, {merchant_ids: merchantId});
-        }else {
+            await this.model.user.update(uid, {merchant_ids: merchantId});
+            return newMerchant._key;
+        } else {
             merchantId = [];
             merchantId.push(newMerchant._key);
-            return await this.model.user.update(uid, {merchant_ids: merchantId});
+            await this.model.user.update(uid, {merchant_ids: merchantId});
+            return newMerchant._key;
         }
     }
 
@@ -145,10 +151,11 @@ export default class UserService extends BaseService {
         const password = user.password;
         if (password === userOldPassword) {
             return await this.model.user.update(uid, {password: userNewPassword});
-        }else {
+        } else {
             return 0;
         }
     }
+
     /**
      * 通过phone、密码和验证码注册用户信息并返回注册后的用户id
      * @param {string} phone
@@ -182,7 +189,7 @@ export default class UserService extends BaseService {
         //     return null;
         // }
 
-        return await (await this.findInnnerJoinById(uid,['merchant'])).next();
+        return await (await this.findInnnerJoinById(uid, ['merchant'])).next();
     }
 
     /**
@@ -201,28 +208,38 @@ export default class UserService extends BaseService {
         try {
             await this.query(query);
             return true;
-        }catch (e) {
+        } catch (e) {
             return false;
         }
     }
+
     /**
      * 向user_id的用户添加coupon_id的优惠券
      * @param {string} uid
      * @param {string} cid
      * @returns {Promise<any>}
      */
-    public async addUserCoupon(uid: string, cid: string) {
-        const user = await this.model.user[uid];
-        let couponId;
-        couponId = user.coupon_ids;
-        if (couponId !== undefined) {
-           couponId.push(cid);
-           return await this.model.user.update(uid, {coupon_ids: couponId});
-        }else {
-            couponId = [];
-            couponId.push(cid);
-            return await this.model.user.update(uid, {coupon_ids: couponId});
+    public async addUserCoupon(uids: string[], cids: string[]) {
+        let usernames;
+        usernames = [];
+        for (let u = 0; u < uids.length; u++) {
+            const user = await this.model.user[uids[u]];
+            usernames.push(user.username);
+            let coupons;
+            coupons = user.coupon_ids;
+            if (coupons !== undefined && coupons.length !== 0) {
+                for (let c = 0; c < cids.length; c++) {
+                    coupons.push(cids[c]);
+                }
+            } else {
+                coupons = [];
+                for (let c = 0; c < cids.length; c++) {
+                    coupons.push(cids[c]);
+                }
+            }
+            await this.model.user.update(uids[u], {coupon_ids: coupons});
         }
+        return usernames;
     }
 
     /**
@@ -240,8 +257,8 @@ export default class UserService extends BaseService {
                 const coupon = await this.model.coupon[coupons[c]];
                 allCouponMessage.push(coupon);
             }
-            return allCouponMessage;
-        }else {
+            return {username: user.username, coupons: allCouponMessage};
+        } else {
             return null;
         }
     }
@@ -262,9 +279,173 @@ export default class UserService extends BaseService {
                 allOrderMessage.push(order);
             }
             return allOrderMessage;
-        }else {
+        } else {
             return null;
         }
     }
+    /**
+     * 获取用户集合为myOrder,address,myCoupon使用数据
+     * @param {string} wid
+     * @returns {Promise<ArrayCursor>}
+     */
+    public async getUser(wid: string) {
+        const user = await this.findByProperty('wx_uid', wid);
+        while (user.hasNext()) {
+            const userMessage = await user.next();
+            const roleIds = userMessage.role_ids;
+            let roleMessage;
+            roleMessage = [];
+            if (roleIds !== undefined) {
+                for (let i = 0; i < roleIds.length; i++) {
+                    const role = await this.model.role[roleIds[i]];
+                    roleMessage.push(role);
+                }
+            }
+            const orderIds = userMessage.order_ids;
+            let orderMessage;
+            orderMessage = [];
+            if (orderIds !== undefined) {
+                for (let i = 0; i < orderIds.length; i++) {
+                    const order = await this.model.order[orderIds[i]];
+                    orderMessage.push(order);
+                }
+            }
+            const couponIds = userMessage.coupon_ids;
+            let couponMessage;
+            couponMessage = [];
+            if (couponIds !== undefined) {
+                for (let i = 0; i < couponIds.length; i++) {
+                    const coupon = await this.model.coupon[couponIds[i]];
+                    couponMessage.push(coupon);
+                }
+            }
+            const addressIds = userMessage.address_ids;
+            let addressMessage;
+            addressMessage = [];
+            if (addressIds !== undefined) {
+                for (let i = 0; i < addressIds.length; i++) {
+                    const address = await this.model.address[addressIds[i]];
+                    addressMessage.push(address);
+                }
+            }
+            const merchantIds = userMessage.merchant_ids;
+            let merchantMessage;
+            merchantMessage = [];
+            if (merchantIds !== undefined) {
+                for (let i = 0; i < merchantIds.length; i++) {
+                    const merchant = await this.model.merchant[merchantIds[i]];
+                    merchantMessage.push(merchant);
+                }
+            }
+            return {userMessage: userMessage, role_ids: roleMessage, order_ids: orderMessage, coupon_ids: couponMessage, address_ids: addressMessage, merchant_ids: merchantMessage};
+        }
+    }
 
+    /**
+     * 注册页面注册电话号码
+     * @param {string} phoneNumber
+     * @param {string} uid
+     * @param {number} YanZhengMa
+     * @returns {Promise<any>}
+     */
+    public async addPhone(phoneNumber: string, uid: string, YanZhengMa: string) {
+        if (YanZhengMa) {
+            return await this.model.user.update(uid, {phone: phoneNumber});
+        }
+    }
+
+    /**
+     * 添加地址页面
+     * @param {string} uid
+     * @param {model.schema.Address} addressMessage
+     * @returns {Promise<any>}
+     */
+    public async addAddress(uid: string, addressMessage: Address) {
+        const address = await this.model.address.save(addressMessage);
+        let addressIds;
+        addressIds = await this.model.user[uid].address_ids;
+        if (addressIds === undefined) {
+            addressIds = [];
+        }
+        addressIds.push(address._key);
+        await this.model.user.update(uid, {address_ids: addressIds});
+        return address._key;
+    }
+
+    /**
+     * 更新地址界面根据用户ID更新对应的地址
+     * @param {string} uid
+     * @param {string} aid
+     * @param {model.schema.Address} addressMessage
+     * @returns {Promise<any>}
+     */
+    public async updateAddress(uid: string, aid: string, addressMessage: Address) {
+        return await this.model.address.update(aid, addressMessage);
+    }
+
+    /**
+     * 删除地址---根据用户的ID和地址ID删除对应的地址
+     * @param {string} aid
+     * @returns {Promise<any>}
+     */
+    public async deleteAddress(uid: string, aid: string) {
+        const query = aql`for u in user filter u._key==${uid} let add_ids = REMOVE_VALUE(u.address_ids,${aid}) update u with {address_ids:add_ids} in user remove ${aid} in address`;
+        return await this.query(query);
+    }
+
+    /**
+     * 更具用户ID和订单ID删除对应的订单
+     * @param {string} uid
+     * @param {string} oid
+     * @returns {Promise<any>}
+     */
+    public async deleteOrder(uid: string, oid: string) {
+        const query = aql`for u in user filter u._key==${uid} let ord_ids = REMOVE_VALUE(u.order_ids,${oid}) update u with {order_ids:ord_ids} in user remove ${oid} in order`;
+        return await this.query(query);
+    }
+
+    /**
+     * 新建订单
+     * @param {string} uid
+     * @param {string} mid
+     * @param {model.schema.Order} orderMessage
+     * @returns {Promise<any>}
+     */
+    public async addOrder(uid: string, mid: string, orderMessage: Order) {
+        const newOrder = await this.model.order.save(orderMessage);
+        const user = await this.model.user[uid];
+        const merchant = await this.model.merchant[mid];
+        let userOrderIds;
+        userOrderIds = user.order_ids;
+        let merchantOrderIds;
+        merchantOrderIds = merchant.order_ids;
+        if (userOrderIds === undefined) {
+            userOrderIds = [];
+        }
+        userOrderIds.push(newOrder._key);
+        if (merchantOrderIds === undefined) {
+            merchantOrderIds = [];
+        }
+        merchantOrderIds.push(newOrder._key);
+        await this.model.user.update(uid, {order_ids: userOrderIds});
+        await this.model.merchant.update(mid, {order_ids: merchantOrderIds});
+        return newOrder._key;
+    }
+
+    /**
+     * 为用户新增优惠券
+     * @param {string} uid
+     * @param {string} cid
+     * @returns {Promise<any>}
+     */
+    public async addCoupon(uid: string, cid: string) {
+        const user = await this.model.user[uid];
+        let couponIds;
+        couponIds = user.coupon_ids;
+        if (couponIds === undefined) {
+            couponIds = [];
+        }
+        couponIds.push(cid);
+        return await this.model.user.update(uid, {coupon_ids: couponIds});
+    }
 }

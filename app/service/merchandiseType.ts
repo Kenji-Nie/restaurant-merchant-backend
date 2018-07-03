@@ -1,5 +1,6 @@
 import BaseService from './base';
 import MerchandiseType = model.schema.MerchandiseType;
+import Merchandise = model.schema.Merchandise;
 
 export default class MerchandiseTypeService extends BaseService {
     public async addMerchandiseType(mid: string, merchandiseTypeName: string, merchandiseTypeIcon: string) {
@@ -47,7 +48,13 @@ export default class MerchandiseTypeService extends BaseService {
     }
 
     public async deleteMerchandiseType(mTypeId: string) {
+        const merchandises = await this.model.merchandise.all();
         try {
+            merchandises.each((item) => {
+                if (item.type_fid === mTypeId) {
+                    this.model.merchandise.remove(item._key);
+                }
+            });
             return await this.model.merchandiseType.remove(mTypeId);
         } catch (e) {
             return {_key: ''};

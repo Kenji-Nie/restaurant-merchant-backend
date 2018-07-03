@@ -149,14 +149,16 @@ export default class UserController extends BaseController {
         const userId = this.ctx.request.body.user_id;
         const merchantDetail = this.ctx.request.body.merchantMessage;
         const result = await this.ctx.service.user.createMerchant(userId, merchantDetail);
-        if (result != null) {
+        if (result) {
             this.ctx.body = {
                 status: true,
+                merchant_id: result,
                 message: merchantDetail,
             };
         } else {
             this.ctx.body = {
                 status: false,
+                merchant_id: '',
                 message: null,
             };
         }
@@ -234,27 +236,29 @@ export default class UserController extends BaseController {
     }
 
     public async addUserCoupon() {
-        const userId = this.ctx.request.body.user_id;
-        const couponId = this.ctx.request.body.coupon_id;
-        const result = await this.ctx.service.user.addUserCoupon(userId, couponId);
+        const userIds = this.ctx.request.body.user_ids.toString();
+        const couponIds = this.ctx.request.body.coupon_ids.toString();
+        const result = await this.ctx.service.user.addUserCoupon(userIds.split(','), couponIds.split(','));
         if (result != null) {
             this.ctx.body = {
                 status: true,
+                usernames: result,
             };
         } else {
             this.ctx.body = {
                 status: false,
+                usernames: '',
             };
         }
     }
 
     public async getUserCoupon() {
         const userId = this.ctx.request.body.user_id;
-        const coupons = await this.ctx.service.user.getUserCoupon(userId);
-        if (coupons !== null) {
+        const result = await this.ctx.service.user.getUserCoupon(userId);
+        if (result !== null) {
             this.ctx.body = {
                 user_id: userId,
-                message: coupons,
+                message: result,
             };
         } else {
             this.ctx.body = {
@@ -274,6 +278,120 @@ export default class UserController extends BaseController {
         } else {
             this.ctx.body = {
                 message: null,
+            };
+        }
+    }
+    public async getUser() {
+        try {
+            const user = await this.ctx.service.user.getUser(this.ctx.request.body.wx_uid);
+            this.ctx.body = {
+                status: true,
+                message: user,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+                message: '',
+            };
+        }
+        /*const user = await this.ctx.service.user.getUser(this.ctx.request.body.wx_uid);
+        if ( user != null) {
+            this.ctx.body = {
+                status: true,
+                message: user,
+            };
+        }else {
+            this.ctx.body = {
+                status: false,
+                message: '',
+            };
+        }*/
+    }
+    public async addPhone() {
+        try {
+            await this.ctx.service.user.addPhone(this.ctx.request.body.phone, this.ctx.request.body.user_id, this.ctx.request.body.YanZhengMa);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
+    public async addAddress() {
+        try {
+            const addressId = await this.ctx.service.user.addAddress(this.ctx.request.body.user_id, this.ctx.request.body.addressMessage);
+            this.ctx.body = {
+                status: true,
+                address_id: addressId,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+                address_id: '',
+            };
+        }
+    }
+    public async updateAddress() {
+        try {
+            const result = await this.ctx.service.user.updateAddress(this.ctx.request.body.user_id, this.ctx.request.body.address_id, this.ctx.request.body.addressMessage);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
+    public async deleteAddress() {
+        try {
+            await this.ctx.service.user.deleteAddress(this.ctx.request.body.user_id, this.ctx.request.body.address_id);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
+    public async deleteOrder() {
+        try {
+            await this.ctx.service.user.deleteOrder(this.ctx.request.body.user_id, this.ctx.request.body.order_id);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
+    public async addOrder() {
+        try {
+            const order = await this.ctx.service.user.addOrder(this.ctx.request.body.user_id, this.ctx.request.body.merchant_id, this.ctx.request.body.orderMessage);
+            this.ctx.body = {
+                status: true,
+                order_id: order,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
+                order_id: '',
+            };
+        }
+    }
+    public async addCoupon() {
+        try {
+            const result = await this.ctx.service.user.addCoupon(this.ctx.request.body.user_id, this.ctx.request.body.coupon_id);
+            this.ctx.body = {
+                status: true,
+            };
+        }catch (e) {
+            this.ctx.body = {
+                status: false,
             };
         }
     }
