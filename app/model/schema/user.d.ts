@@ -7,7 +7,7 @@ namespace model.schema {
         wx_uid: string;
         phone?: string;
         email?: string;
-        sign_up_date: string;
+        sign_up_date?: string;
         role_ids?: string[];
         order_ids?: string[];
         coupon_ids?: string[];

@@ -15,6 +15,12 @@ export default class WechatController extends BaseController {
                 timeout: 3000,
             });
 
+            if (result.data.openid !== null && result.data.openid !== undefined) {
+                let user = this.ctx.request.body.wechatUser;
+                user.wx_uid = result.data.openid;
+                await this.service.user.saveOrUpdateWechatUser(user);
+            }
+
             this.ctx.body = {
                 status: true,
                 message: result
