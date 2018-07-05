@@ -1,5 +1,6 @@
 import BaseService from './base';
 import Order = model.schema.Order;
+import {aql} from "arangojs/lib/async/aql-query";
 
 export default class OrderService extends BaseService {
     public async getOrdersByUserId(uid: string) {
@@ -62,7 +63,7 @@ export default class OrderService extends BaseService {
     public async listOrderByMerchantAndType(merchant_id: string, orderType: number) {
         const merchant = await this.model.merchant[merchant_id];
         const order_ids = merchant.order_ids;
-        const query = aql`for o in order filter o.delete_flag==false && o._key in ${order_ids} && o.type==${orderType}  
+        const query = `for o in order filter o.delete_flag==false && o._key in ${order_ids} && o.type==${orderType}  
         for u in user filter o._key in u.order_ids let phone = u.phone let username = u.username
         let merchandises=(for m in merchandise filter m._key in o.merchandise_ids return m)  
         let coupons=(for c in coupon filter c._key in o.coupon_ids return c) 
@@ -81,7 +82,7 @@ export default class OrderService extends BaseService {
     public async listOrderByMerchant(merchant_id: string) {
         const merchant = await this.model.merchant[merchant_id];
         const order_ids = merchant.order_ids;
-        const query = aql`for o in order filter o.delete_flag==false && o._key in ${order_ids}   
+        const query = `for o in order filter o.delete_flag==false && o._key in ${order_ids}   
         for u in user filter o._key in u.order_ids let phone = u.phone let username = u.username
         let merchandises=(for m in merchandise filter m._key in o.merchandise_ids return m)  
         let coupons=(for c in coupon filter c._key in o.coupon_ids return c) 
