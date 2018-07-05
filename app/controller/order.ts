@@ -113,9 +113,17 @@ export default class OrderController extends BaseController {
             this.ctx.body = {
                 status: false,
                 messages: {}
-            }
+            };
 
         }
 
+    }
+
+    public async addOrder() {
+        const params = this.ctx.request.body;
+        const result = await this.service.order.addOrder(params.user_id, params.merchant_id, params.order);
+        this.ctx.body = {
+            status: result,
+        };
     }
 }

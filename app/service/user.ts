@@ -1,13 +1,9 @@
 import BaseService from './base';
+import {aql} from 'arangojs/lib/async/aql-query';
 import User = model.schema.User;
 import Merchant = model.schema.Merchant;
-import {aql} from 'arangojs/lib/async/aql-query';
-import {consoleTestResultHandler} from 'tslint/lib/test';
-import Coupon = model.schema.Coupon;
 import Address = model.schema.Address;
 import Order = model.schema.Order;
-import Role = model.schema.Role;
-import Merchandise = model.schema.Merchandise;
 
 export default class UserService extends BaseService {
 
@@ -18,6 +14,10 @@ export default class UserService extends BaseService {
      */
     public async findUserById(uid: string) {
         return await this.model.user[uid];
+    }
+
+    public async findUserByWxId(uid: string) {
+        return await (await this.findByProperty('wx_uid', uid)).next();
     }
 
     /**
