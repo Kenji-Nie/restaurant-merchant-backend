@@ -8,16 +8,16 @@ export default class AdService extends BaseService {
         const secrets = this.app.config.secrets.default[params.openid];
         let data = Object.assign({
             appid: secrets.appid,
-            mch_id: '1489984772',
+            mch_id: secrets.mch_id,
             nonce_str: this.getNonce(),
             trade_type: 'JSAPI',
             notify_url: 'http://www.weixin.qq.com/wxpay/pay.php', // test
             out_trade_no: Date.now(),
-            body: 'test',
-            total_fee: 1,
+            body: 'mch_id微信支付',
+            total_fee: params.total_fee,
         }, params);
 
-        data.sign = this.sign(data, '1wdv4Thn9JyH86UJki89Oiu67Gfr45Hy');
+        data.sign = this.sign(data, secrets.key);
 
         data = convert.js2xml({xml: data}, {compact: true, spaces: 2});
 
@@ -44,7 +44,7 @@ export default class AdService extends BaseService {
             if (res[k] == null) return raw;
         }
 
-        res['paySign'] = this.sign(res, '1wdv4Thn9JyH86UJki89Oiu67Gfr45Hy');
+        res['paySign'] = this.sign(res, secrets.key);
 
         delete res['appId'];
 

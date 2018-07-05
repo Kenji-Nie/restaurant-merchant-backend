@@ -10,7 +10,6 @@ export default class WechatController extends BaseController {
                 + '&secret=' + this.ctx.request.body.secret + '&js_code=' + this.ctx.request.body.code
                 + '&grant_type=authorization_code';
 
-
             const result = await this.ctx.curl(url, {
                 method: 'GET',
                 dataType: 'json',
@@ -24,14 +23,20 @@ export default class WechatController extends BaseController {
                 const secret = {
                     appid: this.ctx.request.body.appid,
                     merchant_id: this.ctx.request.body.merchant_id,
-                    key: this.ctx.request.body.code
+                    key: this.ctx.request.body.key,
+                    mch_id: this.ctx.request.body.mch_id
                 };
                 this.app.config.secrets.default[user.wx_uid] = secret;
+                this.ctx.body = {
+                    status: true,
+                    message: result
+                };
+            } else {
+                this.ctx.body = {
+                    status: false
+                };
             }
-            this.ctx.body = {
-                status: true,
-                message: result
-            };
+
         } catch (e) {
             this.ctx.body = {
                 status: false
