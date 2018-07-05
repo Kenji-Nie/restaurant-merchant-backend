@@ -9,7 +9,8 @@ export default class WechatController extends BaseController {
             const url = 'https://api.weixin.qq.com/sns/jscode2session?appid=' + this.ctx.request.body.appid
                 + '&secret=' + this.ctx.request.body.secret + '&js_code=' + this.ctx.request.body.code
                 + '&grant_type=authorization_code';
-            this.app.config.secrets.appid = this.ctx.request.body.appid;
+
+
             const result = await this.ctx.curl(url, {
                 method: 'GET',
                 dataType: 'json',
@@ -20,8 +21,13 @@ export default class WechatController extends BaseController {
                 let user = this.ctx.request.body.wechatUser;
                 user.wx_uid = result.data.openid;
                 await this.service.user.saveOrUpdateWechatUser(user);
+                const secret = {
+                    appid: this.ctx.request.body.appid,
+                    merchant_id: this.ctx.request.body.merchant_id,
+                    key: this.ctx.request.body.code
+                };
+                this.app.config.secrets.default[user.wx_uid] = secret;
             }
-
             this.ctx.body = {
                 status: true,
                 message: result

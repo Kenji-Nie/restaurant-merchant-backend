@@ -52,6 +52,6 @@ export default class WxPayController extends BaseController {
         const params = this.ctx.request.body;
         params['spbill_create_ip'] = this.ctx.ip;
         const raw = await this.service.wxPay.prePay(params);
-        return this.service.wxPay.generateResponse(raw.data.xml);
+        return this.service.wxPay.generateResponse(raw.data.xml, params);
     }
 }

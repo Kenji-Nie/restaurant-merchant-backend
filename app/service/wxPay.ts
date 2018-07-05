@@ -5,10 +5,10 @@ import BaseService from './base';
 const ORDER_URL = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
 export default class AdService extends BaseService {
     public async prePay(params: any) {
-        const secrets = this.app.config.secrets;
+        const secrets = this.app.config.secrets.default[params.openid];
         let data = Object.assign({
             appid: secrets.appid,
-            mch_id: secrets.mch_id,
+            mch_id: '1489984772',
             nonce_str: this.getNonce(),
             trade_type: 'JSAPI',
             notify_url: 'http://www.weixin.qq.com/wxpay/pay.php', // test
@@ -17,7 +17,7 @@ export default class AdService extends BaseService {
             total_fee: 1,
         }, params);
 
-        data.sign = this.sign(data, secrets.key);
+        data.sign = this.sign(data, '1wdv4Thn9JyH86UJki89Oiu67Gfr45Hy');
 
         data = convert.js2xml({xml: data}, {compact: true, spaces: 2});
 
@@ -30,8 +30,8 @@ export default class AdService extends BaseService {
         return res;
     }
 
-    public generateResponse(raw) {
-        const secrets = this.app.config.secrets;
+    public generateResponse(raw, params) {
+        const secrets = this.app.config.secrets.default[params.openid];
         const res = {
             appId: raw.appid._cdata,
             timeStamp: parseInt(Date.now() / 1000 + '', 10),
@@ -44,7 +44,7 @@ export default class AdService extends BaseService {
             if (res[k] == null) return raw;
         }
 
-        res['paySign'] = this.sign(res, secrets.key);
+        res['paySign'] = this.sign(res, '1wdv4Thn9JyH86UJki89Oiu67Gfr45Hy');
 
         delete res['appId'];
 
