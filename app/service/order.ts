@@ -1,5 +1,5 @@
 import BaseService from './base';
-import {aql} from "arangojs/lib/async/aql-query";
+import Order = model.schema.Order;
 
 export default class OrderService extends BaseService {
     public async getOrdersByUserId(uid: string) {
@@ -92,6 +92,24 @@ export default class OrderService extends BaseService {
     }
 
 
+    public async addOrder(uid: string, mid: string, order: Order) {
+        try {
+            const user = await this.service.user.findUserByWxId(uid);
+            const userOrder = user.order_ids || [];
+            const merchantOrder = (await this.model.merchant[mid]).order_ids || [];
+            const orderId = (await this.model.order.save(order))._key;
+            userOrder.push(orderId);
+            merchantOrder.push(orderId);
+            await this.model.user.update(user._key, {order_ids: userOrder});
+            await this.model.merchant.update(mid, {order_ids: merchantOrder});
+            return true;
+        } catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
+
+
     /**
      * 更具用户ID和订单ID删除对应的订单
      * @param {string} uid
@@ -106,5 +124,6 @@ export default class OrderService extends BaseService {
         update m with {order_ids:merchant_ord_ids} in merchant remove ${oid} in order`;
         return await this.query(query);
     }
+
 
 }

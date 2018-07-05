@@ -116,9 +116,15 @@ export default class OrderController extends BaseController {
             }
 
         }
-
     }
 
+    public async addOrder() {
+        const params = this.ctx.request.body;
+        const result = await this.service.order.addOrder(params.user_id, params.merchant_id, params.order);
+        this.ctx.body = {
+            status: result,
+        };
+    }
 
     /**
      * 根据用户ID、店铺ID和订单ID删除对应的订单

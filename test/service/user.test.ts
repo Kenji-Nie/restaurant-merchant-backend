@@ -1,6 +1,5 @@
 import {Context} from 'egg';
 import {app} from 'egg-mock/bootstrap';
-import {concatAST} from 'graphql';
 
 describe('userTest', () => {
     let ctx: Context;
