@@ -107,8 +107,8 @@ describe('userTest', () => {
     //             detail: '夏家庄风和日丽小区9号楼10',
     //         },
     //     };
-    //     // const result = await ctx.service.user.createMerchant('326752', message);
-    //     // console.log(result);
+    //     const result = await ctx.service.user.createMerchant('326752', message);
+    //     console.log(result);
     // });
     // it('updatePassword', async () => {
     //     const result = await ctx.service.user.updatePassword('326752', '123456', '123456789');
@@ -183,11 +183,29 @@ describe('userTest', () => {
     //     console.log(result);
     // });
     // it('addCoupon', async () => {
-    //     // const result = await ctx.service.user.addCoupon('123456', '123456');
-    //     // console.log(result);
+    //     const result = await ctx.service.user.addCoupon('123456', '123456');
+    //     console.log(result);
     // });
-    it('deleteOrder', async () => {
-        const result = await ctx.service.user.getUser('12345');
+    it('saveOrUpdateWechatUser', async () => {
+        const user = {
+            type_fid: '2592009',
+            sign_up_date: '',
+            username: 'mazi',
+            password: 'mazi',
+            name: 'mazi',
+            wx_uid: 'liyi',
+            phone: '18109287772',
+            email: 'wanger',
+            registration_date: 'zhangsan',
+            role_ids: [],
+            order_ids: ['2016664', '2015955'],
+            coupon_ids: ['2048195', '2025007'],
+            addresses: '',
+            id_card: '',
+            merchants: [],
+            deletion_flag: true
+        };
+        const result = await ctx.service.user.saveOrUpdateWechatUser(user);
         console.log(result);
-    });
+    })
 });

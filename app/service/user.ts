@@ -285,6 +285,7 @@ export default class UserService extends BaseService {
             return null;
         }
     }
+
     /**
      * 获取用户集合为myOrder,address,myCoupon使用数据
      * @param {string} wid
@@ -361,7 +362,7 @@ export default class UserService extends BaseService {
         addressIds = user.address_ids;
         if (addressIds !== undefined && addressIds.length !== 0) {
             addressIds.push(address._key);
-        }else {
+        } else {
             addressIds = [];
             addressIds.push(address._key);
         }
@@ -444,5 +445,15 @@ export default class UserService extends BaseService {
         }
         couponIds.push(cid);
         return await this.model.user.update(uid, {coupon_ids: couponIds});
+    }
+
+    public async saveOrUpdateWechatUser(wechatUser: User) {
+        let user = await (await this.findByProperty('wx_uid', wechatUser.wx_uid)).next();
+        if (user === undefined) {
+            user = await this.model.user.save(wechatUser);
+        } else {
+            await this.model.user.update(user._key, wechatUser);
+        }
+        return user;
     }
 }
