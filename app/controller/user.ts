@@ -281,6 +281,7 @@ export default class UserController extends BaseController {
             };
         }
     }
+
     public async getUser() {
         try {
             const user = await this.ctx.service.user.getUser(this.ctx.request.body.wx_uid);
@@ -288,7 +289,7 @@ export default class UserController extends BaseController {
                 status: true,
                 message: user,
             };
-        }catch (e) {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
                 message: '',
@@ -307,18 +308,20 @@ export default class UserController extends BaseController {
             };
         }*/
     }
+
     public async addPhone() {
         try {
             await this.ctx.service.user.addPhone(this.ctx.request.body.phone, this.ctx.request.body.user_id, this.ctx.request.body.YanZhengMa);
             this.ctx.body = {
                 status: true,
             };
-        }catch (e) {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
             };
         }
     }
+
     public async addAddress() {
         try {
             const addressId = await this.ctx.service.user.addAddress(this.ctx.request.body.user_id, this.ctx.request.body.addressMessage);
@@ -326,49 +329,53 @@ export default class UserController extends BaseController {
                 status: true,
                 address_id: addressId,
             };
-        }catch (e) {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
                 address_id: '',
             };
         }
     }
+
     public async updateAddress() {
         try {
             const result = await this.ctx.service.user.updateAddress(this.ctx.request.body.user_id, this.ctx.request.body.address_id, this.ctx.request.body.addressMessage);
             this.ctx.body = {
                 status: true,
             };
-        }catch (e) {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
             };
         }
     }
+
     public async deleteAddress() {
         try {
             await this.ctx.service.user.deleteAddress(this.ctx.request.body.user_id, this.ctx.request.body.address_id);
             this.ctx.body = {
                 status: true,
             };
-        }catch (e) {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
             };
         }
     }
+
     public async deleteOrder() {
         try {
-            await this.ctx.service.user.deleteOrder(this.ctx.request.body.user_id, this.ctx.request.body.order_id);
+            await this.ctx.service.user.deleteOrder(this.ctx.request.body.user_id, this.ctx.request.body.merchant_id, this.ctx.request.body.order_id);
             this.ctx.body = {
                 status: true,
             };
-        }catch (e) {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
             };
         }
     }
+
     public async addOrder() {
         try {
             const order = await this.ctx.service.user.addOrder(this.ctx.request.body.user_id, this.ctx.request.body.merchant_id, this.ctx.request.body.orderMessage);
@@ -376,20 +383,21 @@ export default class UserController extends BaseController {
                 status: true,
                 order_id: order,
             };
-        }catch (e) {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
                 order_id: '',
             };
         }
     }
+
     public async addCoupon() {
         try {
             const result = await this.ctx.service.user.addCoupon(this.ctx.request.body.user_id, this.ctx.request.body.coupon_id);
             this.ctx.body = {
                 status: true,
             };
-        }catch (e) {
+        } catch (e) {
             this.ctx.body = {
                 status: false,
             };

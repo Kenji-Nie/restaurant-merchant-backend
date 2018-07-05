@@ -118,4 +118,22 @@ export default class OrderController extends BaseController {
         }
 
     }
+
+
+    /**
+     * 根据用户ID、店铺ID和订单ID删除对应的订单
+     * @returns {Promise<void>}
+     */
+    public async deleteOrder() {
+        try {
+            await this.ctx.service.user.deleteOrder(this.ctx.request.body.user_id, this.ctx.request.body.merchant_id, this.ctx.request.body.order_id);
+            this.ctx.body = {
+                status: true,
+            };
+        } catch (e) {
+            this.ctx.body = {
+                status: false,
+            };
+        }
+    }
 }

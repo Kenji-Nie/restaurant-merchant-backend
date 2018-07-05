@@ -91,4 +91,20 @@ export default class OrderService extends BaseService {
         return await this.query(query);
     }
 
+
+    /**
+     * 更具用户ID和订单ID删除对应的订单
+     * @param {string} uid
+     * @param {string} oid
+     * @returns {Promise<any>}
+     */
+    public async deleteOrder(uid: string, mid: string, oid: string) {
+        // const query = aql`for u in user filter u._key==${uid} let ord_ids = REMOVE_VALUE(u.order_ids,${oid}) update u with {order_ids:ord_ids} in user remove ${oid} in order`;
+        const query = aql`for u in user filter u._key==${uid} let user_ord_ids = REMOVE_VALUE(u.order_ids,${oid}) 
+        update u with {order_ids:user_ord_ids} in user for m in merchant filter m._key == ${mid} 
+        let merchant_ord_ids = REMOVE_VALUE(m.order_ids,${oid}) 
+        update m with {order_ids:merchant_ord_ids} in merchant remove ${oid} in order`;
+        return await this.query(query);
+    }
+
 }
