@@ -1,6 +1,5 @@
 import BaseService from './base';
 import string from "../extend/lib/string";
-import ArrayUtils from "../utils/arrayUtils";
 import {aql} from "arangojs";
 
 export default class SeatService extends BaseService {
