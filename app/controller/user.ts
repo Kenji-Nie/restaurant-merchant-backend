@@ -281,7 +281,6 @@ export default class UserController extends BaseController {
             };
         }
     }
-
     public async getUser() {
         try {
             const user = await this.ctx.service.user.getUser(this.ctx.request.body.wx_uid);
@@ -289,7 +288,7 @@ export default class UserController extends BaseController {
                 status: true,
                 message: user,
             };
-        } catch (e) {
+        }catch (e) {
             this.ctx.body = {
                 status: false,
                 message: '',
