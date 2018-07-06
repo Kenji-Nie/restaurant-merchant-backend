@@ -92,7 +92,6 @@ export default class OrderService extends BaseService {
         return await this.query(query);
     }
 
-
     public async addOrder(uid: string, mid: string, order: Order) {
         try {
             const user = await this.service.user.findUserByWxId(uid);

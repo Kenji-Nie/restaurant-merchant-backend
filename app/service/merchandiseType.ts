@@ -47,14 +47,18 @@ export default class MerchandiseTypeService extends BaseService {
         }
     }
 
-    public async deleteMerchandiseType(mTypeId: string) {
-        const merchandises = await this.model.merchandise.all();
+    public async deleteMerchandiseType(mid: string, mTypeId: string) {
         try {
-            merchandises.each((item) => {
-                if (item.type_fid === mTypeId) {
-                    this.model.merchandise.remove(item._key);
+            const merchandises = await this.model.merchandise.all();
+            while (merchandises.hasNext()) {
+                const merchandise = await merchandises.next();
+                if (merchandise.type_fid === mTypeId) {
+                    await this.service.merchandise.deleteMerchandise(mid, [merchandise._key]);
                 }
-            });
+            }
+            let mTypeIds = (await this.model.merchant[mid]).merchandiseType_ids || [];
+            mTypeIds = mTypeIds.filter((item) => item !== mTypeId);
+            await this.model.merchant.update(mid, {merchandiseType_ids: mTypeIds});
             return await this.model.merchandiseType.remove(mTypeId);
         } catch (e) {
             return {_key: ''};

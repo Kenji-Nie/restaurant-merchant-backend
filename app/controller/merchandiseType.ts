@@ -30,8 +30,8 @@ export default class MerchandiseTypeController extends BaseController {
     }
 
     public async delete() {
-        const param = this.ctx.params.rest;
-        const result = await this.service.merchandiseType.deleteMerchandiseType(param);
+        const params = this.ctx.request.body;
+        const result = await this.service.merchandiseType.deleteMerchandiseType(params.merchant_id, params.mType_id);
         this.ctx.body = {
             message: result,
             status: !(result._key === ''),

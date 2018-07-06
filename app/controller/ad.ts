@@ -10,6 +10,14 @@ export default class AdController extends BaseController {
         };
     }
 
+    public async add() {
+        const params = this.ctx.request.body;
+        const result = await this.service.ad.add(params.merchant_id, params.ads);
+        this.ctx.body = {
+            status: result,
+        };
+    }
+
     public async update() {
         const params = this.ctx.request.body;
         const result = await this.service.ad.modify(params._key, params);

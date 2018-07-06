@@ -271,18 +271,14 @@ export default class UserService extends BaseService {
      * @returns {Promise<any>}
      */
     public async getOrder(uid: string) {
-        const user = await this.model.user[uid];
-        const orders = user.order_ids;
-        let allOrderMessage;
-        allOrderMessage = [];
-        if (orders !== undefined && orders.length !== 0) {
-            for (let o = 0; o < orders.length; o++) {
-                const order = await this.model.order[orders[o]];
-                allOrderMessage.push(order);
-            }
-            return allOrderMessage;
-        } else {
-            return null;
+        try {
+            const user = await this.model.user[uid] || {};
+            let orders: any[] = user.order_ids || [];
+            orders = orders.map((item) => this.model.order[item]);
+            return Promise.all(orders);
+        } catch (e) {
+            console.log(e);
+            return [];
         }
     }
 
