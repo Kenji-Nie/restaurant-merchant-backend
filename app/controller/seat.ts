@@ -9,8 +9,9 @@ export default class SeatController extends BaseController {
     public async deleteSeats() {
         const ids = this.ctx.request.body.seat_ids.toString();
         try {
+            await this.service.seat.deleteSeats(ids.split(','), this.ctx.request.body.merchant_id)
             this.ctx.body = {
-                status: await this.service.seat.deleteSeats(ids.split(','))
+                status: true
             }
         }
         catch (e) {

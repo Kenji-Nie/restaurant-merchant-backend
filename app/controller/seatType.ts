@@ -54,8 +54,9 @@ export default class SeatTypeController extends BaseController {
     public async deleteSeatTypes() {
         const ids = this.ctx.request.body.seatType_ids.toString();
         try {
+            await this.service.seatType.deleteSeatTypes(ids.split(','),this.ctx.request.body.merchant_id);
             this.ctx.body = {
-                status: await this.service.seatType.deleteSeatTypes(ids.split(','))
+                status: true
             }
         }
         catch (e) {

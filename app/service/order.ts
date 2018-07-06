@@ -71,7 +71,7 @@ export default class OrderService extends BaseService {
         // let sequence_number = LENGTH(sequence_numbers) > 0 ? sequence_numbers[0] : ""
         // return merge(o,{phone},{username},{sequence_number},{merchandises},{coupons})`;
 
-        const query = `for o in order filter o.delete_flag==false && o._key in ${order_ids} && o.type==${orderType}  
+        const query = aql`for o in order filter o.delete_flag==false && o._key in ${order_ids} && o.type==${orderType}  
         for u in user filter o._key in u.order_ids let phone = u.phone let username = u.username   
         let coupons=(for c in coupon filter c._key in o.coupon_ids return c) 
         return merge(o,{phone},{username},{coupons})`;
@@ -87,7 +87,7 @@ export default class OrderService extends BaseService {
     public async listOrderByMerchant(merchant_id: string) {
         const merchant = await this.model.merchant[merchant_id];
         const order_ids = merchant.order_ids;
-        const query = `for o in order filter o.delete_flag==false && o._key in ${order_ids}   
+        const query = aql`for o in order filter o.delete_flag==false && o._key in ${order_ids}   
         for u in user filter o._key in u.order_ids let phone = u.phone let username = u.username   
         let coupons=(for c in coupon filter c._key in o.coupon_ids return c) 
         return merge(o,{phone},{username},{sequence_number},{coupons})`;

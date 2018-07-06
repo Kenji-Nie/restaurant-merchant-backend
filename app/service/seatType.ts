@@ -1,5 +1,6 @@
 import BaseService from './base';
 import SeatType = model.schema.SeatType;
+import {aql} from "arangojs/lib/async/aql-query";
 
 export default class SeatTypeService extends BaseService {
 
@@ -18,8 +19,13 @@ export default class SeatTypeService extends BaseService {
      * @param {string[]} ids
      * @returns {Promise<boolean>}
      */
-    public async deleteSeatTypes(ids: string[]) {
-        return !(await this.model.seatType.removeByKeys(ids, {})).error;
+    public async deleteSeatTypes(ids: string[], merchant_id: string) {
+        const query = aql`let sids=(for s in seat filter s.type_fid in ${ids} return s._key) 
+        for m in merchant filter m._key==${merchant_id} 
+        update m with {seat_ids:REMOVE_VALUES(m.seat_ids,sids),seatType_ids:REMOVE_VALUES(m.seatType_ids,${ids})} in merchant 
+        for st in seatType filter st._key in ${ids} remove st in seatType 
+        for s in seat filter s.type_fid in ${ids}  remove s in seat `;
+        return await this.query(query);
     }
 
     /**

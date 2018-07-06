@@ -10,8 +10,11 @@ export default class SeatService extends BaseService {
      * @param {string[]} ids
      * @returns {Promise<boolean>}
      */
-    public async deleteSeats(ids: string[]) {
-        return !(await this.model.seat.removeByKeys(ids, {})).error;
+    public async deleteSeats(ids: string[], merchant_id: string) {
+        const query = aql`for s in seat filter s._key in ${ids} 
+        remove s in seat for m in merchant filter m._key==${merchant_id} 
+        update m with { seat_ids: REMOVE_VALUES(m.seat_ids,${ids}) } in merchant`;
+        return await this.query(query);
     }
 
     /**
