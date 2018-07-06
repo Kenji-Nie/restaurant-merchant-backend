@@ -63,13 +63,18 @@ export default class OrderService extends BaseService {
     public async listOrderByMerchantAndType(merchant_id: string, orderType: number) {
         const merchant = await this.model.merchant[merchant_id];
         const order_ids = merchant.order_ids;
+        // const query = `for o in order filter o.delete_flag==false && o._key in ${order_ids} && o.type==${orderType}
+        // for u in user filter o._key in u.order_ids let phone = u.phone let username = u.username
+        // let merchandises=(for m in merchandise filter m._key in o.merchandise_ids return m)
+        // let coupons=(for c in coupon filter c._key in o.coupon_ids return c)
+        // let sequence_numbers=(for s in seat filter o.seat_fid == s._key return s.sequence_number)
+        // let sequence_number = LENGTH(sequence_numbers) > 0 ? sequence_numbers[0] : ""
+        // return merge(o,{phone},{username},{sequence_number},{merchandises},{coupons})`;
+
         const query = `for o in order filter o.delete_flag==false && o._key in ${order_ids} && o.type==${orderType}  
-        for u in user filter o._key in u.order_ids let phone = u.phone let username = u.username
-        let merchandises=(for m in merchandise filter m._key in o.merchandise_ids return m)  
+        for u in user filter o._key in u.order_ids let phone = u.phone let username = u.username   
         let coupons=(for c in coupon filter c._key in o.coupon_ids return c) 
-        let sequence_numbers=(for s in seat filter o.seat_fid == s._key return s.sequence_number) 
-        let sequence_number = LENGTH(sequence_numbers) > 0 ? sequence_numbers[0] : ""
-        return merge(o,{phone},{username},{sequence_number},{merchandises},{coupons})`;
+        return merge(o,{phone},{username},{coupons})`;
         return await this.query(query);
     }
 
@@ -83,12 +88,9 @@ export default class OrderService extends BaseService {
         const merchant = await this.model.merchant[merchant_id];
         const order_ids = merchant.order_ids;
         const query = `for o in order filter o.delete_flag==false && o._key in ${order_ids}   
-        for u in user filter o._key in u.order_ids let phone = u.phone let username = u.username
-        let merchandises=(for m in merchandise filter m._key in o.merchandise_ids return m)  
+        for u in user filter o._key in u.order_ids let phone = u.phone let username = u.username   
         let coupons=(for c in coupon filter c._key in o.coupon_ids return c) 
-        let sequence_numbers=(for s in seat filter o.seat_fid == s._key return s.sequence_number) 
-        let sequence_number = LENGTH(sequence_numbers) > 0 ? sequence_numbers[0] : ""
-        return merge(o,{phone},{username},{sequence_number},{merchandises},{coupons})`;
+        return merge(o,{phone},{username},{sequence_number},{coupons})`;
         return await this.query(query);
     }
 
@@ -112,7 +114,7 @@ export default class OrderService extends BaseService {
 
 
     /**
-     * 更具用户ID和订单ID删除对应的订单
+     * 根据用户ID和订单ID删除对应的订单
      * @param {string} uid
      * @param {string} oid
      * @returns {Promise<any>}

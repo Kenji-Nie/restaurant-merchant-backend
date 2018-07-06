@@ -187,5 +187,5 @@ export default class MerchantController extends BaseController {
                 message: '',
             };
         }
-    }
+     }
 }
